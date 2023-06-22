@@ -59,19 +59,51 @@ body {
 .text-green {
   color: #3b9668;
 }
-.filter-container{
+
+.filter-container {
   width: 90%;
   border-radius: 6px;
-  display:flex;
+  display: flex;
   justify-content: center;
   align-items: center;
   background-color: #1BA97F;
-  
+
 
 }
+
+.style-select {
+  position: absolute;
+  inset: auto auto 0px 0px;
+  margin: 0px;
+  transform: translate3d(522.5px, 3847.5px, 0px);
+
+}
+
+.container {
+  width: 93%;
+}
+
 .date-filter input {
   width: 90%;
 }
+
+.card-title {
+  font-size: 13px;
+  color: #5F6980;
+}
+
+.card-title-sub {
+  font-size: 15px;
+  font-weight: bold;
+  color: #282828;
+}
+
+.card-title-footer {
+  color: #1BA97F;
+  font-size: 13px;
+
+}
+
 /* .container {
   display: grid;
   height: 100vh;
@@ -91,6 +123,7 @@ body {
       "main";
   } */
 }
+
 /* mine css */
 .login-screen {
   height: 100vh;
@@ -101,6 +134,12 @@ body {
   border-radius: 10px;
   position: relative;
   width: 60%;
+}
+
+.sidebar__menu h2 {
+
+  padding: 10px 10px !important;
+
 }
 
 .logo_height {
@@ -131,10 +170,39 @@ body {
   color: #525252;
 }
 
+.FAILED {
+  color: red;
+  font-weight: bold;
+  font-size: 10px;
+}
+
+.SUCCESS {
+  color: #3b9668;
+  font-weight: bold;
+  font-size: 10px;
+}
+
+.CREATED {
+  color: #66bcfd;
+  font-weight: bold;
+  font-size: 10px;
+}
+
+.PENDING {
+  color: #ebc64d;
+  font-weight: bold;
+  font-size: 10px;
+}
+
 label {
   font-size: 12px;
   color: #828282;
   padding: 8px 0px;
+}
+
+.activeTab {
+  border-radius: 5px;
+  border: 1px solid #3b9668;
 }
 
 input {
@@ -161,6 +229,7 @@ input {
   border-radius: 6px;
   color: white;
 }
-.page-content{
+
+.page-content {
   width: 100%;
 }

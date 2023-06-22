@@ -3,26 +3,38 @@ import './App.css';
 import Signup from "./components/auth/Signup"
 import Login from "./components/auth/Login"
 import Reset from "./components/auth/Reset"
-import DashboardHome from "./components/dashboard/DashboardHome"
-import Orders from "./components/dashboard/pages/Orders"
+import DashboardLayout from "./components/dashboard/DashboardLayout"
+import Statistics from "./components/dashboard/pages/Statistics"
+import FuelEssance from "./components/dashboard/pages/FuelEssance"
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { ToastProvider } from 'react-toast-notifications';
+import Electricity from './components/dashboard/pages/Electricity';
+import MtnTransactions from './components/dashboard/pages/MtnTransactions';
+import AirtelTransaction from './components/dashboard/pages/AirtelTransaction';
+import Startimes from './components/dashboard/pages/Startimes';
 
 function App() {
   return (
+    <ToastProvider>
     <div>
       <Router>
       <div className=" justify-center  ">
         <Routes>
           <Route exact path="/" element={<Login />}/>
-          <Route exact path="/reset" element={<Reset/>}/>
-          
-          <Route exact path="/sign-up" element={<Signup/>}/>
-          <Route exact path="/dashboard-home/*" element={<DashboardHome/>}/>
-          <Route exact path="/orders" element={<Orders/>}/>
+          <Route  path="/reset" element={<Reset/>}/>
+          <Route  path="/sign-up" element={<Signup/>}/>
+          <Route  path="/dashboard-home/*" element={<DashboardLayout/>}/>
+          <Route  path="/statistics" element={<Statistics/>}/>
+          <Route  path="/fuelEssance" element={<FuelEssance/>}/>
+          <Route  path="/electricity" element={<Electricity />}/>
+          <Route  path="/mtnTransactions" element={<MtnTransactions />}/>
+          <Route  path="/airtelTransaction" element={<AirtelTransaction />}/>
+          <Route  path="/startimes" element={<Startimes />}/>
         </Routes>
       </div>
     </Router>
     </div>
+    </ToastProvider>
     
   
   );

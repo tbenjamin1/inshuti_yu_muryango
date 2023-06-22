@@ -1,8 +1,21 @@
-import React from 'react'
+import React,{useState} from 'react'
 import logo from "../images/login_graphic.svg"
 import { Link } from 'react-router-dom'
 
 function Login() {
+    const [email, setEmailValue] = useState('');
+    const [password, setPasswordValue] = useState('');
+    const [confirmPassword, setConfirmPasswordValue] = useState('');
+    const [error, setError] = useState('');
+    const emailHandleChange = (event) => {
+        setEmailValue(event.target.value);
+    };
+    const passwordHandleChange = (event) => {
+        setPasswordValue(event.target.value);
+    };
+    const confirmPassworddHandleChange = (event) => {
+        setConfirmPasswordValue(event.target.value);
+    };
     return (
         <div className='flex justify-center items-center border login-screen' >
             <div className='flex justify-center items-center bg-white login-page '>
@@ -22,19 +35,19 @@ function Login() {
                             <label>
                                 Email
                             </label>
-                            <input type="text" className='' placeholder='be******@gmail.com' ></input>
+                            <input type="text" className='' placeholder='be******@gmail.com' value={email} onChange={emailHandleChange}  ></input>
                         </span>
                         <span className='flex flex-col' >
                             <label>
                                 Password
                             </label>
-                            <input type="password" className='' placeholder='Password' ></input>
+                            <input type="password" className='' placeholder='Password'  value={password} onChange={passwordHandleChange}></input>
                         </span>
                         <span className='flex flex-col' >
                             <label>
                                 Confirm password
                             </label>
-                            <input type="password" className='' placeholder='Password' ></input>
+                            <input type="password" className='' placeholder='Password' value={confirmPassword} onChange={confirmPassworddHandleChange} ></input>
                         </span>
                         <span className='flex justify-between items-center py-3'>
                             <span className='remeber_forgot flex justify-between items-center'>Already have an account !</span>

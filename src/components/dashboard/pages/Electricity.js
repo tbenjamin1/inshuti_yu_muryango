@@ -130,7 +130,7 @@ function Electricity() {
                                     </tbody>
                                 </table>) : (
                                 <div className='flex justify-center m-5 p-4'>
-                                    No transaction for selected date
+                                    No transaction for selected date range
                                 </div>
                             )}
 

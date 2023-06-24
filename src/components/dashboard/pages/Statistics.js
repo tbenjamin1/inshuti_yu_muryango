@@ -7,18 +7,7 @@ import { addTransactions } from '../../../redux/transactions/TransactionSlice';
 import Chart from "./Chart"
 
 function Statistics() {
-  //  const dispatch = useDispatch();
-
-  // const fetchStatistics = async () => {
-  //   const response = await dashboardApi.get().catch((error) => {
-  //     console.log(error)
-  //   })
-  //   dispatch(addTransactions(response.data))
-  // }
-
-  // useEffect(() => {
-  //   fetchStatistics();
-  // }, [])
+  
   return (
     <DashboardLayout>
       <div className=' flex justify-center items-center' >

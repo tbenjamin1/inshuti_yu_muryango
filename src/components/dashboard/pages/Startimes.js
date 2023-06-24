@@ -15,8 +15,10 @@ function Startimes() {
     const [selectedRange, setSelectedRange] = useState([defaultStartDate, defaultEndDate]);
 
     const handleDateRangeChange = (dates) => {
+        if(dates){
         const formattedDates = dates.map(dateObj => moment(dateObj.$d).format("YYYY-MM-DD"));
         setSelectedRange(formattedDates);
+        }
     };
     const startimesTransactionList = useSelector(getAllstartimesTransaction);
 
@@ -99,8 +101,11 @@ function Startimes() {
                                                    
                                                     {moment(transaction.created_at).format('YYYY-MM-DD HH:mm:ss')}
                                                 </td>
-                                                <td className="px-6 py-4"  >
-                                                    <span className="font-medium text-blue-600 dark:text-blue-500 hover:underline"  >{transaction.statusDesc?transaction.statusDesc:"N/A"}</span>
+                                                <td className="px-6 py-4" >
+                                                    {transaction.statusDesc === 'FAILED' && <span className="font-medium FAILED ">{transaction.statusDesc ? transaction.statusDesc : "N/A"}</span>}
+                                                    {transaction.statusDesc === 'SUCCESS' && <span className="font-medium  SUCCESS ">{transaction.statusDesc ? transaction.statusDesc : "N/A"}</span>}
+                                                    {transaction.statusDesc === 'CREATED' && <span className="font-medium  CREATED ">{transaction.statusDesc ? transaction.statusDesc : "N/A"}</span>}
+                                                    {transaction.statusDesc === 'PENDING' && <span className="font-medium  PENDING ">{transaction.statusDesc ? transaction.statusDesc : "N/A"}</span>}
                                                 </td>
                                             </tr>
                                         ))}

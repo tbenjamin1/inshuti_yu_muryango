@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import DashboardApi from "../../api/DashboardApi";
 
 export const fetchAsyncTransaction = createAsyncThunk('tranx/fetchAsyncElectricity', async (selectedRange) => {
+  
     const response = await DashboardApi.get(`?service=96b33985-1045-437c-9415-ff8a248978db&startDate=${selectedRange[0]}&endDate=${selectedRange[1]}`)
     return response.data;
 })
@@ -21,6 +22,7 @@ export const fetchAsynStartimesTransaction = createAsyncThunk('tranx/fetchAsynSt
 const savedUser = localStorage.getItem('user');
 
 const initialState = {
+    isLoading: false,
     transactionsList: [],
     mtnTransationList: [],
     airtelTransationList: [],
@@ -42,27 +44,55 @@ const transactionsSlice = createSlice({
 
     },
     extraReducers: {
-        [fetchAsyncTransaction.pending]: () => {
-            console.log("pending")
+
+        [fetchAsyncTransaction.pending]: (state) => {
+            state.isLoading = true;
+        },
+        [fetchAsyncMtnTransaction.pending]: (state) => {
+            state.isLoading = true;
+        },
+        [fetchAsyncAirtelTransaction.pending]: (state) => {
+            state.isLoading = true;
+        },
+        [fetchAsynStartimesTransaction.pending]: (state) => {
+            state.isLoading = true;
         },
         [fetchAsyncTransaction.fulfilled]: (state, { payload }) => {
-            console.log("fulfilled")
-            return { ...state, transactionsList: payload };
+            return { ...state,isLoading: false, transactionsList: payload };
         },
+
         [fetchAsyncMtnTransaction.fulfilled]: (state, { payload }) => {
-            console.log("fulfilled mtn")
-            return { ...state, mtnTransationList: payload };
+           
+            return { ...state,isLoading: false, mtnTransationList: payload };
         },
+
         [fetchAsyncAirtelTransaction.fulfilled]: (state, { payload }) => {
-            console.log("fulfilled airtel")
-            return { ...state, airtelTransationList: payload };
+           
+            return { ...state,isLoading: false,airtelTransationList: payload };
         },
+
         [fetchAsynStartimesTransaction.fulfilled]: (state, { payload }) => {
-            console.log("fulfilled startimes")
-            return { ...state, startimesTransationList: payload };
+          
+            return { ...state,isLoading: false,startimesTransationList: payload };
         },
-        [fetchAsyncTransaction.rejected]: () => {
-            console.log("rejected")
+
+        [fetchAsynStartimesTransaction.rejected]: (state) => {
+            
+            state.isLoading = false;
+           
+        },
+        [fetchAsyncAirtelTransaction.rejected]: (state) => {
+            
+            state.isLoading = false;
+           
+        },
+        [fetchAsyncMtnTransaction.rejected]: (state) => {
+            
+            state.isLoading = false;
+           
+        },
+        [fetchAsyncTransaction.rejected]: (state) => {
+            state.isLoading = false; 
         }
     }
 })

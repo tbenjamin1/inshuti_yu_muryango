@@ -12,7 +12,6 @@ function Login() {
     const [email, setEmailValue] = useState('');
     const [password, setPasswordValue] = useState('');
     const [loading, setLoading] = useState(false);
-
     const emailHandleChange = (event) => {
         setEmailValue(event.target.value);
     };
@@ -23,7 +22,7 @@ function Login() {
         event.preventDefault();
         setLoading(true)
         try {
-            const response = await axios.post('https://apidev.koipay.co/api/v1/auth/signin', { email, password }, {
+            const response = await axios.post('https://api.koipay.co/api/v1/auth/signin', { email, password }, {
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                 }
@@ -33,14 +32,11 @@ function Login() {
             const auth_user= response.data;
             // Store the token in local storage
             localStorage.setItem('user', JSON.stringify(auth_user));
-           
-            
             window.location.replace('/statistics');
             setLoading(false);
             //  redirecting the user to the desired page
         } catch (error) {
             addToast(error.response.data.message, { appearance: 'error' });
-           
             setLoading(false);
         }
     };
@@ -55,7 +51,7 @@ function Login() {
                 </div>
                 <div className='flex flex-col justify-center items-center login_form'>
                     <span className='login-title'>
-                        Login to your Koipay Account
+                        Login to your Koipay account
                     </span>
                     <span className='login-sub-title p-2' >See what is going on with your business</span>
                     <span className='login-sub-title my-3'>------------- or Sign in with Email ------------- </span>
@@ -74,7 +70,7 @@ function Login() {
                         </span>
                         <span className='flex justify-between items-center py-3'>
                             <span className='remeber_forgot flex justify-between items-center'><input type="checkbox" className='mr-1'></input> Remember me</span>
-                            <Link to="/reset"><span className='remeber_forgot underline'>Forgot Password?</span></Link>
+                            <Link to="/reset"><span className='remeber_forgot underline'>Forgot password?</span></Link>
                         </span>
                         <span className=' '>
                             <button onClick={handleSubmit} className='flex  justify-center items-center fom-btn w-full p-2'>  {!loading ? (<div className='mr-4' >Login</div>) : (<div role="status">

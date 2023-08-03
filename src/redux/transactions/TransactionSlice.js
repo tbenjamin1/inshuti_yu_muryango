@@ -31,6 +31,7 @@ const initialState = {
     user: savedUser ? JSON.parse(savedUser) : null,
 
 };
+
 const transactionsSlice = createSlice({
     name: "transactions",
     initialState,

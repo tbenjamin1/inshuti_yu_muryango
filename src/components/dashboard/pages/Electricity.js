@@ -12,7 +12,6 @@ function Electricity() {
     const defaultStartDate = moment().startOf('month').format('YYYY-MM-DD'); // Example: Set default date to the start of the current month
     const defaultEndDate = moment().format('YYYY-MM-DD'); // Set default end date to current date
     const [searchQuery, setSearchQuery] = useState('');
-
     const queryHandleChange = (event) => {
         setSearchQuery(event.target.value);
         searchInTransactions(searchQuery)
@@ -21,6 +20,7 @@ function Electricity() {
     const dispatch = useDispatch()
     const [selectedRange, setSelectedRange] = useState([defaultStartDate, defaultEndDate]);
     const [filteredTransactionList, setFilteredTransactionList] = useState([]);
+
     const handleDateRangeChange = (dates) => {
         if (dates) {
             const formattedDates = dates.map(dateObj => moment(dateObj.$d).format("YYYY-MM-DD"));
@@ -48,17 +48,16 @@ function Electricity() {
         }
     };
     const isLoading = useSelector((state) => state.transactions.isLoading);
-    
     useEffect(() => {
         dispatch(fetchAsyncTransaction(selectedRange))
     }, [dispatch, selectedRange]);
+
     return (
         <DashboardLayout>
             <div className='flex justify-center items-center' >
                 <div className='bg-white my-4 rounded-lg border container ' >
                     <div className='border-b   px-3 py-3' >Electricity transactions </div>
                     <div className='   px-3 py-3' >
-
                         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                             <div className="flex items-center justify-between pb-4">
                                 <div>
@@ -72,7 +71,6 @@ function Electricity() {
                                     <input type="text" id="table-search" value={searchQuery} onChange={queryHandleChange} className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80  focus:ring-blue-500 focus:border-blue-500  dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search by name" />
                                 </div>
                             </div>
-
                             {isLoading && (<div role="status" className='flex justify-center my-5' >
                                 <svg aria-hidden="true" class="inline w-4 h-4 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-white" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
@@ -81,8 +79,6 @@ function Electricity() {
                                 <span class="sr-only">Loading...</span>
                             </div>)}
                             {
-
-
                                 transactionList.length > 0 ? (
 
                                     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 border">
@@ -141,7 +137,7 @@ function Electricity() {
                                                         </td>
                                                         <td className="px-6 py-4">
 
-                                                        {moment(transaction.createdAt).format('YYYY-MM-DD HH:mm:ss')}
+                                                            {moment(transaction.createdAt).format('YYYY-MM-DD HH:mm:ss')}
 
                                                         </td>
                                                         <td className="px-6 py-4" >
@@ -175,7 +171,7 @@ function Electricity() {
                                                             </td>
                                                             <td className="px-6 py-4">
 
-                                                            {moment(transaction.createdAt).format('YYYY-MM-DD HH:mm:ss')}
+                                                                {moment(transaction.createdAt).format('YYYY-MM-DD HH:mm:ss')}
 
                                                             </td>
                                                             <td className="px-6 py-4" >
@@ -196,7 +192,7 @@ function Electricity() {
 
                                 ) : (
                                     <div className='flex justify-center m-5 p-4'>
-                                        No transaction for selected date range
+                                        No macthing transaction for the selected date range
                                     </div>
                                 )}
 

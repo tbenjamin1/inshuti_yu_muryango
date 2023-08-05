@@ -17,18 +17,16 @@ function AirtelTransaction() {
     const airtelTransactionList = useSelector(getAllAirtelTransaction);
     const isLoading = useSelector((state) => state.transactions.isLoading);
     const handleDateRangeChange = (dates) => {
-        
-        if(dates){
-        const formattedDates = dates.map(dateObj => moment(dateObj.$d).format("YYYY-MM-DD"));
-        setSelectedRange(formattedDates);
-    }
+        if (dates) {
+            const formattedDates = dates.map(dateObj => moment(dateObj.$d).format("YYYY-MM-DD"));
+            setSelectedRange(formattedDates);
+        }
     };
     const [searchQuery, setSearchQuery] = useState('');
 
     const queryHandleChange = (event) => {
         setSearchQuery(event.target.value);
         searchInTransactions(searchQuery)
-
     };
     const searchInTransactions = (searchQuery) => {
         let search = searchQuery.toLowerCase();
@@ -47,10 +45,10 @@ function AirtelTransaction() {
                 );
             });
             setFilteredTransactionList(filteredList);
-            console.log("filteredTransactionList",filteredTransactionList)
+            console.log("filteredTransactionList", filteredTransactionList)
         }
     };
-   
+
 
     useEffect(() => {
         dispatch(fetchAsyncAirtelTransaction(selectedRange))
@@ -112,8 +110,42 @@ function AirtelTransaction() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    {
-                                                filteredTransactionList.length ? (filteredTransactionList.map((transaction, index) => (
+                                        {
+                                            filteredTransactionList.length ? (filteredTransactionList.map((transaction, index) => (
+                                                <tr className="bg-white border-b hover:bg-gray-50 dark:hover:bg-gray-600" key={index} >
+                                                    <td className="w-4 p-4">
+                                                        <div className="flex items-center">
+                                                            <input id="checkbox-table-search-1" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                            <label for="checkbox-table-search-1" className="sr-only">checkbox</label>
+                                                            <span className='px-2'> {transaction.externalTxnId ? transaction.externalTxnId : "N/A"}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-6 py-4">
+                                                        {transaction.internalTxnId ? transaction.internalTxnId : "N/A"}
+                                                    </td>
+                                                    <td className="px-6 py-4">
+                                                        {transaction.customer ? transaction.customer.username : "N/A"}
+                                                    </td>
+                                                    <td className="px-6 py-4">
+                                                        {transaction.customer ? transaction.customer.phone : "N/A"}
+                                                    </td>
+                                                    <td className="px-6 py-4">
+                                                        {transaction.amount ? transaction.amount : "N/A"}
+                                                    </td>
+                                                    <td className="px-6 py-4">
+
+                                                        {moment(transaction.createdAt).format('YYYY-MM-DD HH:mm:ss')}
+
+                                                    </td>
+                                                    <td className="px-6 py-4" >
+                                                        {transaction.statusDesc === 'FAILED' && <span className="font-medium FAILED">{transaction.statusDesc ? transaction.statusDesc : "N/A"}</span>}
+                                                        {transaction.statusDesc === 'SUCCESS' && <span className="font-medium  SUCCESS">{transaction.statusDesc ? transaction.statusDesc : "N/A"}</span>}
+                                                        {transaction.statusDesc === 'CREATED' && <span className="font-medium  CREATED">{transaction.statusDesc ? transaction.statusDesc : "N/A"}</span>}
+                                                        {transaction.statusDesc === 'PENDING' && <span className="font-medium  PENDING">{transaction.statusDesc ? transaction.statusDesc : "N/A"}</span>}
+                                                    </td>
+                                                </tr>
+                                            ))) : (
+                                                airtelTransactionList.map((transaction, index) => (
                                                     <tr className="bg-white border-b hover:bg-gray-50 dark:hover:bg-gray-600" key={index} >
                                                         <td className="w-4 p-4">
                                                             <div className="flex items-center">
@@ -136,7 +168,7 @@ function AirtelTransaction() {
                                                         </td>
                                                         <td className="px-6 py-4">
 
-                                                        {moment(transaction.createdAt).format('YYYY-MM-DD HH:mm:ss')}
+                                                            {moment(transaction.createdAt).format('YYYY-MM-DD HH:mm:ss')}
 
                                                         </td>
                                                         <td className="px-6 py-4" >
@@ -146,47 +178,13 @@ function AirtelTransaction() {
                                                             {transaction.statusDesc === 'PENDING' && <span className="font-medium  PENDING">{transaction.statusDesc ? transaction.statusDesc : "N/A"}</span>}
                                                         </td>
                                                     </tr>
-                                                ))) : (
-                                                    airtelTransactionList.map((transaction, index) => (
-                                                        <tr className="bg-white border-b hover:bg-gray-50 dark:hover:bg-gray-600" key={index} >
-                                                            <td className="w-4 p-4">
-                                                                <div className="flex items-center">
-                                                                    <input id="checkbox-table-search-1" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                                    <label for="checkbox-table-search-1" className="sr-only">checkbox</label>
-                                                                    <span className='px-2'> {transaction.externalTxnId ? transaction.externalTxnId : "N/A"}</span>
-                                                                </div>
-                                                            </td>
-                                                            <td className="px-6 py-4">
-                                                                {transaction.internalTxnId ? transaction.internalTxnId : "N/A"}
-                                                            </td>
-                                                            <td className="px-6 py-4">
-                                                                {transaction.customer ? transaction.customer.username : "N/A"}
-                                                            </td>
-                                                            <td className="px-6 py-4">
-                                                                {transaction.customer ? transaction.customer.phone : "N/A"}
-                                                            </td>
-                                                            <td className="px-6 py-4">
-                                                                {transaction.amount ? transaction.amount : "N/A"}
-                                                            </td>
-                                                            <td className="px-6 py-4">
-
-                                                            {moment(transaction.createdAt).format('YYYY-MM-DD HH:mm:ss')}
-
-                                                            </td>
-                                                            <td className="px-6 py-4" >
-                                                                {transaction.statusDesc === 'FAILED' && <span className="font-medium FAILED">{transaction.statusDesc ? transaction.statusDesc : "N/A"}</span>}
-                                                                {transaction.statusDesc === 'SUCCESS' && <span className="font-medium  SUCCESS">{transaction.statusDesc ? transaction.statusDesc : "N/A"}</span>}
-                                                                {transaction.statusDesc === 'CREATED' && <span className="font-medium  CREATED">{transaction.statusDesc ? transaction.statusDesc : "N/A"}</span>}
-                                                                {transaction.statusDesc === 'PENDING' && <span className="font-medium  PENDING">{transaction.statusDesc ? transaction.statusDesc : "N/A"}</span>}
-                                                            </td>
-                                                        </tr>
-                                                    ))
-                                                )
-                                            }
+                                                ))
+                                            )
+                                        }
                                     </tbody>
                                 </table>) : (
                                 <div className='flex justify-center m-5 p-4'>
-                                   No macthing transaction for the selected date range
+                                    No macthing transaction for the selected date range
                                 </div>
                             )}
                         </div>

@@ -3,10 +3,24 @@ import DashboardLayout from "../DashboardLayout"
 import { useEffect, useState } from "react";
 import {useDispatch} from "react-redux";
 import dashboardApi from '../../../api/DashboardApi';
-import { addTransactions } from '../../../redux/transactions/TransactionSlice';
+import moment from 'moment';
+import dayjs from 'dayjs';
+import { DatePicker } from 'antd';
+import { Pagination } from 'antd';
+import { addTransactions, fetchAsynClients, fetchAsynRefree } from '../../../redux/transactions/TransactionSlice';
 import Chart from "./Chart"
 
 function Statistics() {
+  
+  const defaultStartDate = moment().startOf('month').format('YYYY-MM-DD'); // Example: Set default date to the start of the current month
+  const defaultEndDate = moment().format('YYYY-MM-DD'); // Set default end date to current date
+  const [selectedRange, setSelectedRange] = useState([defaultStartDate, defaultEndDate]);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchAsynRefree())
+    dispatch(fetchAsynClients(selectedRange))
+}, [dispatch,selectedRange]);
+
   
   return (
     <DashboardLayout>

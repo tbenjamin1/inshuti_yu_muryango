@@ -19,12 +19,12 @@ export const fetchAsynStartimesTransaction = createAsyncThunk('tranx/fetchAsynSt
     const response = await DashboardApi.get(`?service=ca33d2a0-a283-4c91-a946-c49ed59b203e&startDate=${selectedRange[0]}&endDate=${selectedRange[1]}`)
     return response.data;
 })
-export const fetchAsynClients = createAsyncThunk('tranx/fetchAsynStartimesTransaction', async (selectedRange) => {
-    const response = await axios.get(`https://portal.koipay.co/mobile/client/total?startDate=${selectedRange[0]}&endDate=${selectedRange[1]}&page=1&limit=6`)
+export const fetchAsynClients = createAsyncThunk('tranx/fetchAsynClients', async (selectedRange) => {
+    const response = await axios.get(`https://api.koipay.co/api/v1/mobile/client/total?startDate=${selectedRange[0]}&endDate=${selectedRange[1]}&page=1&limit=6`)
     return response.data;
 })
-export const fetchAsynRefree = createAsyncThunk('tranx/fetchAsynStartimesTransaction', async (selectedRange) => {
-    const response = await axios.get(`https://portal.koipay.co/referees/get-all`)
+export const fetchAsynRefree = createAsyncThunk('tranx/fetchAsynRefree', async (selectedRange) => {
+    const response = await axios.get(`https://api.koipay.co/api/v1/referees/total?startDate=2023-03-09&endDate=2023-07-06&page=1&limit=6`)
     return response.data;
 })
 const savedUser = localStorage.getItem('user');
@@ -47,10 +47,10 @@ const transactionsSlice = createSlice({
     initialState,
     reducers: {
         addTransactions: (state, action) => {
-            state.transactionsList = action.payload;
+         state.transactionsList = action.payload;
         },
         setUser: (state, action) => {
-            state.user = action.payload;
+         state.user = action.payload;
         },
     },
     extraReducers: {
@@ -70,9 +70,11 @@ const transactionsSlice = createSlice({
             state.isLoading = true;
         },
         [fetchAsynClients.pending]: (state) => {
+            console.log("pending")
             state.isLoading = true;
         },
         [fetchAsynClients.fulfilled]: (state, { payload }) => {
+            console.log("fulfilled")
             return { ...state, isLoading: false, clientList: payload };
         },
         [fetchAsynRefree.fulfilled]: (state, { payload }) => {
@@ -107,6 +109,7 @@ const transactionsSlice = createSlice({
         },
         [fetchAsynClients.rejected]: (state) => {
             state.isLoading = false;
+            console.log("rejected")
         },
     }
 })

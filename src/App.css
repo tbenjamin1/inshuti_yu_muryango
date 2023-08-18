@@ -141,6 +141,54 @@ body {
   padding: 10px 10px !important;
 
 }
+@media screen and (max-width: 480px) {
+  .referee_height{
+    height:86vh !important;
+    
+  }
+  .momo-number{
+    display: flex !important;
+    flex-direction: column;
+  }
+  label {
+    font-size: 9px !important;
+  }
+  .w_full{
+    width: 150px !important;
+  }
+  .w_full_login{
+    display: flex !important;
+    flex-direction: column;
+    width: 150px !important;
+  }
+  input{
+    width: 150px !important;
+  }
+  .login-page{
+    width: 100%;
+  }
+  .referal-content{
+    font-size: 10px;
+  }
+  .Referral-title{
+    font-size: 9px !important;
+    margin-left: 2px;
+  }
+  .login-title{
+    font-size: 10px !important;
+    margin-left: 2px;
+  }
+  .login_form{
+    display: flex !important;
+   justify-content: start !important ;
+   align-items: unset !important;
+   margin-left: 5px;
+
+  }
+  .remeber_forgot{
+    font-size: 10px !important;
+  }
+}
 
 .logo_height {
   height: 70vh;
@@ -148,8 +196,22 @@ body {
   width: 100%;
 }
 
+.referee_height{
+  height: 70vh;
+  border-radius: 10px 0px 0px 10px;
+  width: 100%;
+  background-color: #979AD3;
+}
 .login_form {
   width: 100%;
+  display: flex !important;
+  justify-content:center ;
+  align-items: center;
+}
+.Referral-title{
+  color: #979AD3;
+  font-size: 13px;
+  font-weight: bold;
 }
 
 .logo_height img {
@@ -157,7 +219,9 @@ body {
   position: absolute;
 
 }
-
+.phone-number{
+  width: 100%;
+}
 .login-title {
   font-weight: 700;
   font-size: 20px;
@@ -232,4 +296,8 @@ input {
 
 .page-content {
   width: 100%;
+}
+.referee-emoji{
+font-size: 30px;
+cursor: pointer;
 }

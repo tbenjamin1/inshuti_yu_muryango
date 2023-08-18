@@ -12,6 +12,7 @@ import Electricity from './components/dashboard/pages/Electricity';
 import MtnTransactions from './components/dashboard/pages/MtnTransactions';
 import AirtelTransaction from './components/dashboard/pages/AirtelTransaction';
 import Startimes from './components/dashboard/pages/Startimes';
+import RefereePage from './components/dashboard/pages/RefereePage';
 
 function App() {
   return (
@@ -30,6 +31,8 @@ function App() {
           <Route  path="/mtnTransactions" element={<MtnTransactions />}/>
           <Route  path="/airtelTransaction" element={<AirtelTransaction />}/>
           <Route  path="/startimes" element={<Startimes />}/>
+          <Route  path="/referee-page" element={<RefereePage />}/>
+          
         </Routes>
       </div>
     </Router>

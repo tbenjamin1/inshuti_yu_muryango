@@ -33,24 +33,35 @@ function RefereePage() {
         handleSubmit();
     }
     const handleSubmit = async () => {
-        let userPhone = {
-            "msisdn": phoneNumber,
-        }
-        if (phoneNumber.length >= 9) {
-            setLoading(true)
+        let userPhone =JSON.stringify( {
+            "msisdn": "250785141480"
+          });
+          console.log('userPhone', userPhone);
+          
+          if (phoneNumber.length >= 9) {
+            setLoading(true);
             try {
-                const response = await axios.get('https://api.koipay.co/api/v1/accountholder/information', { userPhone });
-                // addToast(`Welcome ${response.data.name}`, { appearance: 'success' });
-                console.log("response", response)
-                setIsregistered(true);
-                setLoading(false);
-                //  redirecting the user to the desired page
+                const response = await axios({
+                    method: 'get',
+                    url: 'https://pay.koipay.co/api/v1/accountholder/information',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      Authorization: `Bearer ${process.env.REACT_APP_TOKEN_REFEREE}`,
+                    },
+                    data:userPhone, // Include data in the request body
+                  });
+              addToast(`congratulations !! successfully registered`, { appearance: 'success' });
+              
+              setIsregistered(true);
+              setLoading(false);
+              //  redirecting the user to the desired page
             } catch (error) {
-                addToast(error.response.data.message, { appearance: 'error' });
-                setIsregistered(false);
-                setLoading(false);
+              addToast(error.response.data.message, { appearance: 'error' });
+              setIsregistered(false);
+              setLoading(false);
             }
-        }
+          }
+          
     }
     const handleRefereeSubmit = async (event) => {
         event.preventDefault();
@@ -67,7 +78,7 @@ function RefereePage() {
                     'Access-Control-Allow-Origin': '*',
                 }
             });
-            // addToast(`Welcome ${response.data.name}`, { appearance: 'success' });
+            addToast(`Welcome ${response.data.message}`, { appearance: 'success' });
             setisLoading(false);
             //  redirecting the user to the desired page
         } catch (error) {

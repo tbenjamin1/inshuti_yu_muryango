@@ -1,6 +1,6 @@
 
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import employee from "../../images/employee-referrals.png"
 import { Link } from 'react-router-dom'
 import { useToasts } from 'react-toast-notifications';
@@ -28,41 +28,63 @@ function RefereePage() {
         setdisplayName(event.target.value);
     };
     const confirmMOMOnumberHandleChange = (event) => {
-        setphoneNumber(event.target.value)
-        setLoading(true);
-        handleSubmit();
-    }
+        setphoneNumber(event.target.value);
+        validateAirtelPhoneNumber(event.target.value);
+
+    };
+
+    const validateAirtelPhoneNumber = (inputPhoneNumber) => {
+        const pattern = /07[8,9]{1}[0-9]{7}/;
+
+        if (
+            inputPhoneNumber === "" ||
+            !pattern.test(inputPhoneNumber) ||
+            inputPhoneNumber.length !== 10
+        ) {
+            return false;
+        }
+        return true;
+    };
+
     const handleSubmit = async () => {
-        let userPhone =JSON.stringify( {
-            "msisdn": "250785141480"
-          });
-          console.log('userPhone', userPhone);
-          
-          if (phoneNumber.length >= 9) {
-            setLoading(true);
-            try {
-                const response = await axios({
-                    method: 'get',
-                    url: 'https://pay.koipay.co/api/v1/accountholder/information',
+        const isValidPhoneNumber = validateAirtelPhoneNumber(phoneNumber);
+
+        if (!isValidPhoneNumber) {
+            // Handle invalid phone number case
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            const response = await axios.get(
+                `https://pay.koipay.co/api/v1/accountholder/information?msisdn=25${phoneNumber}`,
+                {
                     headers: {
-                      'Content-Type': 'application/json',
-                      Authorization: `Bearer ${process.env.REACT_APP_TOKEN_REFEREE}`,
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${process.env.REACT_APP_TOKEN_REFEREE}`,
                     },
-                    data:userPhone, // Include data in the request body
-                  });
-              addToast(`congratulations !! successfully registered`, { appearance: 'success' });
-              
-              setIsregistered(true);
-              setLoading(false);
-              //  redirecting the user to the desired page
-            } catch (error) {
-              addToast(error.response.data.message, { appearance: 'error' });
-              setIsregistered(false);
-              setLoading(false);
-            }
-          }
-          
-    }
+                }
+            );
+
+            addToast(`${response.data.data.firstname} registered`, {
+                appearance: 'success',
+            });
+
+            setIsregistered(true);
+            setLoading(false);
+            //  redirecting the user to the desired page
+        } catch (error) {
+            addToast(error.response.data.message, { appearance: 'error' });
+            setIsregistered(false);
+            setLoading(false);
+        }
+    };
+    useEffect(() => {
+        handleSubmit();
+    }, [phoneNumber]);
+
+
     const handleRefereeSubmit = async (event) => {
         event.preventDefault();
         setisLoading(true)
@@ -73,7 +95,7 @@ function RefereePage() {
             "displayName": displayName,
         }
         try {
-            const response = await axios.post('https://api.koipay.co/api/v1/referees', { firstName,lastName,phoneNumber,displayName }, {
+            const response = await axios.post('https://api.koipay.co/api/v1/referees', { firstName, lastName, phoneNumber, displayName }, {
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                 }
@@ -130,8 +152,8 @@ function RefereePage() {
                                         </svg>
                                         <span class="sr-only">Loading...</span>
                                     </div>)}
-                                    {isRegistered && <span role="img" aria-label="check mark button" class="react-emojis">✅</span>}
-                                    {!isRegistered && loading && <span role="img" aria-label="cross mark" class="react-emojis">❌</span>}
+                                    {isRegistered && phoneNumber.length===10 && <span role="img" aria-label="check mark button" class="react-emojis">✅</span>}
+                                    {!isRegistered && phoneNumber.length===10 && <span role="img" aria-label="cross mark" class="react-emojis">❌</span>}
                                 </div>
                             </span>
                         </span>

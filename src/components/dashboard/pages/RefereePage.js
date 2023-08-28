@@ -100,7 +100,7 @@ function RefereePage() {
                     'Access-Control-Allow-Origin': '*',
                 }
             });
-            addToast(`Welcome ${response.data.message}`, { appearance: 'success' });
+            addToast(`${response.data.message } your code is : ${response.data.data.referee.code }`, { appearance: 'success' });
             setisLoading(false);
             setfirstName("");
             setlastName("");

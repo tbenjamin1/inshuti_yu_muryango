@@ -102,7 +102,11 @@ function RefereePage() {
             });
             addToast(`Welcome ${response.data.message}`, { appearance: 'success' });
             setisLoading(false);
-            //  redirecting the user to the desired page
+            setfirstName("");
+            setlastName("");
+            setdisplayName("");
+            setphoneNumber("");
+            setIsregistered(false);
         } catch (error) {
             addToast(error.response.data.message, { appearance: 'error' });
             setisLoading(false);

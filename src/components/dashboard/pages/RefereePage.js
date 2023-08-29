@@ -29,33 +29,33 @@ function RefereePage() {
     };
     const confirmMOMOnumberHandleChange = (event) => {
         setphoneNumber(event.target.value);
-        validateAirtelPhoneNumber(event.target.value);
+        validateMtnPhoneNumber(event.target.value);
 
     };
 
-    const validateAirtelPhoneNumber = (inputPhoneNumber) => {
-        const pattern = /07[8,9]{1}[0-9]{7}/;
-
+    const validateMtnPhoneNumber = (inputPhoneNumber) => {
+        // Pattern: starts with "078" or "079", followed by 7 digits
+        const pattern = /^(078|079)[0-9]{7}$/;
         if (
             inputPhoneNumber === "" ||
             !pattern.test(inputPhoneNumber) ||
             inputPhoneNumber.length !== 10
         ) {
+            setIsregistered(false);
             return false;
         }
         return true;
     };
 
-    const handleSubmit = async () => {
-        const isValidPhoneNumber = validateAirtelPhoneNumber(phoneNumber);
 
+    const handleSubmit = async () => {
+        const isValidPhoneNumber = validateMtnPhoneNumber(phoneNumber);
         if (!isValidPhoneNumber) {
             // Handle invalid phone number case
             return;
         }
 
         setLoading(true);
-
         try {
             const response = await axios.get(
                 `https://pay.koipay.co/api/v1/accountholder/information?msisdn=25${phoneNumber}`,
@@ -67,15 +67,22 @@ function RefereePage() {
                 }
             );
 
-            addToast(`${response.data.data.firstname} registered`, {
+            addToast(`${response.data.data.firstname} you are registered in momo`, {
                 appearance: 'success',
+                autoDismiss: true, // Enable auto dismissal
+                autoDismissTimeout: 5000,
+                transitionDuration: 300,
             });
 
             setIsregistered(true);
             setLoading(false);
             //  redirecting the user to the desired page
         } catch (error) {
-            addToast(error.response.data.message, { appearance: 'error' });
+            addToast("Invalid,use your phone number registered in momo", {
+                appearance: 'error', autoDismiss: true, // Enable auto dismissal
+                autoDismissTimeout: 5000,
+                transitionDuration: 300,
+            });
             setIsregistered(false);
             setLoading(false);
         }
@@ -87,20 +94,31 @@ function RefereePage() {
 
     const handleRefereeSubmit = async (event) => {
         event.preventDefault();
-        setisLoading(true)
-        let referee_info = {
-            "firstName": firstName,
-            "lastName": lastName,
-            "phoneNumber": phoneNumber,
-            "displayName": displayName,
+        const isValidPhoneNumber = validateMtnPhoneNumber(phoneNumber);
+
+        if (!isValidPhoneNumber) {
+            // Handle invalid phone number case
+            addToast("Something went wrong! please check your momo number", {
+                appearance: 'error', autoDismiss: true, // Enable auto dismissal
+                autoDismissTimeout: 5000,
+                transitionDuration: 300,
+            });
+
+            return;
         }
+        setisLoading(true)
+
         try {
             const response = await axios.post('https://api.koipay.co/api/v1/referees', { firstName, lastName, phoneNumber, displayName }, {
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                 }
             });
-            addToast(`${response.data.message } your code is : ${response.data.data.referee.code }`, { appearance: 'success' });
+            addToast(`Successfully registered, your code is : ${response.data.data.referee.code}`, {
+                appearance: 'success', autoDismiss: true, // Enable auto dismissal
+                autoDismissTimeout: 5000,
+                transitionDuration: 300,
+            });
             setisLoading(false);
             setfirstName("");
             setlastName("");
@@ -108,7 +126,11 @@ function RefereePage() {
             setphoneNumber("");
             setIsregistered(false);
         } catch (error) {
-            addToast(error.response.data.message, { appearance: 'error' });
+            addToast("Something went wrong! please try again", {
+                appearance: 'error', autoDismiss: true, // Enable auto dismissal
+                autoDismissTimeout: 5000,
+                transitionDuration: 300,
+            });
             setisLoading(false);
         }
     };
@@ -156,8 +178,8 @@ function RefereePage() {
                                         </svg>
                                         <span class="sr-only">Loading...</span>
                                     </div>)}
-                                    {isRegistered && phoneNumber.length===10 && <span role="img" aria-label="check mark button" class="react-emojis">✅</span>}
-                                    {!isRegistered && phoneNumber.length===10 && <span role="img" aria-label="cross mark" class="react-emojis">❌</span>}
+                                    {isRegistered && phoneNumber.length === 10 && <span role="img" aria-label="check mark button" class="react-emojis">✅</span>}
+                                    {!isRegistered && phoneNumber.length === 10 && <span role="img" aria-label="cross mark" class="react-emojis">❌</span>}
                                 </div>
                             </span>
                         </span>

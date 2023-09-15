@@ -536,11 +536,9 @@ const ParkPick = () => {
 
     return (
         <div className=' '>
-
-
             <nav class="bg-white border-solid border-b-4 nav-bar border-red-500">
                 <div class=" flex flex-wrap items-center justify-between  px-4 py-2">
-                    <a href="https://flowbite.com/" class="flex items-center">
+                    <a href="#" class="flex items-center">
                         <img class=" w-16   h-16 rounded-full object-cover" src={main_logo} alt="user photo" />
                     </a>
                     <div class="flex items-center  bg-white  ">

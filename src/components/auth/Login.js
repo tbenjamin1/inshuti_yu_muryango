@@ -23,7 +23,7 @@ function Login() {
         event.preventDefault();
         setLoading(true)
         try {
-            const response = await axios.post('https://api.koipay.co/api/v1/auth/signin', { email, password }, {
+            const response = await axios.post('https://apidev.koipay.co/api/v1/auth/signin', { email, password }, {
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                 }
@@ -33,7 +33,12 @@ function Login() {
             const auth_user= response.data;
             // Store the token in local storage
             localStorage.setItem('user', JSON.stringify(auth_user));
-            window.location.replace('/statistics');
+            if(auth_user.role.title==="park_and_pick"){
+                 window.location.replace('/park-pick');
+            }else{
+                 window.location.replace('/statistics');
+            }
+            // window.location.replace('/park-pick');
             setLoading(false);
             //  redirecting the user to the desired page
         } catch (error) {

@@ -13,6 +13,7 @@ import MtnTransactions from './components/dashboard/pages/MtnTransactions';
 import AirtelTransaction from './components/dashboard/pages/AirtelTransaction';
 import Startimes from './components/dashboard/pages/Startimes';
 import RefereePage from './components/dashboard/pages/RefereePage';
+import ParkPick from './components/dashboard/parkpick/pages/ParkPick';
 
 function App() {
   return (
@@ -32,7 +33,7 @@ function App() {
           <Route  path="/airtelTransaction" element={<AirtelTransaction />}/>
           <Route  path="/startimes" element={<Startimes />}/>
           <Route  path="/referee-page" element={<RefereePage />}/>
-          
+          <Route  path="/park-pick" element={<ParkPick />}/>
         </Routes>
       </div>
     </Router>

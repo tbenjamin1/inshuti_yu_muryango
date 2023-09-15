@@ -3,7 +3,6 @@ import DashboardApi from "../../api/DashboardApi";
 import axios from "axios";
 
 export const fetchAsyncTransaction = createAsyncThunk('tranx/fetchAsyncElectricity', async (selectedRange) => {
-
     const response = await DashboardApi.get(`?service=96b33985-1045-437c-9415-ff8a248978db&startDate=${selectedRange[0]}&endDate=${selectedRange[1]}`)
     return response.data;
 })
@@ -27,7 +26,24 @@ export const fetchAsynRefree = createAsyncThunk('tranx/fetchAsynRefree', async (
     const response = await axios.get(`https://api.koipay.co/api/v1/referees/total?startDate=2023-03-09&endDate=2023-07-06&page=1&limit=6`)
     return response.data;
 })
+export const fetchAsynParkCatgories= createAsyncThunk('tranx/fetchAsyncategories', async () => {
+    const response = await axios.get(`https://apidev.koipay.co/api/v1/park-pick/categories`)
+
+    
+    return response.data;
+})
+export const fetchAsynParkUnit= createAsyncThunk('tranx/fetchAsynUnit', async () => {
+    const response = await axios.get(`https://apidev.koipay.co/api/v1/park-pick/units/get-all`)
+
+    return response.data;
+})
+export const fetchAsynItems= createAsyncThunk('tranx/fetchAsynItems', async () => {
+    const response = await axios.get(`https://apidev.koipay.co/api/v1/park-pick/items/get-all`)
+    
+    return response.data;
+})
 const savedUser = localStorage.getItem('user');
+console.log("savedUser",savedUser)
 
 const initialState = {
     isLoading: false,
@@ -39,6 +55,9 @@ const initialState = {
     refereeList: [],
     refereePaginatedList: [],
     paginatedClientList: [],
+    parkCategories: [],
+    parkUnitList: [],
+    parkPicktItemsList: [],
     isLoggedIn: savedUser ? true : false,
     user: savedUser ? JSON.parse(savedUser) : null,
 };
@@ -54,6 +73,16 @@ const transactionsSlice = createSlice({
         },
     },
     extraReducers: {
+        [fetchAsynItems.pending]: (state) => {
+            state.isLoading = true;
+        },
+        [fetchAsynParkUnit.pending]: (state) => {
+            state.isLoading = true;
+        },
+        [fetchAsynParkCatgories.pending]: (state) => {
+            state.isLoading = true;
+        },
+        
         [fetchAsyncTransaction.pending]: (state) => {
             state.isLoading = true;
         },
@@ -70,11 +99,21 @@ const transactionsSlice = createSlice({
             state.isLoading = true;
         },
         [fetchAsynClients.pending]: (state) => {
-            console.log("pending")
+           
             state.isLoading = true;
         },
+        
+        [fetchAsynItems.fulfilled]: (state, { payload }) => {
+            return { ...state, isLoading: false, parkPicktItemsList: payload };
+        },
+        [fetchAsynParkUnit.fulfilled]: (state, { payload }) => {
+            return { ...state, isLoading: false, parkUnitList: payload };
+        },
+        [fetchAsynParkCatgories.fulfilled]: (state, { payload }) => {
+            return { ...state, isLoading: false, parkCategories: payload };
+        },
         [fetchAsynClients.fulfilled]: (state, { payload }) => {
-            console.log("fulfilled")
+           
             return { ...state, isLoading: false, clientList: payload };
         },
         [fetchAsynRefree.fulfilled]: (state, { payload }) => {
@@ -91,6 +130,16 @@ const transactionsSlice = createSlice({
         },
         [fetchAsynStartimesTransaction.fulfilled]: (state, { payload }) => {
             return { ...state, isLoading: false, startimesTransationList: payload };
+        },
+        
+        [fetchAsynItems.rejected]: (state) => {
+            state.isLoading = false;
+        },
+        [fetchAsynParkUnit.rejected]: (state) => {
+            state.isLoading = false;
+        },
+        [fetchAsynParkCatgories.rejected]: (state) => {
+            state.isLoading = false;
         },
         [fetchAsynStartimesTransaction.rejected]: (state) => {
             state.isLoading = false;
@@ -109,7 +158,7 @@ const transactionsSlice = createSlice({
         },
         [fetchAsynClients.rejected]: (state) => {
             state.isLoading = false;
-            console.log("rejected")
+           
         },
     }
 })
@@ -123,4 +172,7 @@ export const getAllClientsList = (state) => state.transactions.clientList;
 export const getAllRefree = (state) => state.transactions.refereeList;
 export const getAllstartimesTransaction = (state) => state.transactions.startimesTransationList;
 export const getUser = (state) => state.transactions.user;
+export const getAllparkCategories = (state) => state.transactions.parkCategories;
+export const getAllparkUnitList = (state) => state.transactions.parkUnitList;
+export const getAllparkPickItemsList = (state) => state.transactions.parkPicktItemsList;
 export default transactionsSlice.reducer;

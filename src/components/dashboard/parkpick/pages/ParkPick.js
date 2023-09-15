@@ -654,11 +654,7 @@ const ParkPick = () => {
                         role="tabpanel"
                         aria-labelledby="summary-tab"
                     >
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
-
-                            <strong className="font-medium text-gray-800 ">summary </strong>.
-
-                        </p>
+                        <strong className="font-medium text-gray-800 bg-white py-5 px-20 rounded-lg ">summary comming soon !  </strong>
                     </div>
 
 
@@ -1026,7 +1022,7 @@ const ParkPick = () => {
                     </div>
 
                     <div
-                        className={`p-4 rounded-lg bg-gray-50  px-20 ${activeTab === 'unity' ? '' : 'hidden'}`}
+                        className={`p-4 rounded-lg bg-gray-100  px-20 ${activeTab === 'unity' ? '' : 'hidden'}`}
                         id="unity"
                         role="tabpanel"
                         aria-labelledby="unity-tab"
@@ -1150,7 +1146,7 @@ const ParkPick = () => {
                         <div className='bg-white rounded-md py-2' >
                             <div className='flex justify-between items-center p-4' >
                                 <div>
-                                    Payments
+                                    Payments comming soon !
                                 </div>
                                 <div>
                                     {/* <button onClick={handleOpenModal} className='bg-red-500 text-white font-bold rounded-lg py-2 px-3' >
@@ -1160,7 +1156,7 @@ const ParkPick = () => {
                                 </div>
 
                             </div>
-                            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 rounded-md ">
+                            {/* <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 rounded-md ">
                                 <thead className="text-xs text-gray-700 uppercase dark:text-gray-400 border-b dark:bg-gray-100">
                                     <tr>
                                         <th scope="col" className="px-6 py-3">
@@ -1266,7 +1262,7 @@ const ParkPick = () => {
                                         </td>
                                     </tr>
                                 </tbody>
-                            </table>
+                            </table> */}
                         </div>
                     </div>
                 </div>

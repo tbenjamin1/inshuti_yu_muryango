@@ -43,7 +43,7 @@ export const fetchAsynItems= createAsyncThunk('tranx/fetchAsynItems', async () =
     return response.data;
 })
 const savedUser = localStorage.getItem('user');
-console.log("savedUser",savedUser)
+
 
 const initialState = {
     isLoading: false,

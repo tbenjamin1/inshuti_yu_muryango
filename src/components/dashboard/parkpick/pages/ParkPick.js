@@ -10,10 +10,10 @@ import Modal from './Modal';
 import axios from 'axios';
 import moment from 'moment';
 import { useToasts } from 'react-toast-notifications';
-import { fetchAsynItems, fetchAsynParkCatgories, fetchAsynParkUnit, getAllparkCategories, getAllparkPickItemsList, getAllparkUnitList } from '../../../../redux/transactions/TransactionSlice';
+import { fetchAsynItems, fetchAsynParkCatgories, fetchAsynParkUnit, getAllparkCategories, getAllparkPickItemsList, getAllparkUnitList, getUser } from '../../../../redux/transactions/TransactionSlice';
 
 const ParkPick = () => {
-
+    const user = useSelector(getUser);
     const dispatch = useDispatch();
     const { addToast } = useToasts();
     const [activeTab, setActiveTab] = useState('item');
@@ -81,6 +81,7 @@ const ParkPick = () => {
     const modalTitle = 'Create Item';
     const btn_name = "Save";
     const updateTitle = 'Update Item';
+    const categoryupdate = 'Update category';
     // catgeory
     const categoryTitle = 'Add  new category';
     const handleChildEvent = () => {
@@ -340,7 +341,7 @@ const ParkPick = () => {
 
     // handle Delete unit
     const handleDeleteUnit = async (item) => {
-        const confirmed = window.confirm('Are you sure you want to delete this item?');
+        const confirmed = window.confirm('Are you sure you want to delete this unit ?');
         if (confirmed) {
 
             try {
@@ -366,18 +367,18 @@ const ParkPick = () => {
         }
     }
     // handle Delete Category
-    const handleDeleteCategory = async (item) => {
-        const confirmed = window.confirm('Are you sure you want to delete this item?');
+    const handleDeleteCategory = async (category) => {
+        const confirmed = window.confirm('Are you sure you want to delete this category ?');
         if (confirmed) {
 
             try {
-                await axios.delete(`https://apidev.koipay.co/api/v1/park-pick/items/delete-item/${item.id}/`, {
+                await axios.delete(`https://apidev.koipay.co/api/v1/park-pick/categories/${category.id}/`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'
                     },
                 });
-                dispatch(fetchAsynItems())
+                dispatch(fetchAsynParkCatgories())
                 addToast(`deleted`, {
                     appearance: 'success', autoDismiss: true, // Enable auto dismissal
                     autoDismissTimeout: 5000,
@@ -544,10 +545,10 @@ const ParkPick = () => {
                     <div class="flex items-center  bg-white  ">
 
                         <div className='flex flex-col mx-2' >
-                            <span>Tuyisingize benjamin</span>
+                            <span>{user.name} </span>
                             
                             <div class="group flex justify-between items-center relative">
-                            <span className='text-red-500' >@ Admin</span>
+                            <span className='text-red-500' >@ {user.role.title}</span>
                                 <button
                                     class="bg-white text-gray-700 font-semibold px-4 rounded inline-flex items-center"
                                 >
@@ -682,7 +683,7 @@ const ParkPick = () => {
                                     <button onClick={handleCategoryModal} className='bg-red-500 text-white font-bold rounded-lg py-2 px-3' >
                                         Add Category
                                     </button>
-                                    <Modal setOpenModal={editCategory} onChildEvent={handleChildEditCategoryEvent} Title={updateTitle} button={btn_name}  >
+                                    <Modal setOpenModal={editCategory} onChildEvent={handleChildEditCategoryEvent} Title={categoryupdate} button={btn_name}  >
                                         <div className="flex flex-col justify-center m-12 " >
                                             <div className='flex justify-between ' >
                                                 <label className="block  w-4/5   ">
@@ -694,7 +695,7 @@ const ParkPick = () => {
                                                 </label>
                                             </div>
                                             <div className='flex justify-between my-3' >
-                                                <button className='bg-red-500 text-white px-10 py-1 rounded-md cursor-pointer' onClick={handleUpdateCategory} >Create</button>
+                                                <button className='bg-red-500 text-white px-10 py-1 rounded-md cursor-pointer' onClick={handleUpdateCategory} >Update</button>
                                             </div>
                                         </div>
                                     </Modal>
@@ -824,9 +825,9 @@ const ParkPick = () => {
                                                 <label className="block  w-1/2  mr-3  ">
                                                     <span className="block text-sm font-medium text-slate-700 py-2">Availability</span>
                                                     <select className=' border border-gray-300 rounded-md h-3/5' value={Availability} onChange={handleAvailability}  >
-                                                        <option >pick one</option>
-                                                        <option value="true">yes</option>
-                                                        <option value="false">No</option>
+                                                        <option>pick one</option>
+                                                        <option value={true}>yes</option>
+                                                        <option value={false}>No</option>
                                                     </select>
                                                     {/* {production_year && <p className="  text-pink-600 text-sm">{production_year}</p>} */}
                                                 </label>
@@ -894,7 +895,7 @@ const ParkPick = () => {
                                                 <label className="block  w-1/2  mr-3  ">
                                                     <span className="block text-sm font-medium text-slate-700 py-2">Availability</span>
                                                     <select className=' border border-gray-300 rounded-md h-3/5' value={Availability} onChange={handleAvailability}  >
-                                                        <option value="true">pick one</option>
+                                                        <option >pick one</option>
                                                         <option value="true">yes</option>
                                                         <option value="false">No</option>
                                                     </select>
@@ -926,7 +927,7 @@ const ParkPick = () => {
                                                 <label className="block  w-1/2    ">
                                                     <span className="block text-sm font-medium text-slate-700 py-2">Preferred </span>
                                                     <select className=' border border-gray-300 rounded-md h-1/2' value={Preferred} onChange={handlePreferred}  >
-                                                        <option value="true">pick one</option>
+                                                        <option >pick one</option>
                                                         <option value="true">yes</option>
                                                         <option value="false">No</option>
                                                     </select>
@@ -1028,7 +1029,7 @@ const ParkPick = () => {
                         <div className='bg-white rounded-md py-2' >
                             <div className='flex justify-between items-center p-4' >
                                 <div>
-                                    Unity
+                                unit
                                 </div>
                                 <div className='flex justify-center items-center ' >
                                     {isLoading && <div role="status" className='flex justify-center items-center  w-full' >
@@ -1041,7 +1042,7 @@ const ParkPick = () => {
                                 </div>
                                 <div>
                                     <button onClick={handleUnitModal} className='bg-red-500 text-white font-bold rounded-lg py-2 px-3' >
-                                        Add new unity
+                                        Add new unit
                                     </button>
                                     <Modal setOpenModal={unity} onChildEvent={handleChildUnitEvent} Title={unityTitle} button={btn_name}  >
                                         <div className="flex flex-col justify-center m-12 " >
@@ -1059,7 +1060,7 @@ const ParkPick = () => {
                                             </div>
                                         </div>
                                     </Modal>
-                                    <Modal setOpenModal={editUnit} onChildEvent={handleChildEditUnitEvent} Title={unityTitle} button={btn_name}  >
+                                    <Modal setOpenModal={editUnit} onChildEvent={handleChildEditUnitEvent} Title={"Update unit"} button={btn_name}  >
                                         <div className="flex flex-col justify-center m-12 " >
                                             <div className='flex justify-between ' >
                                                 <label className="block  w-4/5   ">
@@ -1069,7 +1070,7 @@ const ParkPick = () => {
                                                 </label>
                                             </div>
                                             <div className='flex justify-between my-3' >
-                                                <button className='bg-red-500 text-white px-10 py-1 rounded-md cursor-pointer' onClick={updateUnit} >Create</button>
+                                                <button className='bg-red-500 text-white px-10 py-1 rounded-md cursor-pointer' onClick={updateUnit} >update</button>
                                             </div>
                                         </div>
                                     </Modal>
@@ -1274,9 +1275,9 @@ const ParkPick = () => {
                     </a>
                     <div class="flex items-center  bg-white  ">
                         <div class="relative flex">
-                            <Link to='' className='cursor-pointer  social-media'><FontAwesomeIcon icon={faTwitter} color="#1DA1F2" /></Link>
-                            <Link to='' className='mx-3  cursor-pointer social-media'><FontAwesomeIcon icon={faLinkedin} color="#0077B5" /></Link>
-                            <Link to='' className='cursor-pointer social-media'><FontAwesomeIcon icon={faYoutube} color="#E4405F" /></Link>
+                            <Link to='#' className='cursor-pointer  social-media'><FontAwesomeIcon icon={faTwitter} color="#1DA1F2" /></Link>
+                            <Link to='#' className='mx-3  cursor-pointer social-media'><FontAwesomeIcon icon={faLinkedin} color="#0077B5" /></Link>
+                            <Link to='#' className='cursor-pointer social-media'><FontAwesomeIcon icon={faYoutube} color="#E4405F" /></Link>
                         </div>
                     </div>
 

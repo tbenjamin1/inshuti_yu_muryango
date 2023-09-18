@@ -14,6 +14,7 @@ import AirtelTransaction from './components/dashboard/pages/AirtelTransaction';
 import Startimes from './components/dashboard/pages/Startimes';
 import RefereePage from './components/dashboard/pages/RefereePage';
 import ParkPick from './components/dashboard/parkpick/pages/ParkPick';
+import RegisterEntity from './components/dashboard/pages/RegisterEntity';
 
 function App() {
   return (
@@ -34,6 +35,8 @@ function App() {
           <Route  path="/startimes" element={<Startimes />}/>
           <Route  path="/referee-page" element={<RefereePage />}/>
           <Route  path="/park-pick" element={<ParkPick />}/>
+          <Route  path="/register-entity" element={<RegisterEntity />}/>
+          
         </Routes>
       </div>
     </Router>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import logo from "../images/login_graphic.svg"
+import koipay_logo from "../images/main_logo.png"
 import axios from 'axios';
 
 import { useToasts } from 'react-toast-notifications';
@@ -49,6 +50,18 @@ function Login() {
 
     return (
         <div className='flex justify-center items-center border login-screen' >
+               <nav class="bg-white border-solid border-b-4 nav-bar border_green">
+                <div class=" flex flex-wrap items-center justify-between  px-4 py-2">
+                    <a href="#" class="flex items-center">
+                        <img class="  object-cover" src={koipay_logo} alt="user photo" />
+                    </a>
+                    <div class="flex justify-between items-center  bg-white  ">
+                    <Link to="/referee-page" ><button className='fom-btn px-3 py-2 mx-3 cursor-pointer' > Register as referee</button></Link>
+                    <Link to="/register-entity" >  <button className='fom-btn px-3 py-2 mx-3 cursor-pointer' >Register your entity</button></Link>
+                    </div>
+
+                </div>
+            </nav>
             <div className='flex justify-center items-center bg-white login-page '>
                 <div className='logo_height'>
                     <span>
@@ -75,7 +88,6 @@ function Login() {
                             <input type="password" className='' placeholder='Password' value={password} onChange={passwordHandleChange} ></input>
                         </span>
                         <span className='flex justify-between items-center py-3  w_full_login ' >
-                            <span className='remeber_forgot flex justify-between items-center'><span className='mx-1 referee-emoji' role="img" aria-label="partying-face">🥳</span> <Link to="/referee-page" ><span className='text- underline ' > Register as a referee</span></Link>   </span>
                             <Link to="/reset"><span className='remeber_forgot underline cursor-pointer'>Forgot password?</span></Link>
                         </span>
                         <span className=' '>

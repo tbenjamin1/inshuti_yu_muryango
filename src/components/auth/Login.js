@@ -55,7 +55,7 @@ function Login() {
                     <a href="#" class="flex items-center">
                         <img class="  object-cover" src={koipay_logo} alt="user photo" />
                     </a>
-                    <div class="flex justify-between items-center  bg-white  ">
+                    <div class="flex justify-between  fom-btn-container items-center  bg-white  ">
                     <Link to="/referee-page" ><button className='fom-btn px-3 py-2 mx-3 cursor-pointer' > Register as referee</button></Link>
                     <Link to="/register-entity" >  <button className='fom-btn px-3 py-2 mx-3 cursor-pointer' >Register your entity</button></Link>
                     </div>
@@ -63,7 +63,7 @@ function Login() {
                 </div>
             </nav>
             <div className='flex justify-center items-center bg-white login-page '>
-                <div className='logo_height'>
+                <div className='logo_height '>
                     <span>
                         <img src={logo} className="App-logo" alt="logo" />
                     </span>

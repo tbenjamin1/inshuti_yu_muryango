@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from 'react'
 import employee from "../../images/employee-referrals.png"
 import { Link } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrash ,faBackward} from '@fortawesome/free-solid-svg-icons';
 import { useToasts } from 'react-toast-notifications';
 import axios from 'axios';
 
@@ -127,6 +129,7 @@ function RegisterEntity() {
     };
     return (
         <div className='flex bg-slate-100 py-20  main-refree-container px-10' >
+             <Link to="/"> <span className='remeber_forgot underline cursor-pointer top-2 mx-3 absolute '><FontAwesomeIcon icon={faBackward} color="#13b9668DA1F2"  className='mx-3'/>Back</span> </Link>
                 <div className='banner-background w-1/2  px-2 '>
                     <span className='flex flex-col  ' >
                         <img src={employee} className="App-logo" alt="logo" />
@@ -136,8 +139,8 @@ function RegisterEntity() {
                 </div>
                 <div className='flex flex-col w-1/2 justify-center items-center bg-white py-4 referee-form '>
                     <span className='Referral-title flex flex-col    font-serif   '>
-                        <span>Join Koipay's Referral Program and Multiply Your Rewards!</span>
-                        <span> Every time your friends use Koipay</span>
+                        <span className='pl-2'>Join Koipay's Referral Program and Multiply Your Rewards!</span>
+                       
                     </span>
                     <span className='login-sub-title p-2' ></span>
                     <span className='login-sub-title my-3'>------ Register your Entity --------</span>

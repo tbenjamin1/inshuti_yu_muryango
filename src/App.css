@@ -75,6 +75,7 @@ body {
   margin: 0px;
   transform: translate3d(522.5px, 3847.5px, 0px);
 }
+
 /* .social-media{
 font-size: 10px;
 } */
@@ -83,56 +84,70 @@ font-size: 10px;
   width: 93%;
 }
 
-.myTabContent{
+.myTabContent {
   padding-top: 100px;
   /* height:100vh; */
 }
-.my_TabContent{
+
+.my_TabContent {
   max-height: 64vh;
   overflow: hidden;
   overflow-y: auto;
   scroll-behavior: smooth;
-  
+
   scrollbar-color: rgb(17, 13, 13);
   border: 2px solid rgba(150, 187, 212, 0.25)
 }
+
 .my_TabContent::-webkit-scrollbar {
-  width: 4px; /* Adjust the width as needed */
+  width: 4px;
+  /* Adjust the width as needed */
 }
 
 .my_TabContent::-webkit-scrollbar-thumb {
   width: 1px;
-  background-color: rgb(222, 68, 68); /* Change this to red */
+  background-color: rgb(222, 68, 68);
+  /* Change this to red */
 }
 
 .my_TabContent::-webkit-scrollbar-thumb:hover {
-  background-color: darkred; /* Change this to a darker red when hovering over the thumb */
+  background-color: darkred;
+  /* Change this to a darker red when hovering over the thumb */
 }
 
 .my_TabContent::-webkit-scrollbar-track {
-  background-color: lightgray; /* Change this to the color you want for the track */
+  background-color: lightgray;
+  /* Change this to the color you want for the track */
 }
-.logout-button{
+
+.logout-button {
   width: 150px;
 
 }
-.nav-bar{
+
+.nav-bar {
   top: 0;
   position: fixed;
   width: 100%;
 }
-input,textarea,select{
-width: 100%;
-border: 1px solid #E5E5E5;
+
+input,
+textarea,
+select {
+  width: 100%;
+  border: 1px solid #E5E5E5;
 }
-textarea{
+
+textarea {
   height: 100px;
 }
-.footer{
+
+.footer {
   bottom: 0;
   position: fixed;
   width: 100%;
 }
+
 .date-filter input {
   width: 90%;
 }
@@ -153,14 +168,13 @@ textarea{
   font-size: 13px;
 
 }
-.border_green{
-  border-bottom:4px solid #1BA97F;
+
+.border_green {
+  border-bottom: 4px solid #1BA97F;
 }
 
 
-@media only screen and (max-width: 978px) {
-  
-}
+@media only screen and (max-width: 978px) {}
 
 /* mine css */
 .login-screen {
@@ -179,65 +193,101 @@ textarea{
   padding: 10px 10px !important;
 
 }
+
+@media screen and (max-width: 768) {
+  .fom-btn {
+    font-size: 9px;
+
+  }
+}
+
 @media screen and (max-width: 480px) {
-  .referee_height{
-    height:86vh !important;
-    
+  .referee_height {
+    height: 86vh !important;
+
   }
-  .login-sub-title{
-padding: 0px;
-margin: 0px;
+  .fom-btn-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px 0px 0px 20px;
   }
-  .form-width{
+  .fom-btn {
+    font-size: 9px;
+
+  }
+  .logo_height img{
+    height: 100%;
+  }
+  .login-sub-title {
+    padding: 0px;
+    margin: 0px;
+    font-size: 9px !important;
+  }
+
+  .form-width {
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
   }
-  .main-refree-container{
-    padding:100px 0px;
+
+  .main-refree-container {
+    padding: 100px 0px;
   }
-  .momo-number{
+
+  .momo-number {
     display: flex !important;
     flex-direction: column;
   }
+
   label {
     font-size: 9px !important;
   }
-  .w_full{
+
+  .w_full {
     width: 150px !important;
   }
-  .w_full_login{
+
+  .w_full_login {
     display: flex !important;
     flex-direction: column;
     width: 150px !important;
   }
-  input{
+
+  input {
     width: 150px !important;
   }
-  .login-page{
+
+  .login-page {
     width: 100%;
+    height: 50%;
   }
-  .referal-content{
+
+  .referal-content {
     font-size: 13px;
   }
-  .Referral-title{
+
+  .Referral-title {
     font-size: 9px !important;
     margin-left: 2px;
   }
-  .login-title{
+
+  .login-title {
     font-size: 10px !important;
     margin-left: 2px;
   }
-  .login_form{
+
+  .login_form {
     display: flex !important;
-   justify-content: start !important ;
-   align-items: unset !important;
-   margin-left: 5px;
+    justify-content: start !important;
+    align-items: unset !important;
+    margin-left: 5px;
 
   }
-  .remeber_forgot{
+
+  .remeber_forgot {
     font-size: 10px !important;
   }
 }
@@ -247,13 +297,16 @@ margin: 0px;
   position: relative;
   width: 100%;
 }
-.main-refree-container{
+
+.main-refree-container {
   height: 100vh;
 }
-.referee-form{
+
+.referee-form {
   border-radius: 0px 10px 10px 0px;
 }
-.banner-background{
+
+.banner-background {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -261,13 +314,15 @@ margin: 0px;
   border-radius: 10px 0px 0px 10px;
   background-color: #979AD3;
 }
+
 .login_form {
   width: 100%;
   display: flex !important;
-  justify-content:center ;
+  justify-content: center;
   align-items: center;
 }
-.Referral-title{
+
+.Referral-title {
   color: #979AD3;
   font-size: 13px;
   font-weight: bold;
@@ -278,9 +333,11 @@ margin: 0px;
   position: absolute;
 
 }
-.phone-number{
+
+.phone-number {
   width: 100%;
 }
+
 .login-title {
   font-weight: 700;
   font-size: 20px;
@@ -356,7 +413,8 @@ input {
 .page-content {
   width: 100%;
 }
-.referee-emoji{
-font-size: 30px;
-cursor: pointer;
+
+.referee-emoji {
+  font-size: 30px;
+  cursor: pointer;
 }

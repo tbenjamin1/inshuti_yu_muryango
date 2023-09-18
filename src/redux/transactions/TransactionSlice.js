@@ -28,8 +28,8 @@ export const fetchAsynRefree = createAsyncThunk('tranx/fetchAsynRefree', async (
 })
 export const fetchAsynParkCatgories= createAsyncThunk('tranx/fetchAsyncategories', async () => {
     const response = await axios.get(`https://apidev.koipay.co/api/v1/park-pick/categories`)
-
-    console.log("response",response)
+console.log(response)
+   
     return response.data;
 })
 export const fetchAsynParkUnit= createAsyncThunk('tranx/fetchAsynUnit', async () => {
@@ -37,9 +37,9 @@ export const fetchAsynParkUnit= createAsyncThunk('tranx/fetchAsynUnit', async ()
 
     return response.data;
 })
-export const fetchAsynItems= createAsyncThunk('tranx/fetchAsynItems', async () => {
-    const response = await axios.get(`https://apidev.koipay.co/api/v1/park-pick/items/get-all`)
-    
+export const fetchAsynItems= createAsyncThunk('tranx/fetchAsynItems', async (currentPage) => {
+    const response = await axios.get(`https://apidev.koipay.co/api/v1/park-pick/items/get-all?page=${currentPage}`)
+
     return response.data;
 })
 const savedUser = localStorage.getItem('user');
@@ -56,6 +56,7 @@ const initialState = {
     refereePaginatedList: [],
     paginatedClientList: [],
     parkCategories: [],
+    paginatedParkCategories: [],
     parkUnitList: [],
     parkPicktItemsList: [],
     parkPicktpaginatedItems: [],
@@ -105,7 +106,8 @@ const transactionsSlice = createSlice({
         },
         
         [fetchAsynItems.fulfilled]: (state, { payload }) => {
-            return { ...state, isLoading: false, parkPicktpaginatedItems: payload,parkPicktItemsList: payload };
+            return { ...state, isLoading: false, parkPicktpaginatedItems: payload,parkPicktItemsList: payload.items
+            };
         },
         [fetchAsynParkUnit.fulfilled]: (state, { payload }) => {
             return { ...state, isLoading: false, parkUnitList: payload };
@@ -175,5 +177,8 @@ export const getAllstartimesTransaction = (state) => state.transactions.startime
 export const getUser = (state) => state.transactions.user;
 export const getAllparkCategories = (state) => state.transactions.parkCategories;
 export const getAllparkUnitList = (state) => state.transactions.parkUnitList;
+
 export const getAllparkPickItemsList = (state) => state.transactions.parkPicktItemsList;
+
+export const getAllparkPickPaginatedItems = (state) => state.transactions.parkPicktpaginatedItems;
 export default transactionsSlice.reducer;

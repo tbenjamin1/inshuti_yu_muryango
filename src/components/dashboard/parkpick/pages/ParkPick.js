@@ -11,7 +11,7 @@ import axios from 'axios';
 import moment from 'moment';
 import { Pagination } from 'antd';
 import { useToasts } from 'react-toast-notifications';
-import { fetchAsynItems, fetchAsynParkCatgories, fetchAsynParkUnit, getAllparkCategories, getAllparkPickItemsList, getAllparkUnitList, getUser } from '../../../../redux/transactions/TransactionSlice';
+import { fetchAsynItems, fetchAsynParkCatgories, fetchAsynParkUnit, getAllparkCategories, getAllparkPickItemsList, getAllparkPickPaginatedItems, getAllparkUnitList, getUser } from '../../../../redux/transactions/TransactionSlice';
 
 const ParkPick = () => {
     const user = useSelector(getUser);
@@ -25,6 +25,12 @@ const ParkPick = () => {
 
     const unitList = useSelector(getAllparkUnitList)
     const itemsList = useSelector(getAllparkPickItemsList)
+    const [currentPage, setCurrentPage] = useState(1);
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+      };
+    const paginatedItemsList = useSelector(getAllparkPickPaginatedItems)
+
     const isLoading = useSelector((state) => state.transactions.isLoading);
     //  Item form 
     const [Name, setNameValue] = useState('');
@@ -533,8 +539,8 @@ const ParkPick = () => {
     useEffect(() => {
         dispatch(fetchAsynParkCatgories())
         dispatch(fetchAsynParkUnit())
-        dispatch(fetchAsynItems())
-    }, [dispatch]);
+        dispatch(fetchAsynItems(currentPage))
+    }, [dispatch,currentPage]);
 
     return (
         <div className='bg-gray-100  '>
@@ -1018,9 +1024,9 @@ const ParkPick = () => {
 
 
                         </div>
-                        {/* <div className='flex justify-end my-1' >
-                            <Pagination defaultCurrent={4} className="border p-3 rounded-lg bg-white" />
-                        </div> */}
+                        <div className='flex justify-end my-1' >
+                            <Pagination defaultCurrent={10} total={paginatedItemsList.totalCount} onChange={handlePageChange} className="border p-3 rounded-lg bg-white" />
+                        </div>
                     </div>
 
                     <div

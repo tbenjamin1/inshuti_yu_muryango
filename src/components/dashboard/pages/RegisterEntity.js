@@ -6,27 +6,18 @@ import { Link } from 'react-router-dom'
 import { useToasts } from 'react-toast-notifications';
 import axios from 'axios';
 
-function RefereePage() {
+function RegisterEntity() {
     const { addToast } = useToasts();
-    const [email, setEmailValue] = useState('');
-    const [password, setPasswordValue] = useState('');
     const [phoneNumber, setphoneNumber] = useState('');
     const [error, setError] = useState('');
     const [isRegistered, setIsregistered] = useState(false);
-    const [firstName, setfirstName] = useState('');
-    const [lastName, setlastName] = useState('');
-    const [displayName, setdisplayName] = useState('');
+    const [entityName, setEntityName] = useState('');
     const [loading, setLoading] = useState(false);
     const [isloading, setisLoading] = useState(false);
-    const firstNameHandleChange = (event) => {
-        setfirstName(event.target.value);
+    const entityNameHandleChange = (event) => {
+        setEntityName(event.target.value);
     };
-    const lastNameHandleChange = (event) => {
-        setlastName(event.target.value);
-    };
-    const displayNameHandleChange = (event) => {
-        setdisplayName(event.target.value);
-    };
+   
     const confirmMOMOnumberHandleChange = (event) => {
         setphoneNumber(event.target.value);
         validateMtnPhoneNumber(event.target.value);
@@ -107,20 +98,22 @@ function RefereePage() {
             return;
         }
         setisLoading(true)
+        const entity = {
+            'name': entityName,
+            'phone_number': phoneNumber,
+        }
 
         try {
-            const response = await axios.post('https://api.koipay.co/api/v1/referees', { firstName, lastName, phoneNumber, displayName }, {
+            const response = await axios.post('https://api.koipay.co/api/v1/entities',entity, {
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                 }
             });
-            addToast(`Successfully registered, your code is : ${response.data.data.referee.code}`, {
+            addToast(`An Entity was successfully created, your entity is : ${response.data.entities.name}`, {
                 appearance: 'success',
             });
             setisLoading(false);
-            setfirstName("");
-            setlastName("");
-            setdisplayName("");
+            setEntityName("");
             setphoneNumber("");
             setIsregistered(false);
         } catch (error) {
@@ -147,20 +140,15 @@ function RefereePage() {
                         <span> Every time your friends use Koipay</span>
                     </span>
                     <span className='login-sub-title p-2' ></span>
-                    <span className='login-sub-title my-3'>------ Join Koipay's Referral --------</span>
-                    <div className='flex flex-col my-3  w-3/5 form-width'>
+                    <span className='login-sub-title my-3'>------ Register your Entity --------</span>
+                    <div className='flex flex-col  my-3  w-3/5 form-width'>
                         <span className='flex flex-col my-4' >
                             <label>
-                                First Name
+                            Entity  Name
                             </label>
-                            <input type="text" className='' placeholder=' First Name' value={firstName} onChange={firstNameHandleChange}  ></input>
+                            <input type="text" className='' placeholder='  Name' value={entityName} onChange={entityNameHandleChange}  ></input>
                         </span>
-                        <span className='flex flex-col' >
-                            <label>
-                                Last Name
-                            </label>
-                            <input type="text" className='' placeholder=' Last Name' value={lastName} onChange={lastNameHandleChange}></input>
-                        </span>
+                        
                         <span className='flex flex-col' >
                             <label>
                                 MTN MOMO Number
@@ -180,12 +168,7 @@ function RefereePage() {
                                 </div>
                             </span>
                         </span>
-                        <span className='flex flex-col' >
-                            <label>
-                                Display Name
-                            </label>
-                            <input type="text" className='' placeholder='Display Name' value={displayName} onChange={displayNameHandleChange} ></input>
-                        </span>
+                        
                         <span className=' w_full flex justify-between items-center py-3 '>
                             <span className='remeber_forgot flex justify-between items-center'>All filled are required !</span>
                             <Link to="/"> <span className='remeber_forgot underline cursor-pointer '>Back</span> </Link>
@@ -208,4 +191,4 @@ function RefereePage() {
     )
 }
 
-export default RefereePage
+export default RegisterEntity

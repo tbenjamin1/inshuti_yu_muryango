@@ -29,7 +29,7 @@ export const fetchAsynRefree = createAsyncThunk('tranx/fetchAsynRefree', async (
 export const fetchAsynParkCatgories= createAsyncThunk('tranx/fetchAsyncategories', async () => {
     const response = await axios.get(`https://apidev.koipay.co/api/v1/park-pick/categories`)
 
-    
+    console.log("response",response)
     return response.data;
 })
 export const fetchAsynParkUnit= createAsyncThunk('tranx/fetchAsynUnit', async () => {
@@ -58,6 +58,7 @@ const initialState = {
     parkCategories: [],
     parkUnitList: [],
     parkPicktItemsList: [],
+    parkPicktpaginatedItems: [],
     isLoggedIn: savedUser ? true : false,
     user: savedUser ? JSON.parse(savedUser) : null,
 };
@@ -104,7 +105,7 @@ const transactionsSlice = createSlice({
         },
         
         [fetchAsynItems.fulfilled]: (state, { payload }) => {
-            return { ...state, isLoading: false, parkPicktItemsList: payload };
+            return { ...state, isLoading: false, parkPicktpaginatedItems: payload,parkPicktItemsList: payload };
         },
         [fetchAsynParkUnit.fulfilled]: (state, { payload }) => {
             return { ...state, isLoading: false, parkUnitList: payload };

@@ -9,6 +9,7 @@ import { faTwitter, faLinkedin, faYoutube } from '@fortawesome/free-brands-svg-i
 import Modal from './Modal';
 import axios from 'axios';
 import moment from 'moment';
+import { Pagination } from 'antd';
 import { useToasts } from 'react-toast-notifications';
 import { fetchAsynItems, fetchAsynParkCatgories, fetchAsynParkUnit, getAllparkCategories, getAllparkPickItemsList, getAllparkUnitList, getUser } from '../../../../redux/transactions/TransactionSlice';
 
@@ -536,7 +537,7 @@ const ParkPick = () => {
     }, [dispatch]);
 
     return (
-        <div className=' '>
+        <div className='bg-gray-100  '>
             <nav class="bg-white border-solid border-b-4 nav-bar border-red-500">
                 <div class=" flex flex-wrap items-center justify-between  px-4 py-2">
                     <a href="#" class="flex items-center">
@@ -546,9 +547,8 @@ const ParkPick = () => {
 
                         <div className='flex flex-col mx-2' >
                             <span>{user.name} </span>
-                            
                             <div class="group flex justify-between items-center relative">
-                            <span className='text-red-500' >@ {user.role.title}</span>
+                                <span className='text-red-500' >@ {user.role.title}</span>
                                 <button
                                     class="bg-white text-gray-700 font-semibold px-4 rounded inline-flex items-center"
                                 >
@@ -570,7 +570,7 @@ const ParkPick = () => {
                                             href="/"
                                         >Log out</a>
                                     </li>
-                                    
+
                                 </ul>
                             </div>
                         </div>
@@ -586,7 +586,7 @@ const ParkPick = () => {
             </nav>
 
             <div className="mb-4 border-b myTabContent border-gray-200  ">
-                <ul className="flex flex-wrap text-sm font-medium text-center px-16 " role="tablist">
+                <ul className="flex flex-wrap text-sm font-medium text-center px-16 bg-white " role="tablist">
                     <li className="mr-2" role="presentation">
                         <button
                             className={`inline-block p-4 border-b-4 rounded-t-lg ${activeTab === 'item' ? 'border-red-500' : 'border-transparent hover:border-slate-400'}`}
@@ -645,10 +645,10 @@ const ParkPick = () => {
                     </li>
                 </ul>
 
-                <div id="myTabContent" className=' myTabContent bg-gray-100' >
+                <div id="myTabContent" className='  bg-gray-100 ' >
 
                     <div
-                        className={`p-4 rounded-lg bg-gray-100  px-20  ${activeTab === 'summary' ? '' : 'hidden'}`}
+                        className={`p-4 rounded-lg my_TabContent bg-gray-100  px-20  ${activeTab === 'summary' ? '' : 'hidden'}`}
                         id="summary"
                         role="tabpanel"
                         aria-labelledby="summary-tab"
@@ -658,7 +658,7 @@ const ParkPick = () => {
 
 
                     <div
-                        className={`p-4 rounded-lg bg-gray-100   px-20 ${activeTab === 'category' ? '' : 'hidden'}`}
+                        className={`p-4 my_TabContent rounded-lg bg-gray-100   px-20 ${activeTab === 'category' ? '' : 'hidden'}`}
                         id="category"
                         role="tabpanel"
                         aria-labelledby="category-tab"
@@ -733,9 +733,9 @@ const ParkPick = () => {
                                         <th scope="col" className="px-6 py-3">
                                             updated_at
                                         </th>
-                                        <th scope="col" className="px-6 py-3">
+                                        {/* <th scope="col" className="px-6 py-3">
                                             deleted_at
-                                        </th>
+                                        </th> */}
                                         <th scope="col" className="px-6 py-3">
                                             actions
                                         </th>
@@ -758,9 +758,9 @@ const ParkPick = () => {
                                                 {moment(item.updatedAt).format('LLLL')}
                                             </td>
 
-                                            <td className="px-6 py-4">
+                                            {/* <td className="px-6 py-4">
                                                 {item.deletedAt ? item.deletedAt : "N/A"}
-                                            </td>
+                                            </td> */}
 
                                             <td className='px-6 py-4 flex justify-between' >
                                                 <FontAwesomeIcon icon={faEdit} size="1x" className='cursor-pointer ' onClick={() => handleEditCategory(item)} />
@@ -780,7 +780,7 @@ const ParkPick = () => {
                     </div>
 
                     <div
-                        className={`p-4 rounded-lg bg-gray-100  px-20 ${activeTab === 'item' ? '' : 'hidden'}`}
+                        className={`p-4 rounded-lg my_TabContent bg-gray-100  px-20 ${activeTab === 'item' ? '' : 'hidden'}`}
                         id="item"
                         role="tabpanel"
                         aria-labelledby="item-tab"
@@ -1018,10 +1018,13 @@ const ParkPick = () => {
 
 
                         </div>
+                        {/* <div className='flex justify-end my-1' >
+                            <Pagination defaultCurrent={4} className="border p-3 rounded-lg bg-white" />
+                        </div> */}
                     </div>
 
                     <div
-                        className={`p-4 rounded-lg bg-gray-100  px-20 ${activeTab === 'unity' ? '' : 'hidden'}`}
+                        className={`p-4 rounded-lg my_TabContent bg-gray-100  px-20 ${activeTab === 'unity' ? '' : 'hidden'}`}
                         id="unity"
                         role="tabpanel"
                         aria-labelledby="unity-tab"
@@ -1029,7 +1032,7 @@ const ParkPick = () => {
                         <div className='bg-white rounded-md py-2' >
                             <div className='flex justify-between items-center p-4' >
                                 <div>
-                                unit
+                                    unit
                                 </div>
                                 <div className='flex justify-center items-center ' >
                                     {isLoading && <div role="status" className='flex justify-center items-center  w-full' >
@@ -1092,9 +1095,9 @@ const ParkPick = () => {
                                         <th scope="col" className="px-6 py-3">
                                             updated_at
                                         </th>
-                                        <th scope="col" className="px-6 py-3">
+                                        {/* <th scope="col" className="px-6 py-3">
                                             deleted_at
-                                        </th>
+                                        </th> */}
                                         <th scope="col" className="px-6 py-3">
                                             actions
                                         </th>
@@ -1116,9 +1119,9 @@ const ParkPick = () => {
                                                 {moment(item.updatedAt).format('LLLL')}
                                             </td>
 
-                                            <td className="px-6 py-4">
+                                            {/* <td className="px-6 py-4">
                                                 {item.deletedAt ? item.deletedAt : "N/A"}
-                                            </td>
+                                            </td> */}
 
                                             <td className='px-6 py-4 flex justify-between' >
                                                 <FontAwesomeIcon icon={faEdit} size="1x" className='cursor-pointer ' onClick={() => handleEditUnit(item)} />
@@ -1137,7 +1140,7 @@ const ParkPick = () => {
                     </div>
 
                     <div
-                        className={`p-4 rounded-lg bg-gray-100  px-20 ${activeTab === 'payments' ? '' : 'hidden'}`}
+                        className={`p-4 rounded-lg my_TabContent bg-gray-100  px-20 ${activeTab === 'payments' ? '' : 'hidden'}`}
                         id="payments"
                         role="tabpanel"
                         aria-labelledby="payments-tab"
@@ -1283,7 +1286,7 @@ const ParkPick = () => {
 
                 </div>
                 <div className='px-20 py-2 bg-red-500' >
-                    <span className='text-white text-sm' >Alright reserved </span>
+                    <span className='text-white text-sm' >All rights reserved</span>
                 </div>
             </footer>
 

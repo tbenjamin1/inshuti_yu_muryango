@@ -63,9 +63,13 @@ const initialState = {
     isLoggedIn: savedUser ? true : false,
     user: savedUser ? JSON.parse(savedUser) : null,
 };
+
+
 const transactionsSlice = createSlice({
+    
     name: "transactions",
     initialState,
+
     reducers: {
         addTransactions: (state, action) => {
          state.transactionsList = action.payload;
@@ -74,6 +78,7 @@ const transactionsSlice = createSlice({
          state.user = action.payload;
         },
     },
+
     extraReducers: {
         [fetchAsynItems.pending]: (state) => {
             state.isLoading = true;

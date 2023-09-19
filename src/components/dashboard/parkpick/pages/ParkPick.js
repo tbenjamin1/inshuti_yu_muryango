@@ -841,7 +841,7 @@ const ParkPick = () => {
                                                     <span className="block text-sm font-medium text-slate-700 py-2 ">Category</span>
                                                     <select className=' border border-gray-300 rounded-md h-3/5' value={Category} onChange={handleCategory}  >
                                                         <option>pick one</option>
-                                                        {categoriesList && categoriesList.map((category) => (
+                                                        {categoriesList.length && categoriesList.map((category) => (
                                                             <option key={category.id} value={category.id}>{category.name}</option>
                                                         ))}
                                                     </select>
@@ -854,7 +854,7 @@ const ParkPick = () => {
                                                     <span className="block text-sm font-medium text-slate-700 py-2">Unity </span>
                                                     <select className=' border border-gray-300 rounded-md h-3/5' value={Unity} onChange={handleUnity}  >
                                                         <option value="true">pick one</option>
-                                                        {unitList && unitList.map((unit) => (
+                                                        {unitList.length && unitList.map((unit) => (
                                                             <option key={unit.id} value={unit.id}>{unit.name}</option>
                                                         ))}
                                                     </select>
@@ -911,7 +911,7 @@ const ParkPick = () => {
                                                     <span className="block text-sm font-medium text-slate-700 py-2 ">Category</span>
                                                     <select className=' border border-gray-300 rounded-md h-3/5' value={Category} onChange={handleCategory}  >
                                                         <option value="true">pick one</option>
-                                                        {categoriesList && categoriesList.map((category) => (
+                                                        {categoriesList.length && categoriesList.map((category) => (
                                                             <option key={category.id} value={category.id}>{category.name}</option>
                                                         ))}
                                                     </select>
@@ -923,7 +923,7 @@ const ParkPick = () => {
                                                     <span className="block text-sm font-medium text-slate-700 py-2">Unity </span>
                                                     <select className=' border border-gray-300 rounded-md h-3/5' value={Unity} onChange={handleUnity}  >
                                                         <option value="true">pick one</option>
-                                                        {unitList && unitList.map((unit) => (
+                                                        {unitList.length && unitList.map((unit) => (
                                                             <option key={unit.id} value={unit.id}>{unit.name}</option>
                                                         ))}
                                                     </select>
@@ -1110,7 +1110,7 @@ const ParkPick = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {unitList.length && (unitList.map((item, index) => (
+                                    {unitList.length && unitList.map((item, index) => (
                                         <tr className="bg-white border-b dark:hover:bg-gray-300 dark:hover:text-black" key={index} >
                                             <td className="w-4 p-4">
                                                 {item.id}
@@ -1136,7 +1136,7 @@ const ParkPick = () => {
                                         </tr>
 
 
-                                    )))
+                                    ))
                                     }
 
                                 </tbody>

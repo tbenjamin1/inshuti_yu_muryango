@@ -28,7 +28,7 @@ export const fetchAsynRefree = createAsyncThunk('tranx/fetchAsynRefree', async (
 })
 export const fetchAsynParkCatgories= createAsyncThunk('tranx/fetchAsyncategories', async () => {
     const response = await axios.get(`https://apidev.koipay.co/api/v1/park-pick/categories`)
-console.log(response)
+
    
     return response.data;
 })
@@ -66,7 +66,7 @@ const initialState = {
 
 
 const transactionsSlice = createSlice({
-    
+
     name: "transactions",
     initialState,
 

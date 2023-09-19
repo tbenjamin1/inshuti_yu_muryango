@@ -86,11 +86,11 @@ font-size: 10px;
 
 .myTabContent {
   padding-top: 100px;
-  /* height:100vh; */
+  height:100vh;
 }
 
 .my_TabContent {
-  max-height: 64vh;
+  max-height: 68vh;
   overflow: hidden;
   overflow-y: auto;
   scroll-behavior: smooth;

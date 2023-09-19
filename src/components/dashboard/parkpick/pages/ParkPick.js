@@ -539,8 +539,8 @@ const ParkPick = () => {
     useEffect(() => {
         dispatch(fetchAsynParkCatgories())
         dispatch(fetchAsynParkUnit())
-        dispatch(fetchAsynItems())
-    }, [dispatch]);
+        dispatch(fetchAsynItems(currentPage))
+    }, [dispatch,currentPage]);
 
     return (
         <div className='bg-gray-100  '>
@@ -994,13 +994,13 @@ const ParkPick = () => {
                                                 {item.name}
                                             </th>
                                             <td className="px-6 py-4">
-                                                {item.category.name}
+                                                {item.category?item.category.name:'N/A'}
                                             </td>
                                             <td className="px-6 py-4">
                                                 {item.price} /FRW
                                             </td>
                                             <td className="px-6 py-4">
-                                                {item.unit.name}
+                                                {item.unit?item.unit.name:'N/A'}
                                             </td>
 
                                             <td className="px-6 py-4">

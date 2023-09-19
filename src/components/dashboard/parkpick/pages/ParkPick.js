@@ -592,7 +592,7 @@ const ParkPick = () => {
             </nav>
 
             <div className="mb-4 border-b myTabContent border-gray-200  ">
-                <ul className="flex flex-wrap text-sm font-medium text-center px-16 bg-white " role="tablist">
+                <ul className="nav-tab-items flex flex-wrap text-sm font-medium text-center px-16 bg-white " role="tablist">
                     <li className="mr-2" role="presentation">
                         <button
                             className={`inline-block p-4 border-b-4 rounded-t-lg ${activeTab === 'item' ? 'border-red-500' : 'border-transparent hover:border-slate-400'}`}
@@ -654,7 +654,7 @@ const ParkPick = () => {
                 <div id="myTabContent" className='  bg-gray-100 ' >
 
                     <div
-                        className={`p-4 rounded-lg my_TabContent bg-gray-100  px-20  ${activeTab === 'summary' ? '' : 'hidden'}`}
+                        className={`p-4 rounded-lg my_TabContent my_TabContent_mobile bg-gray-100  px-20  ${activeTab === 'summary' ? '' : 'hidden'}`}
                         id="summary"
                         role="tabpanel"
                         aria-labelledby="summary-tab"
@@ -664,7 +664,7 @@ const ParkPick = () => {
 
 
                     <div
-                        className={`p-4 my_TabContent rounded-lg bg-gray-100   px-20 ${activeTab === 'category' ? '' : 'hidden'}`}
+                        className={`p-4 my_TabContent my_TabContent_mobile rounded-lg bg-gray-100   px-20 ${activeTab === 'category' ? '' : 'hidden'}`}
                         id="category"
                         role="tabpanel"
                         aria-labelledby="category-tab"
@@ -786,14 +786,14 @@ const ParkPick = () => {
                     </div>
 
                     <div
-                        className={`p-4 rounded-lg my_TabContent bg-gray-100  px-20 ${activeTab === 'item' ? '' : 'hidden'}`}
+                        className={`p-4 rounded-lg my_TabContent my_TabContent_mobile bg-gray-100  px-20 ${activeTab === 'item' ? '' : 'hidden'}`}
                         id="item"
                         role="tabpanel"
                         aria-labelledby="item-tab"
                     >
 
 
-                        <div className='bg-white rounded-md py-2' >
+                        <div className='bg-white rounded-md py-2 border tab-section' >
                             <div className='flex justify-between items-center p-4' >
                                 <div>
                                     Items
@@ -1030,7 +1030,7 @@ const ParkPick = () => {
                     </div>
 
                     <div
-                        className={`p-4 rounded-lg my_TabContent bg-gray-100  px-20 ${activeTab === 'unity' ? '' : 'hidden'}`}
+                        className={`p-4 rounded-lg my_TabContent my_TabContent_mobile  bg-gray-100  px-20 ${activeTab === 'unity' ? '' : 'hidden'}`}
                         id="unity"
                         role="tabpanel"
                         aria-labelledby="unity-tab"
@@ -1146,7 +1146,7 @@ const ParkPick = () => {
                     </div>
 
                     <div
-                        className={`p-4 rounded-lg my_TabContent bg-gray-100  px-20 ${activeTab === 'payments' ? '' : 'hidden'}`}
+                        className={`p-4 rounded-lg my_TabContent my_TabContent_mobile bg-gray-100  px-20 ${activeTab === 'payments' ? '' : 'hidden'}`}
                         id="payments"
                         role="tabpanel"
                         aria-labelledby="payments-tab"

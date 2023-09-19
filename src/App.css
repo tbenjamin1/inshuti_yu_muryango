@@ -174,7 +174,38 @@ textarea {
 }
 
 
-@media only screen and (max-width: 978px) {}
+@media only screen and (max-width: 820px) {
+  .my_TabContent {
+    overflow: auto;
+  }
+  thead tr th{
+    font-size: 12px;
+  }
+  tbody tr td{
+    font-size: 18px;
+    padding: 19px 4px !important;
+  }
+  tbody tr th{
+    font-size: 18px;
+    padding: 19px 4px !important;
+  }
+  .my_TabContent{
+    padding: 0px;
+    font-size: 18px;
+  }
+  .nav-tab-items {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
+    padding: 10px 2px;
+    margin: 0px;
+
+  }
+  .nav-tab-items button {
+padding: 0px;
+  }
+}
 
 /* mine css */
 .login-screen {
@@ -202,6 +233,36 @@ textarea {
 }
 
 @media screen and (max-width: 480px) {
+  .my_TabContent {
+    overflow: auto;
+  }
+  thead tr th{
+    font-size: 9px;
+  }
+  tbody tr td{
+    font-size: 9px;
+    padding: 5px 4px !important;
+  }
+  tbody tr th{
+    font-size: 9px;
+    padding: 5px 4px !important;
+  }
+  .my_TabContent{
+    padding: 0px;
+    font-size: 10px;
+  }
+  .nav-tab-items {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 9px;
+    padding: 0px 2px;
+    margin: 0px;
+
+  }
+  .nav-tab-items button {
+padding: 0px;
+  }
   .referee_height {
     height: 86vh !important;
 

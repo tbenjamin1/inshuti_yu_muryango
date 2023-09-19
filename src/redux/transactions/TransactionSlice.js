@@ -30,12 +30,12 @@ export const fetchAsynParkCatgories= createAsyncThunk('tranx/fetchAsyncategories
     const response = await axios.get(`https://apidev.koipay.co/api/v1/park-pick/categories`)
 
    
-    return response.data;
+    return response.data.categories;
 })
 export const fetchAsynParkUnit= createAsyncThunk('tranx/fetchAsynUnit', async () => {
     const response = await axios.get(`https://apidev.koipay.co/api/v1/park-pick/units/get-all`)
 
-    return response.data;
+    return response.data.units;
 })
 export const fetchAsynItems= createAsyncThunk('tranx/fetchAsynItems', async (currentPage) => {
     const response = await axios.get(`https://apidev.koipay.co/api/v1/park-pick/items/get-all?page=${currentPage}`)

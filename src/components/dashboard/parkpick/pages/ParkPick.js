@@ -539,8 +539,8 @@ const ParkPick = () => {
     useEffect(() => {
         dispatch(fetchAsynParkCatgories())
         dispatch(fetchAsynParkUnit())
-        dispatch(fetchAsynItems(currentPage))
-    }, [dispatch,currentPage]);
+        dispatch(fetchAsynItems())
+    }, [dispatch]);
 
     return (
         <div className='bg-gray-100  '>
@@ -1110,7 +1110,7 @@ const ParkPick = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {unitList.length && unitList.map((item, index) => (
+                                    {unitList.length && (unitList.map((item, index) => (
                                         <tr className="bg-white border-b dark:hover:bg-gray-300 dark:hover:text-black" key={index} >
                                             <td className="w-4 p-4">
                                                 {item.id}
@@ -1136,7 +1136,7 @@ const ParkPick = () => {
                                         </tr>
 
 
-                                    ))
+                                    )))
                                     }
 
                                 </tbody>

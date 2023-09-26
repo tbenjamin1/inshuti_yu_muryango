@@ -46,7 +46,7 @@ const ParkPick = () => {
     const filterOption = (input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
 
 
-    const [activeTab, setActiveTab] = useState('payments');
+    const [activeTab, setActiveTab] = useState('item');
     const [open, setOpen] = useState(false);
     const [pageboughtItems, setPageboughtItems] = useState(1);
     const [category, setcategoryOpen] = useState(false);

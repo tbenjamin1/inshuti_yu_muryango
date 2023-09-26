@@ -13,7 +13,7 @@ import dayjs from 'dayjs';
 import { DatePicker, Select } from 'antd';
 import { Pagination } from 'antd';
 import { useToasts } from 'react-toast-notifications';
-import { fetchAsynBoughtItems, fetchAsynItems, fetchAsynParkCatgories, fetchAsynParkUnit, getAllparkCategories, getAllparkPickBoughtItemsList, getAllparkPickItemsList, getAllparkPickPaginatedBoughtItemsList, getAllparkPickPaginatedItems, getAllparkUnitList, getUser } from '../../../../redux/transactions/TransactionSlice';
+import { fetchAsynBoughtItems, fetchAsynItems, fetchAsynNonPaginatedItems, fetchAsynParkCatgories, fetchAsynParkUnit, getAllNonPaginatedItems, getAllparkCategories, getAllparkPickBoughtItemsList, getAllparkPickItemsList, getAllparkPickPaginatedBoughtItemsList, getAllparkPickPaginatedItems, getAllparkUnitList, getUser } from '../../../../redux/transactions/TransactionSlice';
 import ExcelExport   from './ExcelExport';
 
 const ParkPick = () => {
@@ -54,6 +54,7 @@ const ParkPick = () => {
     const categoriesList = useSelector(getAllparkCategories);
 
     const boughtItemsList = useSelector(getAllparkPickBoughtItemsList);
+    const nonPaginatedItemsList = useSelector(getAllNonPaginatedItems);
     const total = boughtItemsList.reduce((accumulator, item) => {
         // Assuming that item.number is a number you want to sum
         return accumulator + item.number;
@@ -67,7 +68,7 @@ const ParkPick = () => {
 
 
     const paginatedBoughtItemsList = useSelector(getAllparkPickPaginatedBoughtItemsList)
-    console.log("paginatedBoughtItemsList", paginatedBoughtItemsList)
+    
     const unitList = useSelector(getAllparkUnitList)
     const itemsList = useSelector(getAllparkPickItemsList)
     const [currentPage, setCurrentPage] = useState(1);
@@ -592,6 +593,7 @@ const ParkPick = () => {
         dispatch(fetchAsynParkCatgories())
         dispatch(fetchAsynParkUnit())
         dispatch(fetchAsynItems(currentPage))
+        dispatch(fetchAsynNonPaginatedItems())
         dispatch(fetchAsynBoughtItems({ currentPage }))
     }, [dispatch, currentPage]);
 
@@ -1225,7 +1227,7 @@ const ParkPick = () => {
                                                 onChange={onItemsChange}
                                                 onSearch={onSearch}
                                                 filterOption={filterOption}
-                                                options={itemsList}
+                                                options={nonPaginatedItemsList}
                                             />
                                         </div>
                                         <div className='flex flex-col' >

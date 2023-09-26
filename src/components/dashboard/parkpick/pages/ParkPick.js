@@ -9,26 +9,75 @@ import { faTwitter, faLinkedin, faYoutube } from '@fortawesome/free-brands-svg-i
 import Modal from './Modal';
 import axios from 'axios';
 import moment from 'moment';
+import dayjs from 'dayjs';
+import { DatePicker, Select } from 'antd';
 import { Pagination } from 'antd';
 import { useToasts } from 'react-toast-notifications';
-import { fetchAsynItems, fetchAsynParkCatgories, fetchAsynParkUnit, getAllparkCategories, getAllparkPickItemsList, getAllparkPickPaginatedItems, getAllparkUnitList, getUser } from '../../../../redux/transactions/TransactionSlice';
+import { fetchAsynBoughtItems, fetchAsynItems, fetchAsynParkCatgories, fetchAsynParkUnit, getAllparkCategories, getAllparkPickBoughtItemsList, getAllparkPickItemsList, getAllparkPickPaginatedBoughtItemsList, getAllparkPickPaginatedItems, getAllparkUnitList, getUser } from '../../../../redux/transactions/TransactionSlice';
+import ExcelExport   from './ExcelExport';
 
 const ParkPick = () => {
     const user = useSelector(getUser);
     const dispatch = useDispatch();
     const { addToast } = useToasts();
-    const [activeTab, setActiveTab] = useState('item');
+    const defaultStartDate = moment().startOf('month').format('YYYY-MM-DD'); // Example: Set default date to the start of the current month
+    const defaultEndDate = moment().format('YYYY-MM-DD'); // Set default end date to current date
+    const [selectedRange, setSelectedRange] = useState([defaultStartDate, defaultEndDate]);
+    const [filterItem, setfilterItem] = useState('');
+    const [filterStatus, setfilterStatus] = useState('');
+
+    const handleDateRangeChange = (dates) => {
+        if (dates) {
+            const formattedDates = dates.map(dateObj => moment(dateObj.$d).format("YYYY-MM-DD"));
+            setSelectedRange(formattedDates);
+        }
+    };
+    const onStatusChange = (value) => {
+        setfilterStatus(value)
+    };
+    const onItemsChange = (value) => {
+        setfilterItem(value)
+    };
+    const onSearch = (value) => {
+        console.log('search:', value);
+    };
+
+    // Filter `option.label` match the user type `input`
+    const filterOption = (input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
+
+
+    const [activeTab, setActiveTab] = useState('payments');
     const [open, setOpen] = useState(false);
+    const [pageboughtItems, setPageboughtItems] = useState(1);
     const [category, setcategoryOpen] = useState(false);
     const [unity, setUnityModalOpen] = useState(false);
     const categoriesList = useSelector(getAllparkCategories);
 
+    const boughtItemsList = useSelector(getAllparkPickBoughtItemsList);
+    const total = boughtItemsList.reduce((accumulator, item) => {
+        // Assuming that item.number is a number you want to sum
+        return accumulator + item.number;
+    }, 0);
+    // Map through the items and calculate the amount for each item
+    let totalAmount = 0;
+    const items = boughtItemsList.map((item, index) => {
+        const amount = item.item.price * item.number;
+        totalAmount += amount;
+    })
+
+
+    const paginatedBoughtItemsList = useSelector(getAllparkPickPaginatedBoughtItemsList)
+    console.log("paginatedBoughtItemsList", paginatedBoughtItemsList)
     const unitList = useSelector(getAllparkUnitList)
     const itemsList = useSelector(getAllparkPickItemsList)
     const [currentPage, setCurrentPage] = useState(1);
+
     const handlePageChange = (page) => {
         setCurrentPage(page);
-      };
+    };
+    const handlePageboughtItemsChange = (page) => {
+        setPageboughtItems(page);
+    };
     const paginatedItemsList = useSelector(getAllparkPickPaginatedItems)
 
     const isLoading = useSelector((state) => state.transactions.isLoading);
@@ -37,7 +86,7 @@ const ParkPick = () => {
     const [Price, setPriceValue] = useState('');
     const [Availability, setAvailabilityValue] = useState(false);
     const [Category, setCategoryValue] = useState('');
-    const [Unity, setUnityValue] = useState('');
+    const [Unity, setUnityValue] = useState();
     const [Preferred, setPreferredValue] = useState(false);
     const [Description, setDescriptionValue] = useState('');
 
@@ -75,7 +124,7 @@ const ParkPick = () => {
         setCategoryValue(parseInt(event.target.value))
     };
     const handleUnity = (event) => {
-        setUnityValue(event.target.value)
+        setUnityValue(parseInt(event.target.value))
     };
     const handlePreferred = (event) => {
         const newValue = event.target.value === 'true';
@@ -125,7 +174,7 @@ const ParkPick = () => {
             'name': unitName,
         };
         try {
-            await axios.patch(`https://apidev.koipay.co/api/v1/park-pick/units/update/${editUnitData.id}`, unit, {
+            await axios.patch(`https://api.koipay.co/api/v1/park-pick/units/update/${editUnitData.id}`, unit, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
@@ -140,7 +189,7 @@ const ParkPick = () => {
             setUnitNameValue('');
             setEditUnit(!editUnit);
         } catch (error) {
-            if (error.response.status == 400) {
+            if (error.response.status === 400) {
                 // Request was successful
                 // let riderErros = Object.keys(error.response.data);
                 // ErrorHandler(riderErros);
@@ -167,7 +216,7 @@ const ParkPick = () => {
             'name': categoryName,
         };
         try {
-            await axios.patch(`https://apidev.koipay.co/api/v1/park-pick/categories/${editCategoryData.id}`, category, {
+            await axios.patch(`https://api.koipay.co/api/v1/park-pick/categories/${editCategoryData.id}`, category, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
@@ -182,7 +231,7 @@ const ParkPick = () => {
             setcategoryNameValue('');
             setEditCategory(!editCategory);
         } catch (error) {
-            if (error.response.status == 400) {
+            if (error.response.status === 400) {
                 // Request was successful
                 // let riderErros = Object.keys(error.response.data);
                 // ErrorHandler(riderErros);
@@ -209,7 +258,7 @@ const ParkPick = () => {
             'name': unitName,
         };
         try {
-            await axios.post(`https://apidev.koipay.co/api/v1/park-pick/units/create`, unit, {
+            await axios.post(`https://api.koipay.co/api/v1/park-pick/units/create`, unit, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
@@ -224,7 +273,7 @@ const ParkPick = () => {
             setUnitNameValue('');
             setUnityModalOpen(!unity);
         } catch (error) {
-            if (error.response.status == 400) {
+            if (error.response.status === 400) {
                 // Request was successful
                 // let riderErros = Object.keys(error.response.data);
                 // ErrorHandler(riderErros);
@@ -251,7 +300,7 @@ const ParkPick = () => {
             'name': categoryName,
         };
         try {
-            await axios.post(`https://apidev.koipay.co/api/v1/park-pick/categories/create`, category, {
+            await axios.post(`https://api.koipay.co/api/v1/park-pick/categories/create`, category, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
@@ -266,7 +315,7 @@ const ParkPick = () => {
             setcategoryNameValue('');
             setcategoryOpen(!category);
         } catch (error) {
-            if (error.response.status == 400) {
+            if (error.response.status === 400) {
                 // Request was successful
                 // let riderErros = Object.keys(error.response.data);
                 // ErrorHandler(riderErros);
@@ -301,7 +350,7 @@ const ParkPick = () => {
 
         try {
 
-            await axios.post(`https://apidev.koipay.co/api/v1/park-pick/items/create`, item, {
+            await axios.post(`https://api.koipay.co/api/v1/park-pick/items/create`, item, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
@@ -323,7 +372,7 @@ const ParkPick = () => {
             setDescriptionValue('');
             setOpen(!open);
         } catch (error) {
-            if (error.response.status == 400) {
+            if (error.response.status === 400) {
                 // Request was successful
                 // let riderErros = Object.keys(error.response.data);
                 // ErrorHandler(riderErros);
@@ -352,7 +401,7 @@ const ParkPick = () => {
         if (confirmed) {
 
             try {
-                await axios.delete(`https://apidev.koipay.co/api/v1/park-pick/units/delete/${item.id}/`, {
+                await axios.delete(`https://api.koipay.co/api/v1/park-pick/units/delete/${item.id}/`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'
@@ -379,7 +428,7 @@ const ParkPick = () => {
         if (confirmed) {
 
             try {
-                await axios.delete(`https://apidev.koipay.co/api/v1/park-pick/categories/${category.id}/`, {
+                await axios.delete(`https://api.koipay.co/api/v1/park-pick/categories/${category.id}/`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'
@@ -418,7 +467,7 @@ const ParkPick = () => {
         if (confirmed) {
 
             try {
-                await axios.delete(`https://apidev.koipay.co/api/v1/park-pick/items/delete-item/${item.id}/`, {
+                await axios.delete(`https://api.koipay.co/api/v1/park-pick/items/delete-item/${item.id}/`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'
@@ -495,7 +544,7 @@ const ParkPick = () => {
 
 
         try {
-            await axios.patch(`https://apidev.koipay.co/api/v1/park-pick/items/update-item/${editItem.id}`, item, {
+            await axios.patch(`https://api.koipay.co/api/v1/park-pick/items/update-item/${editItem.id}`, item, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
@@ -516,7 +565,7 @@ const ParkPick = () => {
             setDescriptionValue('');
             seteditItemOpen(!editItemOpen);
         } catch (error) {
-            if (error.response.status == 400) {
+            if (error.response.status === 400) {
                 // Request was successful
                 addToast('please fill the required field', {
                     appearance: 'error', autoDismiss: true,
@@ -535,20 +584,24 @@ const ParkPick = () => {
         }
 
     }
+    useEffect(() => {
+        dispatch(fetchAsynBoughtItems({ pageboughtItems, filterStatus, filterItem, selectedRange }))
+    }, [dispatch, pageboughtItems, filterStatus, filterItem, selectedRange]);
 
     useEffect(() => {
         dispatch(fetchAsynParkCatgories())
         dispatch(fetchAsynParkUnit())
         dispatch(fetchAsynItems(currentPage))
-    }, [dispatch,currentPage]);
+        dispatch(fetchAsynBoughtItems({ currentPage }))
+    }, [dispatch, currentPage]);
 
     return (
         <div className='bg-gray-100  '>
             <nav class="bg-white border-solid border-b-4 nav-bar border-red-500">
                 <div class=" flex flex-wrap items-center justify-between  px-4 py-2">
-                    <a href="#" class="flex items-center">
-                        <img class=" w-16   h-16 rounded-full object-cover" src={main_logo} alt="user photo" />
-                    </a>
+
+                    <img class=" w-16   h-16 rounded-full object-cover" src={main_logo} alt="user photo" />
+
                     <div class="flex items-center  bg-white  ">
 
                         <div className='flex flex-col mx-2' >
@@ -591,7 +644,7 @@ const ParkPick = () => {
                 </div>
             </nav>
 
-            <div className="mb-4 border-b myTabContent border-gray-200  ">
+            <div className="mb-4 border-b myTabContent border-gray-200">
                 <ul className="nav-tab-items flex flex-wrap text-sm font-medium text-center px-16 bg-white " role="tablist">
                     <li className="mr-2" role="presentation">
                         <button
@@ -984,7 +1037,6 @@ const ParkPick = () => {
                                     </tr>
                                 </thead>
                                 <tbody className='' >
-
                                     {itemsList.length && (itemsList.map((item, index) => (
                                         <tr className="bg-white border-b dark:hover:bg-gray-300 dark:hover:text-black" key={index} >
                                             <td className="w-4 p-4">
@@ -994,13 +1046,13 @@ const ParkPick = () => {
                                                 {item.name}
                                             </th>
                                             <td className="px-6 py-4">
-                                                {item.category?item.category.name:'N/A'}
+                                                {item.category ? item.category.name : 'N/A'}
                                             </td>
                                             <td className="px-6 py-4">
                                                 {item.price} /FRW
                                             </td>
                                             <td className="px-6 py-4">
-                                                {item.unit?item.unit.name:'N/A'}
+                                                {item.unit ? item.unit.name : 'N/A'}
                                             </td>
 
                                             <td className="px-6 py-4">
@@ -1152,125 +1204,176 @@ const ParkPick = () => {
                         aria-labelledby="payments-tab"
                     >
                         <div className='bg-white rounded-md py-2' >
-                            <div className='flex justify-between items-center p-4' >
-                                <div>
-                                    Payments comming soon !
-                                </div>
-                                <div>
-                                    {/* <button onClick={handleOpenModal} className='bg-red-500 text-white font-bold rounded-lg py-2 px-3' >
-                                        Add Item
-                                    </button> */}
+                            <div className='bg-white rounded-md py-2' >
+                                <button className='bg-red-500 text-white font-bold rounded-lg py-2 px-3 mx-4' >
+                                    Daily transaction for mobile
+                                </button>
+                                <div className='flex justify-between items-center p-4' >
+
+                                    <div className='flex  filter-section  ' >
+                                        <div className='flex flex-col' >
+                                            <span className='py-2' >Filter by date :</span>
+                                            <DatePicker.RangePicker onChange={handleDateRangeChange} defaultValue={[dayjs(defaultStartDate), dayjs(defaultEndDate)]}
+                                                format="YYYY-MM-DD" />
+                                        </div>
+                                        <div className='flex flex-col' >
+                                            <span className='py-2' >Filter by Items :</span>
+                                            <Select
+                                                showSearch
+                                                placeholder="Select an items"
+                                                optionFilterProp="children"
+                                                onChange={onItemsChange}
+                                                onSearch={onSearch}
+                                                filterOption={filterOption}
+                                                options={itemsList}
+                                            />
+                                        </div>
+                                        <div className='flex flex-col' >
+                                            <span className='py-2' >Filter by status :</span>
+                                            <Select
+                                                showSearch
+                                                placeholder="Select a status"
+                                                optionFilterProp="children"
+                                                onChange={onStatusChange}
+                                                onSearch={onSearch}
+                                                filterOption={filterOption}
+                                                options={[
+                                                    {
+                                                        value: '200',
+                                                        label: '200',
+                                                    },
+                                                    {
+                                                        value: '201',
+                                                        label: '201',
+                                                    },
+                                                    {
+                                                        value: '202',
+                                                        label: '202',
+                                                    },
+                                                    {
+                                                        value: '500',
+                                                        label: '500',
+                                                    },
+                                                ]}
+                                            />
+                                        </div>
+                                        {/* <button className='bg-red-500 text-white font-bold rounded-lg py-2 px-3 mx-4' >
+                                            Export
+                                        </button> */}
+                                        <ExcelExport excelData={boughtItemsList}  Amount={totalAmount} />
+                                    </div>
+                                    <div className='flex justify-center items-center ' >
+                                        {isLoading && <div role="status" className='flex justify-center items-center  w-full' >
+                                            <svg aria-hidden="true" class="inline w-6 h-6 mr-2 text-gray-200 animate-spin dark:text-red-600 fill-white" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
+                                                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
+                                            </svg>
+                                            <span class="sr-only">Loading...</span>
+                                        </div>}
+                                    </div>
+                                    <div>
+
+                                        {/* <Modal setOpenModal={editCategory} onChildEvent={handleChildEditCategoryEvent} Title={categoryupdate} button={btn_name}  >
+                                        <div className="flex flex-col justify-center m-12 " >
+                                            <div className='flex justify-between ' >
+                                                <label className="block  w-4/5   ">
+                                                    <span className="block text-sm font-medium text-slate-700 py-2">Category Name </span>
+                                                    <input type="text" className="border-gray-300 " placeholder='Category Name ' value={categoryName} onChange={handlecategoryName} />
+                                                   
+                                                </label>
+                                            </div>
+                                            <div className='flex justify-between my-3' >
+                                                <button className='bg-red-500 text-white px-10 py-1 rounded-md cursor-pointer' onClick={handleUpdateCategory} >Update</button>
+                                            </div>
+                                        </div>
+                                    </Modal>
+                                    <Modal setOpenModal={category} onChildEvent={handleChildCatgeoryEvent} Title={categoryTitle} button={btn_name}  >
+                                        <div className="flex flex-col justify-center m-12 " >
+                                            <div className='flex justify-between ' >
+                                                <label className="block  w-4/5   ">
+                                                    <span className="block text-sm font-medium text-slate-700 py-2">Category Name </span>
+                                                    <input type="text" className="border-gray-300 " placeholder='Category Name ' value={categoryName} onChange={handlecategoryName} />
+                                                    
+                                                </label>
+                                            </div>
+                                            <div className='flex justify-between my-3' >
+                                                <button className='bg-red-500 text-white px-10 py-1 rounded-md cursor-pointer' onClick={handleCreateCategory} >Create</button>
+                                            </div>
+                                        </div>
+                                    </Modal> */}
+                                    </div>
 
                                 </div>
+                                <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 rounded-md ">
+                                    <thead className="text-xs text-gray-700 uppercase dark:text-gray-400 border-b dark:bg-gray-100">
+                                        <tr>
+                                            <th scope="col" className="px-6 py-3">
+                                                Internal Txn Id
+                                            </th>
+                                            <th scope="col" className="px-6 py-3">
+                                                name
+                                            </th>
+                                            <th scope="col" className="px-6 py-3">
+                                                price
+                                            </th>
+                                            <th scope="col" className="px-6 py-3">
+                                                number/unit
+                                            </th>
+                                            <th scope="col" className="px-6 py-3">
+                                                amount
+                                            </th>
+                                            <th scope="col" className="px-6 py-3">
+                                                Done_at
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
 
+                                        {boughtItemsList.length && (boughtItemsList.map((item, index) => (
+                                            <tr className="bg-white border-b dark:hover:bg-gray-300 dark:hover:text-black" key={index} >
+                                                <td className="w-4 p-4">
+                                                    {item.dailyTransactionForMobile.internalTxnId}
+                                                </td>
+                                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
+                                                    {item.item.name}
+                                                </th>
+                                                <td className="px-6 py-4">
+                                                    {item.item.price}
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    {item.number}
+                                                </td>
+                                                <td className='px-6 py-4 flex justify-between' >
+                                                    {item.item ? item.item.price * item.number : 'N/A'}
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    {item.dailyTransactionForMobile ? moment(item.dailyTransactionForMobile.createdAt).format('MMM Do YYYY, h:mm:ss a') : 'N/A'}
+                                                </td>
+                                            </tr>
+                                        )))
+                                        }
+                                        {boughtItemsList.length && (<tr className="bg-white border-b dark:hover:bg-gray-300 dark:hover:text-black"  >
+                                            <td className="w-4 p-4">
+                                            </td>
+                                            <td className="w-4 p-4">
+                                            </td>
+                                            <td className="w-4 p-4">
+                                            </td>
+                                            <td className="w-4 p-4 total-unit">
+                                                Total unit : <strong className='total-unit font-semibold text-black' >{total}</strong>
+                                            </td>
+                                            <td className="w-4 p-4 total-unit ">
+                                                Total amount : <strong className='total-unit font-semibold text-black' >{totalAmount}</strong>RWF
+                                            </td>
+                                            <td className="w-4 p-4">
+                                            </td>
+                                        </tr>)}
+                                    </tbody>
+                                </table>
                             </div>
-                            {/* <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 rounded-md ">
-                                <thead className="text-xs text-gray-700 uppercase dark:text-gray-400 border-b dark:bg-gray-100">
-                                    <tr>
-                                        <th scope="col" className="px-6 py-3">
-                                            #
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            name
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            category
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            price/unit
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            unit
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            status
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            actions
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr className="bg-white border-b dark:hover:bg-gray-300 dark:hover:text-black"  >
-                                        <td className="w-4 p-4">
-                                            120v
-                                        </td>
-                                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
-                                            green vegetable
-                                        </th>
-                                        <td className="px-6 py-4">
-                                            vegetable
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            1000FRW
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            1 bunch
-                                        </td>
-
-                                        <td className="px-6 py-4">
-                                            available
-                                        </td>
-
-                                        <td className='px-6 py-4 flex justify-between' >
-                                            <FontAwesomeIcon icon={faEdit} size="1x" className='cursor-pointer ' />
-                                            <FontAwesomeIcon icon={faTrash} size="1x" className='cursor-pointer text-red-500 ' />
-                                        </td>
-                                    </tr>
-                                    <tr className="bg-white border-b dark:hover:bg-gray-300 dark:hover:text-black"  >
-                                        <td className="w-4 p-4">
-                                            120v
-                                        </td>
-                                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
-                                            green vegetable
-                                        </th>
-                                        <td className="px-6 py-4">
-                                            vegetable
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            1000FRW
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            1 bunch
-                                        </td>
-
-                                        <td className="px-6 py-4">
-                                            available
-                                        </td>
-
-                                        <td className='px-6 py-4 flex justify-between' >
-                                            <FontAwesomeIcon icon={faEdit} size="1x" className='cursor-pointer ' />
-                                            <FontAwesomeIcon icon={faTrash} size="1x" className='cursor-pointer text-red-500 ' />
-                                        </td>
-                                    </tr>
-                                    <tr className="bg-white border-b dark:hover:bg-gray-300 dark:hover:text-black"  >
-                                        <td className="w-4 p-4">
-                                            120v
-                                        </td>
-                                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
-                                            green vegetable
-                                        </th>
-                                        <td className="px-6 py-4">
-                                            vegetable
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            1000FRW
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            1 bunch
-                                        </td>
-
-                                        <td className="px-6 py-4">
-                                            available
-                                        </td>
-
-                                        <td className='px-6 py-4 flex justify-between' >
-                                            <FontAwesomeIcon icon={faEdit} size="1x" className='cursor-pointer ' />
-                                            <FontAwesomeIcon icon={faTrash} size="1x" className='cursor-pointer text-red-500 ' />
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table> */}
+                        </div>
+                        <div className='flex justify-end my-1' >
+                            <Pagination defaultCurrent={10} total={paginatedBoughtItemsList.totalCount} onChange={handlePageboughtItemsChange} className="border p-3 rounded-lg bg-white" />
                         </div>
                     </div>
                 </div>
@@ -1278,10 +1381,12 @@ const ParkPick = () => {
 
             <footer class="bg-white  footer   ">
                 <div class=" flex flex-wrap items-center justify-between px-4 py-2">
-                    <a href="#" class="flex items-center">
+
+                    <div className='flex' >
                         <img class=" w-16   h-16 rounded-full object-cover" src={groupeya} alt="user photo" />
                         <strong className="font-medium text-gray-800 pt-7 text-sm ">Powered by Groupeya </strong>
-                    </a>
+                    </div>
+
                     <div class="flex items-center  bg-white  ">
                         <div class="relative flex">
                             <Link to='#' className='cursor-pointer  social-media'><FontAwesomeIcon icon={faTwitter} color="#1DA1F2" /></Link>

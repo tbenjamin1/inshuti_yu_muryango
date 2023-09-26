@@ -27,6 +27,7 @@ function Electricity() {
             setSelectedRange(formattedDates);
         }
     };
+    
     const transactionList = useSelector(getAllTransaction);
     const searchInTransactions = (searchQuery) => {
         let search = searchQuery.toLowerCase();

@@ -86,7 +86,7 @@ font-size: 10px;
 
 .myTabContent {
   padding-top: 100px;
-  height:100vh;
+  height: 100vh;
 }
 
 .my_TabContent {
@@ -178,21 +178,26 @@ textarea {
   .my_TabContent {
     overflow: auto;
   }
-  thead tr th{
+
+  thead tr th {
     font-size: 12px;
   }
-  tbody tr td{
+
+  tbody tr td {
     font-size: 18px;
     padding: 19px 4px !important;
   }
-  tbody tr th{
+
+  tbody tr th {
     font-size: 18px;
     padding: 19px 4px !important;
   }
-  .my_TabContent{
+
+  .my_TabContent {
     padding: 0px;
     font-size: 18px;
   }
+
   .nav-tab-items {
     display: flex;
     justify-content: space-between;
@@ -202,17 +207,16 @@ textarea {
     margin: 0px;
 
   }
+
   .nav-tab-items button {
-padding: 0px;
+    padding: 0px;
   }
 }
-
 /* mine css */
 .login-screen {
   height: 100vh;
   background-color: #E5E5E5;
 }
-
 .login-page {
   border-radius: 10px;
   position: relative;
@@ -220,15 +224,20 @@ padding: 0px;
 }
 
 .sidebar__menu h2 {
-
   padding: 10px 10px !important;
-
 }
-
+.filter-section {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.total-unit{
+  font-size: 12px;
+}
 @media screen and (max-width: 768) {
   .fom-btn {
     font-size: 9px;
-
   }
 }
 
@@ -236,21 +245,26 @@ padding: 0px;
   .my_TabContent {
     overflow: auto;
   }
-  thead tr th{
+
+  thead tr th {
     font-size: 9px;
   }
-  tbody tr td{
-    font-size: 9px;
-    padding: 5px 4px !important;
-  }
-  tbody tr th{
+
+  tbody tr td {
     font-size: 9px;
     padding: 5px 4px !important;
   }
-  .my_TabContent{
+
+  tbody tr th {
+    font-size: 9px;
+    padding: 5px 4px !important;
+  }
+
+  .my_TabContent {
     padding: 0px;
     font-size: 10px;
   }
+
   .nav-tab-items {
     display: flex;
     justify-content: space-between;
@@ -260,26 +274,32 @@ padding: 0px;
     margin: 0px;
 
   }
+
   .nav-tab-items button {
-padding: 0px;
+    padding: 0px;
   }
+
   .referee_height {
     height: 86vh !important;
 
   }
-  .fom-btn-container{
+
+  .fom-btn-container {
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 0px 0px 0px 20px;
   }
+
   .fom-btn {
     font-size: 9px;
 
   }
-  .logo_height img{
+
+  .logo_height img {
     height: 100%;
   }
+
   .login-sub-title {
     padding: 0px;
     margin: 0px;
@@ -327,7 +347,7 @@ padding: 0px;
   }
 
   .referal-content {
-    font-size: 13px;
+    font-size: 11px;
   }
 
   .Referral-title {

@@ -4,14 +4,13 @@ import React, { useState, useEffect } from 'react'
 import employee from "../../images/employee-referrals.png"
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash ,faBackward} from '@fortawesome/free-solid-svg-icons';
+import {faBackward} from '@fortawesome/free-solid-svg-icons';
 import { useToasts } from 'react-toast-notifications';
 import axios from 'axios';
 
 function RegisterEntity() {
     const { addToast } = useToasts();
     const [phoneNumber, setphoneNumber] = useState('');
-    const [error, setError] = useState('');
     const [isRegistered, setIsregistered] = useState(false);
     const [entityName, setEntityName] = useState('');
     const [loading, setLoading] = useState(false);
@@ -134,12 +133,12 @@ function RegisterEntity() {
                     <span className='flex flex-col  ' >
                         <img src={employee} className="App-logo" alt="logo" />
                         <span className=' referee-emoji' role="img" aria-label="partying-face">🥳</span>
-                        <span className='my-3 ml-4 font-serif referal-content' >Refer, Earn, and Give Back with Koipay! Invite your friends to join Koipay and earn cash back every time they use our platform. Support charities close to your heart by donating your cash back rewards</span>
+                        <span className='my-3 ml-4 font-serif referal-content' >Empower your cause like never before by joining our platform. Unlock the potential of cashback rewards as a source of generous donations from our network and supporters passionate about your mission. <strong>Why Register with Us?</strong>Expand  Your Reach: Connect with individuals who genuinely care about your cause.Receive Direct Support: Tap into a unique source of funding from cashback rewards !</span>
                     </span>
                 </div>
                 <div className='flex flex-col w-1/2 justify-center items-center bg-white py-4 referee-form '>
                     <span className='Referral-title flex flex-col    font-serif   '>
-                        <span className='pl-2'>Join Koipay's Referral Program and Multiply Your Rewards!</span>
+                        <span className='pl-2'>Register Your Charity and Fuel Your Mission!</span>
                        
                     </span>
                     <span className='login-sub-title p-2' ></span>

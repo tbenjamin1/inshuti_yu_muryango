@@ -46,7 +46,7 @@ const ParkPick = () => {
     const filterOption = (input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
 
 
-    const [activeTab, setActiveTab] = useState('item');
+    const [activeTab, setActiveTab] = useState('payments');
     const [open, setOpen] = useState(false);
     const [pageboughtItems, setPageboughtItems] = useState(1);
     const [category, setcategoryOpen] = useState(false);
@@ -1325,6 +1325,9 @@ const ParkPick = () => {
                                                 amount
                                             </th>
                                             <th scope="col" className="px-6 py-3">
+                                                status
+                                            </th>
+                                            <th scope="col" className="px-6 py-3">
                                                 Done_at
                                             </th>
                                         </tr>
@@ -1343,10 +1346,13 @@ const ParkPick = () => {
                                                     {item.item.price}
                                                 </td>
                                                 <td className="px-6 py-4">
-                                                    {item.number}
+                                                    {item.number} /{item.unit}
                                                 </td>
                                                 <td className='px-6 py-4 flex justify-between' >
                                                     {item.item ? item.item.price * item.number : 'N/A'}
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                {item.dailyTransactionForMobile? item.dailyTransactionForMobile.status:'N/A'}
                                                 </td>
                                                 <td className="px-6 py-4">
                                                     {item.dailyTransactionForMobile ? moment(item.dailyTransactionForMobile.createdAt).format('MMM Do YYYY, h:mm:ss a') : 'N/A'}
@@ -1366,6 +1372,8 @@ const ParkPick = () => {
                                             </td>
                                             <td className="w-4 p-4 total-unit ">
                                                 Total amount : <strong className='total-unit font-semibold text-black' >{totalAmount}</strong>RWF
+                                            </td>
+                                            <td className="w-4 p-4">
                                             </td>
                                             <td className="w-4 p-4">
                                             </td>

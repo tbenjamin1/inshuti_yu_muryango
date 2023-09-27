@@ -175,7 +175,10 @@ textarea {
 thead tr th {
   font-size: 12px;
 }
-
+.spinner-w{
+  width: 100%;
+  position: absolute;
+}
 tbody tr td {
   font-size: 12px;
   padding: 19px 4px !important;
@@ -185,7 +188,21 @@ tbody tr th {
   font-size: 12px;
   padding: 19px 4px !important;
 }
-
+.FAILED{
+  
+}
+.PENDING{
+  
+}
+.SUCCESS{
+  color: #1BA97F;
+}
+.CREATED{
+  
+}
+.PENDING{
+  
+}
 @media only screen and (max-width: 820px) {
   .my_TabContent {
     overflow: auto;

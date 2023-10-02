@@ -1352,6 +1352,9 @@ const ParkPick = () => {
                                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 rounded-md ">
                                     <thead className="text-xs text-gray-700 uppercase dark:text-gray-400 border-b dark:bg-gray-100">
                                         <tr>
+                                        <th scope="col" className="px-6 py-3">
+                                                #
+                                            </th>
                                             <th scope="col" className="px-6 py-3">
                                                 Internal Txn Id
                                             </th>
@@ -1388,6 +1391,9 @@ const ParkPick = () => {
 
                                         {boughtItemsList.length ? (boughtItemsList.map((item, index) => (
                                             <tr className="bg-white border-b dark:hover:bg-gray-300 dark:hover:text-black" key={index} >
+                                                 <td className="w-4 p-4">
+                                                    {index+1}
+                                                </td>
                                                 <td className="w-4 p-4">
                                                     {item.dailyTransactionForMobile.internalTxnId}
                                                 </td>
@@ -1419,6 +1425,8 @@ const ParkPick = () => {
                                         </div>)
                                         }
                                         {boughtItemsList.length && (<tr className="bg-white border-b dark:hover:bg-gray-300 dark:hover:text-black"  >
+                                            <td className="w-4 p-4">
+                                            </td>
                                             <td className="w-4 p-4">
                                             </td>
                                             <td className="w-4 p-4">

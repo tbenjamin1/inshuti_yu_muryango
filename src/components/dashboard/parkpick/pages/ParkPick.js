@@ -14,7 +14,7 @@ import { DatePicker, Select } from 'antd';
 import { Pagination } from 'antd';
 import { useToasts } from 'react-toast-notifications';
 import { fetchAsynBoughtItems, fetchAsynItems, fetchAsynNonPaginatedItems, fetchAsynParkCatgories, fetchAsynParkUnit, getAllNonPaginatedItems, getAllparkCategories, getAllparkPickBoughtItemsList, getAllparkPickItemsList, getAllparkPickPaginatedBoughtItemsList, getAllparkPickPaginatedItems, getAllparkUnitList, getUser } from '../../../../redux/transactions/TransactionSlice';
-import ExcelExport   from './ExcelExport';
+import ExcelExport from './ExcelExport';
 
 const ParkPick = () => {
     const user = useSelector(getUser);
@@ -25,6 +25,46 @@ const ParkPick = () => {
     const [selectedRange, setSelectedRange] = useState([defaultStartDate, defaultEndDate]);
     const [filterItem, setfilterItem] = useState('');
     const [filterStatus, setfilterStatus] = useState('');
+    const [isThisMonth, setIsThisMonth] = useState(true);
+
+    // week days
+    const [firstDayOfWeek, SetweekFirstDay] = useState('');
+    const [lastDayOfWeek, SetweekLastDay] = useState('');
+
+    // month day
+    const [firstDayOfMonth, SetweekFirstMonth] = useState('');
+    const [lastDayOfMonth, SetweekLastMonth] = useState('');
+
+
+    const getDayOfWeek = () => {
+        setIsThisMonth(false);
+        const startDate = moment().startOf('isoWeek').format('YYYY-MM-DD');
+        const endDate = moment().endOf('isoWeek').format('YYYY-MM-DD');
+        setSelectedRange([startDate, endDate]);
+        SetweekFirstDay(startDate);
+        SetweekLastDay(endDate);
+        SetweekFirstMonth('');
+        SetweekLastMonth('');
+       
+
+
+    }
+
+    const getDayOfMonth = () => {
+
+        setIsThisMonth(true);
+
+        const startDate = moment().startOf('month').format('YYYY-MM-DD');
+        const endDate = moment().endOf('month').format('YYYY-MM-DD');
+        console.log(startDate,"startDate",endDate)
+        setSelectedRange([startDate, endDate]);
+        SetweekFirstMonth(startDate);
+        SetweekLastMonth(endDate);
+        SetweekFirstDay('');
+        SetweekLastDay('');
+       
+    }
+
 
     const handleDateRangeChange = (dates) => {
         if (dates) {
@@ -54,22 +94,23 @@ const ParkPick = () => {
     const categoriesList = useSelector(getAllparkCategories);
 
     const boughtItemsList = useSelector(getAllparkPickBoughtItemsList);
-   
+
     const nonPaginatedItemsList = useSelector(getAllNonPaginatedItems);
-    const total =boughtItemsList ? boughtItemsList.reduce((accumulator, item) => {
+
+    const total = boughtItemsList ? boughtItemsList.reduce((accumulator, item) => {
         // Assuming that item.number is a number you want to sum
         return accumulator + item.number;
-    }, 0):[];
+    }, 0) : [];
     // Map through the items and calculate the amount for each item
     let totalAmount = 0;
-    const items =boughtItemsList? boughtItemsList.map((item, index) => {
+    const items = boughtItemsList ? boughtItemsList.map((item, index) => {
         const amount = item.item.price * item.number;
         totalAmount += amount;
-    }):[];
+    }) : [];
 
 
     const paginatedBoughtItemsList = useSelector(getAllparkPickPaginatedBoughtItemsList)
-    
+
     const unitList = useSelector(getAllparkUnitList)
     const itemsList = useSelector(getAllparkPickItemsList)
     const [currentPage, setCurrentPage] = useState(1);
@@ -587,7 +628,11 @@ const ParkPick = () => {
 
     }
     useEffect(() => {
-        dispatch(fetchAsynBoughtItems({ pageboughtItems, filterStatus, filterItem, selectedRange }))
+        if(selectedRange.length){
+            dispatch(fetchAsynBoughtItems({ pageboughtItems, filterStatus, filterItem, selectedRange }))
+        }
+        
+        console.log("selectedRange",selectedRange)
     }, [dispatch, pageboughtItems, filterStatus, filterItem, selectedRange]);
 
     useEffect(() => {
@@ -1216,11 +1261,20 @@ const ParkPick = () => {
                                     <div className='flex  filter-section  ' >
                                         <div className='flex flex-col' >
                                             <span className='py-2' >Filter by date :</span>
-                                            <DatePicker.RangePicker onChange={handleDateRangeChange} defaultValue={[dayjs(defaultStartDate), dayjs(defaultEndDate)]}
-                                                format="YYYY-MM-DD" />
+                                            <div className='flex' >
+                                                <DatePicker.RangePicker onChange={handleDateRangeChange} defaultValue={[dayjs(defaultStartDate), dayjs(defaultEndDate)]}
+                                                    format="YYYY-MM-DD" />
+                                                <div onClick={getDayOfMonth} className={isThisMonth ? 'mx-1 border px-3 py-1 rounded-lg active_filter' : 'mx-1 border px-3 py-1 rounded-lg'}  >
+                                                    this month
+                                                </div>
+                                                <div onClick={getDayOfWeek} className={firstDayOfWeek ? 'ml-1 mr-2 border px-3 py-1 rounded-lg active_filter' : 'ml-1 mr-2 border px-3 py-1 rounded-lg'}  >
+                                                    this week
+                                                </div>
+                                            </div>
                                         </div>
                                         <div className='flex flex-col' >
                                             <span className='py-2' >Filter by Item :</span>
+
                                             <Select
                                                 showSearch
                                                 placeholder="Select an items"
@@ -1263,9 +1317,9 @@ const ParkPick = () => {
                                         {/* <button className='bg-red-500 text-white font-bold rounded-lg py-2 px-3 mx-4' >
                                             Export
                                         </button> */}
-                                        <ExcelExport excelData={boughtItemsList}  Amount={totalAmount} />
+                                        <ExcelExport excelData={boughtItemsList} Amount={totalAmount} />
                                     </div>
-                                  
+
                                     <div>
 
                                         {/* <Modal setOpenModal={editCategory} onChildEvent={handleChildEditCategoryEvent} Title={categoryupdate} button={btn_name}  >
@@ -1354,19 +1408,19 @@ const ParkPick = () => {
                                                     {item.item ? item.item.price * item.number : 'N/A'}
                                                 </td>
                                                 <td className="px-6 py-4">
-                                               {item.dailyTransactionForMobile.statusDesc==='FAILED' && <span className='FAILED' > FAILED</span> } <span></span>
-                                               {item.dailyTransactionForMobile.statusDesc==='PENDING' && <span className='PENDING' > PENDING</span>} <span></span>
-                                               {item.dailyTransactionForMobile.statusDesc==='SUCCESS' && <span className='SUCCESS' > SUCCESS</span>} <span></span>
-                                               {item.dailyTransactionForMobile.statusDesc==='CREATED' && <span className='CREATED' > CREATED</span>} <span></span>
-                                               {item.dailyTransactionForMobile.statusDesc==='PENDING' && <span className='PENDING' > PENDING</span>} <span></span>
+                                                    {item.dailyTransactionForMobile.statusDesc === 'FAILED' && <span className='FAILED' > FAILED</span>} <span></span>
+                                                    {item.dailyTransactionForMobile.statusDesc === 'PENDING' && <span className='PENDING' > PENDING</span>} <span></span>
+                                                    {item.dailyTransactionForMobile.statusDesc === 'SUCCESS' && <span className='SUCCESS' > SUCCESS</span>} <span></span>
+                                                    {item.dailyTransactionForMobile.statusDesc === 'CREATED' && <span className='CREATED' > CREATED</span>} <span></span>
+                                                    {item.dailyTransactionForMobile.statusDesc === 'PENDING' && <span className='PENDING' > PENDING</span>} <span></span>
                                                 </td>
                                                 <td className="px-6 py-4">
                                                     {item.dailyTransactionForMobile ? moment(item.dailyTransactionForMobile.createdAt).format('MMM Do YYYY, h:mm:ss a') : 'N/A'}
                                                 </td>
                                             </tr>
-                                        ))):( <div>
+                                        ))) : (<div>
                                             no items available
-                                        </div> )
+                                        </div>)
                                         }
                                         {boughtItemsList.length && (<tr className="bg-white border-b dark:hover:bg-gray-300 dark:hover:text-black"  >
                                             <td className="w-4 p-4">

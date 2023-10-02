@@ -39,7 +39,8 @@ export const fetchAsynItems= createAsyncThunk('tranx/fetchAsynItems', async (cur
     return response.data;
 })
 export const fetchAsynNonPaginatedItems= createAsyncThunk('tranx/NonPaginatedItems', async () => {
-    const response = await axios.get(`https://apidev.koipay.co/api/v1/park-pick/items/get-items`)
+    const response = await axios.get(`https://api.koipay.co/api/v1/park-pick/items/get-items`)
+
     return response.data;
 })
 export const fetchAsynBoughtItems= createAsyncThunk('tranx/fetchAsynBoughtItems', async ({pageboughtItems,selectedRange,filterStatus,filterItem}) => {

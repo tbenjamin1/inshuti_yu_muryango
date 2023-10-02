@@ -51,12 +51,9 @@ const ParkPick = () => {
     }
 
     const getDayOfMonth = () => {
-
         setIsThisMonth(true);
-
         const startDate = moment().startOf('month').format('YYYY-MM-DD');
         const endDate = moment().endOf('month').format('YYYY-MM-DD');
-        console.log(startDate,"startDate",endDate)
         setSelectedRange([startDate, endDate]);
         SetweekFirstMonth(startDate);
         SetweekLastMonth(endDate);
@@ -79,7 +76,6 @@ const ParkPick = () => {
         setfilterItem(value)
     };
     const onSearch = (value) => {
-        console.log('search:', value);
     };
 
     // Filter `option.label` match the user type `input`
@@ -1264,10 +1260,10 @@ const ParkPick = () => {
                                             <div className='flex' >
                                                 <DatePicker.RangePicker onChange={handleDateRangeChange} defaultValue={[dayjs(defaultStartDate), dayjs(defaultEndDate)]}
                                                     format="YYYY-MM-DD" />
-                                                <div onClick={getDayOfMonth} className={isThisMonth ? 'mx-1 border px-3 py-1 rounded-lg active_filter' : 'mx-1 border px-3 py-1 rounded-lg'}  >
+                                                <div onClick={getDayOfMonth} className={isThisMonth ? 'mx-1 border px-3 py-1 rounded-lg active_filter cursor-pointer' : 'mx-1 border px-3 py-1 rounded-lg cursor-pointer'}  >
                                                     this month
                                                 </div>
-                                                <div onClick={getDayOfWeek} className={firstDayOfWeek ? 'ml-1 mr-2 border px-3 py-1 rounded-lg active_filter' : 'ml-1 mr-2 border px-3 py-1 rounded-lg'}  >
+                                                <div onClick={getDayOfWeek} className={firstDayOfWeek ? 'ml-1 mr-2 border px-3 py-1 rounded-lg active_filter cursor-pointer' : 'ml-1 mr-2 border px-3 py-1 rounded-lg cursor-pointer'}  >
                                                     this week
                                                 </div>
                                             </div>

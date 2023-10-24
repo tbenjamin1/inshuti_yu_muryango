@@ -92,6 +92,7 @@ const ParkPick = () => {
     const boughtItemsList = useSelector(getAllparkPickBoughtItemsList);
 
     const nonPaginatedItemsList = useSelector(getAllNonPaginatedItems);
+   
 
     const total = boughtItemsList ? boughtItemsList.reduce((accumulator, item) => {
         // Assuming that item.number is a number you want to sum
@@ -1111,8 +1112,6 @@ const ParkPick = () => {
                                                 <FontAwesomeIcon icon={faTrash} size="1x" className='cursor-pointer text-red-500 ' onClick={() => handleDeleteItem(item)} />
                                             </td>
                                         </tr>
-
-
                                     )))
                                     }
                                 </tbody>
@@ -1197,9 +1196,6 @@ const ParkPick = () => {
                                         <th scope="col" className="px-6 py-3">
                                             updated_at
                                         </th>
-                                        {/* <th scope="col" className="px-6 py-3">
-                                            deleted_at
-                                        </th> */}
                                         <th scope="col" className="px-6 py-3">
                                             actions
                                         </th>
@@ -1220,11 +1216,6 @@ const ParkPick = () => {
                                             <td className="px-6 py-4">
                                                 {moment(item.updatedAt).format('LLLL')}
                                             </td>
-
-                                            {/* <td className="px-6 py-4">
-                                                {item.deletedAt ? item.deletedAt : "N/A"}
-                                            </td> */}
-
                                             <td className='px-6 py-4 flex justify-between' >
                                                 <FontAwesomeIcon icon={faEdit} size="1x" className='cursor-pointer ' onClick={() => handleEditUnit(item)} />
                                                 <FontAwesomeIcon icon={faTrash} size="1x" className='cursor-pointer text-red-500 ' onClick={() => handleDeleteUnit(item)} />
@@ -1269,9 +1260,10 @@ const ParkPick = () => {
                                             </div>
                                         </div>
                                         <div className='flex flex-col' >
-                                            <span className='py-2' >Filter by Item :</span>
+                                            <span className='py-2' >Filter by category:</span>
 
                                             <Select
+
                                                 showSearch
                                                 placeholder="Select an items"
                                                 optionFilterProp="children"
@@ -1279,17 +1271,21 @@ const ParkPick = () => {
                                                 onSearch={onSearch}
                                                 filterOption={filterOption}
                                                 options={nonPaginatedItemsList}
+
                                             />
+
                                         </div>
                                         <div className='flex flex-col' >
                                             <span className='py-2' >Filter by status :</span>
                                             <Select
+
                                                 showSearch
                                                 placeholder="Select a status"
                                                 optionFilterProp="children"
                                                 onChange={onStatusChange}
                                                 onSearch={onSearch}
                                                 filterOption={filterOption}
+
                                                 options={[
                                                     {
                                                         value: '200',
@@ -1310,9 +1306,7 @@ const ParkPick = () => {
                                                 ]}
                                             />
                                         </div>
-                                        {/* <button className='bg-red-500 text-white font-bold rounded-lg py-2 px-3 mx-4' >
-                                            Export
-                                        </button> */}
+                                       
                                         <ExcelExport excelData={boughtItemsList} Amount={totalAmount} />
                                     </div>
 
@@ -1407,7 +1401,7 @@ const ParkPick = () => {
                                                     {item.number} / {item.unit}
                                                 </td>
                                                 <td className='px-6 py-4 flex justify-between' >
-                                                    {item.item ? item.item.price * item.number : 'N/A'}
+                                                    {item.item ? item.item.price * item.number : 'N/A'} RWF
                                                 </td>
                                                 <td className="px-6 py-4">
                                                     {item.dailyTransactionForMobile.statusDesc === 'FAILED' && <span className='FAILED' > FAILED</span>} <span></span>

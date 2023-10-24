@@ -20,11 +20,12 @@ function Login() {
         setPasswordValue(event.target.value);
     };
     
+    
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoading(true)
         try {
-            const response = await axios.post('https://apidev.koipay.co/api/v1/auth/signin', { email, password }, {
+            const response = await axios.post('https://api.koipay.co/api/v1/auth/signin', { email, password }, {
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                 }
@@ -39,7 +40,7 @@ function Login() {
             }else{
                  window.location.replace('/statistics');
             }
-            // window.location.replace('/park-pick');
+            window.location.replace('/park-pick');
             setLoading(false);
             //  redirecting the user to the desired page
         } catch (error) {

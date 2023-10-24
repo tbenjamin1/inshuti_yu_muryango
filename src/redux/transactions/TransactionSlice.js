@@ -40,7 +40,7 @@ export const fetchAsynItems= createAsyncThunk('tranx/fetchAsynItems', async (cur
 })
 export const fetchAsynNonPaginatedItems= createAsyncThunk('tranx/NonPaginatedItems', async () => {
     const response = await axios.get(`https://api.koipay.co/api/v1/park-pick/items/get-items`)
-
+    console.log("nonPaginatedItemsList",response.data.categories)
     return response.data;
 })
 export const fetchAsynBoughtItems= createAsyncThunk('tranx/fetchAsynBoughtItems', async ({pageboughtItems,selectedRange,filterStatus,filterItem}) => {
@@ -49,12 +49,29 @@ export const fetchAsynBoughtItems= createAsyncThunk('tranx/fetchAsynBoughtItems'
 })
 const savedUser = localStorage.getItem('user');
 
+// Import necessary dependencies
+
+// const savedUser = localStorage.getItem('user');
+
+// Function to check if the token is expired
+// const isTokenExpired = (user) => {
+//   const currentTime = new Date().getTime();
+//   return user && user.expiresAt && currentTime >= user.expiresAt;
+// };
+// isLoggedIn: savedUser ? !isTokenExpired(savedUser) : false,
+//   user: savedUser && !isTokenExpired(savedUser) ? JSON.parse(savedUser) : null,
+
 
 const initialState = {
+
+    
     isLoading: false,
+
+
     transactionsList: [],
     mtnTransationList: [],
     airtelTransationList: [],
+
 
     startimesTransationList: [],
     clientList: [],
@@ -69,8 +86,11 @@ const initialState = {
     paginatedBoughtItemsList: [],
     parkPicktItemsList: [],
     parkPicktpaginatedItems: [],
+
+
     isLoggedIn: savedUser ? true : false,
     user: savedUser ? JSON.parse(savedUser) : null,
+
 };
 
 
@@ -129,7 +149,8 @@ const transactionsSlice = createSlice({
        
         
         [fetchAsynNonPaginatedItems.fulfilled]: (state, { payload }) => {
-            return { ...state, isLoading: false, nonPaginatedItemsList: payload.items
+            return { ...state, isLoading: false, nonPaginatedItemsList: payload.categories
+
             };
         },
         [fetchAsynBoughtItems.fulfilled]: (state, { payload }) => {
@@ -215,6 +236,9 @@ export const getAllClientsList = (state) => state.transactions.clientList;
 export const getAllRefree = (state) => state.transactions.refereeList;
 export const getAllstartimesTransaction = (state) => state.transactions.startimesTransationList;
 export const getUser = (state) => state.transactions.user;
+
+export const loggedInStatus = (state) => state.transactions.isLoggedIn;
+
 export const getAllparkCategories = (state) => state.transactions.parkCategories;
 export const getAllparkUnitList = (state) => state.transactions.parkUnitList;
 

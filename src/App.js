@@ -6,7 +6,7 @@ import Reset from "./components/auth/Reset"
 import DashboardLayout from "./components/dashboard/DashboardLayout"
 import Statistics from "./components/dashboard/pages/Statistics"
 import FuelEssance from "./components/dashboard/pages/FuelEssance"
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes ,Navigate} from "react-router-dom";
 import { ToastProvider } from 'react-toast-notifications';
 import Electricity from './components/dashboard/pages/Electricity';
 import MtnTransactions from './components/dashboard/pages/MtnTransactions';
@@ -15,29 +15,69 @@ import Startimes from './components/dashboard/pages/Startimes';
 import RefereePage from './components/dashboard/pages/RefereePage';
 import ParkPick from './components/dashboard/parkpick/pages/ParkPick';
 import RegisterEntity from './components/dashboard/pages/RegisterEntity';
+import { useDispatch, useSelector } from "react-redux"
+import { loggedInStatus } from './redux/transactions/TransactionSlice';
 
 function App() {
+  
+  const loginStatus = useSelector(loggedInStatus);
+  console.log("loginStatus",loginStatus)
+  
   return (
     <ToastProvider>
     <div>
       <Router>
       <div className=" justify-center  ">
+
         <Routes>
           <Route exact path="/" element={<Login />}/>
           <Route  path="/reset" element={<Reset/>}/>
           <Route  path="/sign-up" element={<Signup/>}/>
-          <Route  path="/dashboard-home/*" element={<DashboardLayout/>}/>
-          <Route  path="/statistics" element={<Statistics/>}/>
-          <Route  path="/fuelEssance" element={<FuelEssance/>}/>
-          <Route  path="/electricity" element={<Electricity />}/>
-          <Route  path="/mtnTransactions" element={<MtnTransactions />}/>
-          <Route  path="/airtelTransaction" element={<AirtelTransaction />}/>
-          <Route  path="/startimes" element={<Startimes />}/>
-          <Route  path="/referee-page" element={<RefereePage />}/>
-          <Route  path="/park-pick" element={<ParkPick />}/>
-          <Route  path="/register-entity" element={<RegisterEntity />}/>
-          
+
+          <Route
+                path="/dashboard-home/*"
+                element={loginStatus ? <DashboardLayout /> : <Navigate to="/" />}
+              />
+              <Route
+                path="/statistics"
+                element={loginStatus ? <Statistics /> : <Navigate to="/" />}
+              />
+              <Route
+                path="/fuelEssance"
+                element={loginStatus ? <FuelEssance /> : <Navigate to="/" />}
+              />
+              <Route
+                path="/electricity"
+                element={loginStatus ? <Electricity /> : <Navigate to="/" />}
+              />
+              <Route
+                path="/mtnTransactions"
+                element={loginStatus ? <MtnTransactions /> : <Navigate to="/" />}
+              />
+              <Route
+                path="/airtelTransaction"
+                element={loginStatus ? <AirtelTransaction /> : <Navigate to="/" />}
+              />
+              <Route
+                path="/startimes"
+                element={loginStatus ? <Startimes /> : <Navigate to="/" />}
+              />
+              <Route
+                path="/referee-page"
+                element={loginStatus ? <RefereePage /> : <Navigate to="/" />}
+              />
+              <Route
+                path="/park-pick"
+                element={loginStatus ? <ParkPick /> : <Navigate to="/" />}
+              />
+              <Route
+                path="/register-entity"
+                element={loginStatus ? <RegisterEntity /> : <Navigate to="/" />}
+              />
+
         </Routes>
+
+
       </div>
     </Router>
     </div>

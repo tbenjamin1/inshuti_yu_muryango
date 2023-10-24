@@ -40,7 +40,6 @@ export const fetchAsynItems= createAsyncThunk('tranx/fetchAsynItems', async (cur
 })
 export const fetchAsynNonPaginatedItems= createAsyncThunk('tranx/NonPaginatedItems', async () => {
     const response = await axios.get(`https://api.koipay.co/api/v1/park-pick/items/get-items`)
-    console.log("nonPaginatedItemsList",response.data.categories)
     return response.data;
 })
 export const fetchAsynBoughtItems= createAsyncThunk('tranx/fetchAsynBoughtItems', async ({pageboughtItems,selectedRange,filterStatus,filterItem}) => {
@@ -149,7 +148,7 @@ const transactionsSlice = createSlice({
        
         
         [fetchAsynNonPaginatedItems.fulfilled]: (state, { payload }) => {
-            return { ...state, isLoading: false, nonPaginatedItemsList: payload.categories
+            return { ...state, isLoading: false, nonPaginatedItemsList: payload.items
 
             };
         },

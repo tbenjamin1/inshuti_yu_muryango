@@ -641,14 +641,11 @@ const ParkPick = () => {
     }, [dispatch, currentPage]);
 
     return (
-        <div className='bg-gray-100  '>
+        <div className='bg-gray-100'>
             <nav class="bg-white border-solid border-b-4 nav-bar border-red-500">
                 <div class=" flex flex-wrap items-center justify-between  px-4 py-2">
-
                     <img class=" w-16   h-16 rounded-full object-cover" src={main_logo} alt="user photo" />
-
                     <div class="flex items-center  bg-white  ">
-
                         <div className='flex flex-col mx-2' >
                             <span>{user.name} </span>
                             <div class="group flex justify-between items-center relative">
@@ -793,9 +790,7 @@ const ParkPick = () => {
                                                 <label className="block  w-4/5   ">
                                                     <span className="block text-sm font-medium text-slate-700 py-2">Category Name </span>
                                                     <input type="text" className="border-gray-300 " placeholder='Category Name ' value={categoryName} onChange={handlecategoryName} />
-                                                    {/* {production_year && <p className="  text-pink-600 text-sm">
-                                            {production_year}
-                                        </p>} */}
+                                                   
                                                 </label>
                                             </div>
                                             <div className='flex justify-between my-3' >
@@ -809,9 +804,7 @@ const ParkPick = () => {
                                                 <label className="block  w-4/5   ">
                                                     <span className="block text-sm font-medium text-slate-700 py-2">Category Name </span>
                                                     <input type="text" className="border-gray-300 " placeholder='Category Name ' value={categoryName} onChange={handlecategoryName} />
-                                                    {/* {production_year && <p className="  text-pink-600 text-sm">
-                                            {production_year}
-                                        </p>} */}
+                                                   
                                                 </label>
                                             </div>
                                             <div className='flex justify-between my-3' >
@@ -837,16 +830,12 @@ const ParkPick = () => {
                                         <th scope="col" className="px-6 py-3">
                                             updated_at
                                         </th>
-                                        {/* <th scope="col" className="px-6 py-3">
-                                            deleted_at
-                                        </th> */}
                                         <th scope="col" className="px-6 py-3">
                                             actions
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-
                                     {categoriesList.length && (categoriesList.map((item, index) => (
                                         <tr className="bg-white border-b dark:hover:bg-gray-300 dark:hover:text-black" key={index} >
                                             <td className="w-4 p-4">
@@ -866,7 +855,7 @@ const ParkPick = () => {
                                                 {item.deletedAt ? item.deletedAt : "N/A"}
                                             </td> */}
 
-                                            <td className='px-6 py-4 flex justify-between' >
+                                            <td className='px-6 p-4 flex justify-between' >
                                                 <FontAwesomeIcon icon={faEdit} size="1x" className='cursor-pointer ' onClick={() => handleEditCategory(item)} />
                                                 <FontAwesomeIcon icon={faTrash} size="1x" className='cursor-pointer text-red-500 ' onClick={() => handleDeleteCategory(item)} />
                                             </td>
@@ -1085,7 +1074,7 @@ const ParkPick = () => {
                                     {itemsList.length && (itemsList.map((item, index) => (
                                         <tr className="bg-white border-b dark:hover:bg-gray-300 dark:hover:text-black" key={index} >
                                             <td className="w-4 p-4">
-                                                {item.id}
+                                                {index+1}
                                             </td>
                                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                                 {item.name}
@@ -1107,7 +1096,7 @@ const ParkPick = () => {
                                                 {item.isPreferred === true ? "Preferred" : "Not Preferred"}
                                             </td>
 
-                                            <td className='px-6 py-4 flex justify-between' >
+                                            <td className='px-6 p-4 flex justify-between' >
                                                 <FontAwesomeIcon icon={faEdit} size="1x" className='cursor-pointer ' onClick={() => handleEditItem(item)} />
                                                 <FontAwesomeIcon icon={faTrash} size="1x" className='cursor-pointer text-red-500 ' onClick={() => handleDeleteItem(item)} />
                                             </td>
@@ -1216,7 +1205,7 @@ const ParkPick = () => {
                                             <td className="px-6 py-4">
                                                 {moment(item.updatedAt).format('LLLL')}
                                             </td>
-                                            <td className='px-6 py-4 flex justify-between' >
+                                            <td className='px-6 p-4 flex justify-between' >
                                                 <FontAwesomeIcon icon={faEdit} size="1x" className='cursor-pointer ' onClick={() => handleEditUnit(item)} />
                                                 <FontAwesomeIcon icon={faTrash} size="1x" className='cursor-pointer text-red-500 ' onClick={() => handleDeleteUnit(item)} />
                                             </td>
@@ -1265,7 +1254,7 @@ const ParkPick = () => {
                                             <Select
 
                                                 showSearch
-                                                placeholder="Select an items"
+                                                placeholder="Select category"
                                                 optionFilterProp="children"
                                                 onChange={onItemsChange}
                                                 onSearch={onSearch}
@@ -1311,35 +1300,6 @@ const ParkPick = () => {
                                     </div>
 
                                     <div>
-
-                                        {/* <Modal setOpenModal={editCategory} onChildEvent={handleChildEditCategoryEvent} Title={categoryupdate} button={btn_name}  >
-                                        <div className="flex flex-col justify-center m-12 " >
-                                            <div className='flex justify-between ' >
-                                                <label className="block  w-4/5   ">
-                                                    <span className="block text-sm font-medium text-slate-700 py-2">Category Name </span>
-                                                    <input type="text" className="border-gray-300 " placeholder='Category Name ' value={categoryName} onChange={handlecategoryName} />
-                                                   
-                                                </label>
-                                            </div>
-                                            <div className='flex justify-between my-3' >
-                                                <button className='bg-red-500 text-white px-10 py-1 rounded-md cursor-pointer' onClick={handleUpdateCategory} >Update</button>
-                                            </div>
-                                        </div>
-                                    </Modal>
-                                    <Modal setOpenModal={category} onChildEvent={handleChildCatgeoryEvent} Title={categoryTitle} button={btn_name}  >
-                                        <div className="flex flex-col justify-center m-12 " >
-                                            <div className='flex justify-between ' >
-                                                <label className="block  w-4/5   ">
-                                                    <span className="block text-sm font-medium text-slate-700 py-2">Category Name </span>
-                                                    <input type="text" className="border-gray-300 " placeholder='Category Name ' value={categoryName} onChange={handlecategoryName} />
-                                                    
-                                                </label>
-                                            </div>
-                                            <div className='flex justify-between my-3' >
-                                                <button className='bg-red-500 text-white px-10 py-1 rounded-md cursor-pointer' onClick={handleCreateCategory} >Create</button>
-                                            </div>
-                                        </div>
-                                    </Modal> */}
                                     </div>
 
                                 </div>

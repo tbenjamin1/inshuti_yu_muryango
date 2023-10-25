@@ -1105,7 +1105,7 @@ const ParkPick = () => {
 
 
                         </div>
-                        {paginatedItemsList.length>0 && <div className='flex justify-end my-1' >
+                        {itemsList.length>0 && <div className='flex justify-end my-1' >
                             <Pagination defaultCurrent={10} total={paginatedItemsList.totalCount} onChange={handlePageChange} className="border p-3 rounded-lg bg-white" />
                         </div>}
                     </div>

@@ -47,7 +47,9 @@ body {
 .text-lightblue {
   color: #469cac;
 }
-
+.unavailable-items{
+  width: 100%;
+}
 .text-red {
   color: #cc3d38;
 }

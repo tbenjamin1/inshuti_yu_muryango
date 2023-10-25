@@ -39,13 +39,13 @@ const ParkPick = () => {
     const getDayOfWeek = () => {
         setIsThisMonth(false);
         const startDate = moment().startOf('isoWeek').format('YYYY-MM-DD');
-        const endDate = moment().endOf('isoWeek').format('YYYY-MM-DD');
+        const endDate = moment().endOf('isoWeek').add(1, 'day').format('YYYY-MM-DD');
         setSelectedRange([startDate, endDate]);
         SetweekFirstDay(startDate);
         SetweekLastDay(endDate);
         SetweekFirstMonth('');
         SetweekLastMonth('');
-       
+
 
 
     }
@@ -53,19 +53,21 @@ const ParkPick = () => {
     const getDayOfMonth = () => {
         setIsThisMonth(true);
         const startDate = moment().startOf('month').format('YYYY-MM-DD');
-        const endDate = moment().endOf('month').format('YYYY-MM-DD');
+        const endDate = moment().endOf('month').add(1, 'day').format('YYYY-MM-DD');
         setSelectedRange([startDate, endDate]);
         SetweekFirstMonth(startDate);
         SetweekLastMonth(endDate);
         SetweekFirstDay('');
         SetweekLastDay('');
-       
+
     }
 
 
     const handleDateRangeChange = (dates) => {
         if (dates) {
             const formattedDates = dates.map(dateObj => moment(dateObj.$d).format("YYYY-MM-DD"));
+            // Add one day to the end date (formattedDates[1])
+            formattedDates[1] = moment(formattedDates[1]).add(1, 'day').format("YYYY-MM-DD");
             setSelectedRange(formattedDates);
         }
     };
@@ -92,7 +94,7 @@ const ParkPick = () => {
     const boughtItemsList = useSelector(getAllparkPickBoughtItemsList);
 
     const nonPaginatedItemsList = useSelector(getAllNonPaginatedItems);
-   
+
 
     const total = boughtItemsList ? boughtItemsList.reduce((accumulator, item) => {
         // Assuming that item.number is a number you want to sum
@@ -625,11 +627,11 @@ const ParkPick = () => {
 
     }
     useEffect(() => {
-        if(selectedRange.length){
+        if (selectedRange.length) {
             dispatch(fetchAsynBoughtItems({ pageboughtItems, filterStatus, filterItem, selectedRange }))
         }
-        
-        console.log("selectedRange",selectedRange)
+
+        console.log("selectedRange", selectedRange)
     }, [dispatch, pageboughtItems, filterStatus, filterItem, selectedRange]);
 
     useEffect(() => {
@@ -790,7 +792,7 @@ const ParkPick = () => {
                                                 <label className="block  w-4/5   ">
                                                     <span className="block text-sm font-medium text-slate-700 py-2">Category Name </span>
                                                     <input type="text" className="border-gray-300 " placeholder='Category Name ' value={categoryName} onChange={handlecategoryName} />
-                                                   
+
                                                 </label>
                                             </div>
                                             <div className='flex justify-between my-3' >
@@ -804,7 +806,7 @@ const ParkPick = () => {
                                                 <label className="block  w-4/5   ">
                                                     <span className="block text-sm font-medium text-slate-700 py-2">Category Name </span>
                                                     <input type="text" className="border-gray-300 " placeholder='Category Name ' value={categoryName} onChange={handlecategoryName} />
-                                                   
+
                                                 </label>
                                             </div>
                                             <div className='flex justify-between my-3' >
@@ -836,13 +838,13 @@ const ParkPick = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {categoriesList.length && (categoriesList.map((item, index) => (
+                                    {categoriesList.length>0 && (categoriesList.map((item, index) => (
                                         <tr className="bg-white border-b dark:hover:bg-gray-300 dark:hover:text-black" key={index} >
                                             <td className="w-4 p-4">
-                                                {item.id}
+                                                {index + 1}
                                             </td>
                                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
-                                                {item.name}
+                                                {item.name ? item.name : 'N/A'}
                                             </th>
                                             <td className="px-6 py-4">
                                                 {moment(item.createdAt).format('LLLL')}
@@ -850,11 +852,6 @@ const ParkPick = () => {
                                             <td className="px-6 py-4">
                                                 {moment(item.updatedAt).format('LLLL')}
                                             </td>
-
-                                            {/* <td className="px-6 py-4">
-                                                {item.deletedAt ? item.deletedAt : "N/A"}
-                                            </td> */}
-
                                             <td className='px-6 p-4 flex justify-between' >
                                                 <FontAwesomeIcon icon={faEdit} size="1x" className='cursor-pointer ' onClick={() => handleEditCategory(item)} />
                                                 <FontAwesomeIcon icon={faTrash} size="1x" className='cursor-pointer text-red-500 ' onClick={() => handleDeleteCategory(item)} />
@@ -1071,19 +1068,19 @@ const ParkPick = () => {
                                     </tr>
                                 </thead>
                                 <tbody className='' >
-                                    {itemsList.length && (itemsList.map((item, index) => (
+                                    {itemsList.length>0 && (itemsList.map((item, index) => (
                                         <tr className="bg-white border-b dark:hover:bg-gray-300 dark:hover:text-black" key={index} >
                                             <td className="w-4 p-4">
-                                                {index+1}
+                                                {index + 1}
                                             </td>
                                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
-                                                {item.name}
+                                                {item.name ? item.name : 'N/A'}
                                             </th>
                                             <td className="px-6 py-4">
                                                 {item.category ? item.category.name : 'N/A'}
                                             </td>
                                             <td className="px-6 py-4">
-                                                {item.price} /FRW
+                                                {item.price ? item.price : 'N/A'} /FRW
                                             </td>
                                             <td className="px-6 py-4">
                                                 {item.unit ? item.unit.name : 'N/A'}
@@ -1108,9 +1105,9 @@ const ParkPick = () => {
 
 
                         </div>
-                        <div className='flex justify-end my-1' >
+                        {paginatedItemsList.length>0 && <div className='flex justify-end my-1' >
                             <Pagination defaultCurrent={10} total={paginatedItemsList.totalCount} onChange={handlePageChange} className="border p-3 rounded-lg bg-white" />
-                        </div>
+                        </div>}
                     </div>
 
                     <div
@@ -1191,13 +1188,13 @@ const ParkPick = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {unitList.length && (unitList.map((item, index) => (
+                                    {unitList.length>0 && (unitList.map((item, index) => (
                                         <tr className="bg-white border-b dark:hover:bg-gray-300 dark:hover:text-black" key={index} >
                                             <td className="w-4 p-4">
-                                                {item.id}
+                                                {index + 1}
                                             </td>
                                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
-                                                {item.name}
+                                                {item.name ? item.name : 'N/A'}
                                             </th>
                                             <td className="px-6 py-4">
                                                 {moment(item.createdAt).format('LLLL')}
@@ -1295,18 +1292,15 @@ const ParkPick = () => {
                                                 ]}
                                             />
                                         </div>
-                                       
                                         <ExcelExport excelData={boughtItemsList} Amount={totalAmount} />
                                     </div>
-
                                     <div>
                                     </div>
-
                                 </div>
                                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 rounded-md ">
                                     <thead className="text-xs text-gray-700 uppercase dark:text-gray-400 border-b dark:bg-gray-100">
                                         <tr>
-                                        <th scope="col" className="px-6 py-3">
+                                            <th scope="col" className="px-6 py-3">
                                                 #
                                             </th>
                                             <th scope="col" className="px-6 py-3">
@@ -1343,22 +1337,22 @@ const ParkPick = () => {
                                     </div>
                                     <tbody>
 
-                                        {boughtItemsList.length ? (boughtItemsList.map((item, index) => (
+                                        {boughtItemsList.length>0 ? (boughtItemsList.map((item, index) => (
                                             <tr className="bg-white border-b dark:hover:bg-gray-300 dark:hover:text-black" key={index} >
-                                                 <td className="w-4 p-4">
-                                                    {index+1}
+                                                <td className="w-4 p-4">
+                                                    {index + 1}
                                                 </td>
                                                 <td className="w-4 p-4">
-                                                    {item.dailyTransactionForMobile.internalTxnId}
+                                                    {item.dailyTransactionForMobile ? item.dailyTransactionForMobile.internalTxnId : 'N/A'}
                                                 </td>
                                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
-                                                    {item.item.name}
+                                                    {item.item ? item.item.name : 'N/A'}
                                                 </th>
                                                 <td className="px-6 py-4">
-                                                    {item.item.price}
+                                                    {item.item ? item.item.price : 'N/A'}
                                                 </td>
                                                 <td className="px-6 py-4">
-                                                    {item.number} / {item.unit}
+                                                    {item.number ? item.number : 'N/A'} / {item.unit ? item.unit : 'N/A'}
                                                 </td>
                                                 <td className='px-6 py-4 flex justify-between' >
                                                     {item.item ? item.item.price * item.number : 'N/A'} RWF
@@ -1374,11 +1368,13 @@ const ParkPick = () => {
                                                     {item.dailyTransactionForMobile ? moment(item.dailyTransactionForMobile.createdAt).format('MMM Do YYYY, h:mm:ss a') : 'N/A'}
                                                 </td>
                                             </tr>
-                                        ))) : (<div>
-                                            no items available
-                                        </div>)
+                                        ))) : (<tr className="bg-white  dark:hover:bg-gray-300 dark:hover:text-black  text-center"  >
+                                            
+                                                no matching items available
+                                          
+                                        </tr>)
                                         }
-                                        {boughtItemsList.length && (<tr className="bg-white border-b dark:hover:bg-gray-300 dark:hover:text-black"  >
+                                        {boughtItemsList.length>0 && (<tr className="bg-white border-b dark:hover:bg-gray-300 dark:hover:text-black"  >
                                             <td className="w-4 p-4">
                                             </td>
                                             <td className="w-4 p-4">
@@ -1402,9 +1398,9 @@ const ParkPick = () => {
                                 </table>
                             </div>
                         </div>
-                        <div className='flex justify-end my-1' >
+                        { boughtItemsList.length>0 && <div className='flex justify-end my-1' >
                             <Pagination defaultCurrent={10} total={paginatedBoughtItemsList.totalCount} onChange={handlePageboughtItemsChange} className="border p-3 rounded-lg bg-white" />
-                        </div>
+                        </div>}
                     </div>
                 </div>
             </div>

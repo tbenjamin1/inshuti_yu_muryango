@@ -46,32 +46,13 @@ export const fetchAsynBoughtItems= createAsyncThunk('tranx/fetchAsynBoughtItems'
     const response = await axios.get(`https://api.koipay.co/api/v1/park-pick/bought-items/get-all?page=${pageboughtItems}&itemId=${filterItem?filterItem:''}&startDate=${selectedRange[0]}&endDate=${selectedRange[1]}&status=${filterStatus}`)
     return response.data;
 })
+
 const savedUser = localStorage.getItem('user');
-
-// Import necessary dependencies
-
-// const savedUser = localStorage.getItem('user');
-
-// Function to check if the token is expired
-// const isTokenExpired = (user) => {
-//   const currentTime = new Date().getTime();
-//   return user && user.expiresAt && currentTime >= user.expiresAt;
-// };
-// isLoggedIn: savedUser ? !isTokenExpired(savedUser) : false,
-//   user: savedUser && !isTokenExpired(savedUser) ? JSON.parse(savedUser) : null,
-
-
 const initialState = {
-
-    
     isLoading: false,
-
-
     transactionsList: [],
     mtnTransationList: [],
     airtelTransationList: [],
-
-
     startimesTransationList: [],
     clientList: [],
     refereeList: [],
@@ -85,16 +66,10 @@ const initialState = {
     paginatedBoughtItemsList: [],
     parkPicktItemsList: [],
     parkPicktpaginatedItems: [],
-
-
     isLoggedIn: savedUser ? true : false,
     user: savedUser ? JSON.parse(savedUser) : null,
-
 };
-
-
 const transactionsSlice = createSlice({
-
     name: "transactions",
     initialState,
 
@@ -108,8 +83,6 @@ const transactionsSlice = createSlice({
     },
 
     extraReducers: {
-        
-        
         [fetchAsynNonPaginatedItems.pending]: (state) => {
             state.isLoading = true;
         },
@@ -144,24 +117,19 @@ const transactionsSlice = createSlice({
         [fetchAsynClients.pending]: (state) => {
            
             state.isLoading = true;
-        },
-       
-        
+        }, 
         [fetchAsynNonPaginatedItems.fulfilled]: (state, { payload }) => {
-            return { ...state, isLoading: false, nonPaginatedItemsList: payload.items
-
+            return { ...state, isLoading: false, nonPaginatedItemsList: payload.categories
             };
         },
         [fetchAsynBoughtItems.fulfilled]: (state, { payload }) => {
             return { ...state, isLoading: false, paginatedBoughtItemsList: payload,parkBoughtItemsList: payload.boughtItems
             };
         },
-
         [fetchAsynItems.fulfilled]: (state, { payload }) => {
             return { ...state, isLoading: false, parkPicktpaginatedItems: payload,parkPicktItemsList: payload.items
             };
         },
-
         [fetchAsynParkUnit.fulfilled]: (state, { payload }) => {
             return { ...state, isLoading: false, parkUnitList: payload };
         },

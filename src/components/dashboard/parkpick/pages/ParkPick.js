@@ -84,7 +84,7 @@ const ParkPick = () => {
     const filterOption = (input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
 
 
-    const [activeTab, setActiveTab] = useState('payments');
+    const [activeTab, setActiveTab] = useState('item');
     const [open, setOpen] = useState(false);
     const [pageboughtItems, setPageboughtItems] = useState(1);
     const [category, setcategoryOpen] = useState(false);
@@ -113,12 +113,16 @@ const ParkPick = () => {
     const unitList = useSelector(getAllparkUnitList)
     const itemsList = useSelector(getAllparkPickItemsList)
     const [currentPage, setCurrentPage] = useState(1);
+    const [startingIndex, setstartingIndex] = useState(0);
+    const [startingboughtIndex, setstartingboughtIndex ]= useState(0);
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
+        setstartingIndex((page - 1) * 10);
     };
     const handlePageboughtItemsChange = (page) => {
         setPageboughtItems(page);
+        setstartingboughtIndex((page - 1) * 10);
     };
     const paginatedItemsList = useSelector(getAllparkPickPaginatedItems)
 
@@ -841,7 +845,9 @@ const ParkPick = () => {
                                     {categoriesList.length>0 && (categoriesList.map((item, index) => (
                                         <tr className="bg-white border-b dark:hover:bg-gray-300 dark:hover:text-black" key={index} >
                                             <td className="w-4 p-4">
-                                                {index + 1}
+                                               <span className='px-2' >
+                                               {index + 1}
+                                               </span>
                                             </td>
                                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                                 {item.name ? item.name : 'N/A'}
@@ -853,8 +859,10 @@ const ParkPick = () => {
                                                 {moment(item.updatedAt).format('LLLL')}
                                             </td>
                                             <td className='px-6 p-4 flex justify-between' >
+                                                <span className='px-2 flex justify-around w-full' >
                                                 <FontAwesomeIcon icon={faEdit} size="1x" className='cursor-pointer ' onClick={() => handleEditCategory(item)} />
                                                 <FontAwesomeIcon icon={faTrash} size="1x" className='cursor-pointer text-red-500 ' onClick={() => handleDeleteCategory(item)} />
+                                                </span>
                                             </td>
                                         </tr>
                                     )))
@@ -1071,7 +1079,9 @@ const ParkPick = () => {
                                     {itemsList.length>0 && (itemsList.map((item, index) => (
                                         <tr className="bg-white border-b dark:hover:bg-gray-300 dark:hover:text-black" key={index} >
                                             <td className="w-4 p-4">
-                                                {index + 1}
+                                           <span className='px-2' >
+                                           {startingIndex + index + 1}
+                                           </span>
                                             </td>
                                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                                 {item.name ? item.name : 'N/A'}
@@ -1094,8 +1104,10 @@ const ParkPick = () => {
                                             </td>
 
                                             <td className='px-6 p-4 flex justify-between' >
+                                                <span className='px-3 flex justify-between  w-full' >  
                                                 <FontAwesomeIcon icon={faEdit} size="1x" className='cursor-pointer ' onClick={() => handleEditItem(item)} />
                                                 <FontAwesomeIcon icon={faTrash} size="1x" className='cursor-pointer text-red-500 ' onClick={() => handleDeleteItem(item)} />
+                                                </span>
                                             </td>
                                         </tr>
                                     )))
@@ -1106,7 +1118,7 @@ const ParkPick = () => {
 
                         </div>
                         {itemsList.length>0 && <div className='flex justify-end my-1' >
-                            <Pagination defaultCurrent={10} total={paginatedItemsList.totalCount} onChange={handlePageChange} className="border p-3 rounded-lg bg-white" />
+                            <Pagination defaultCurrent={1} total={paginatedItemsList.totalCount} onChange={handlePageChange} className="border p-3 rounded-lg bg-white" />
                         </div>}
                     </div>
 
@@ -1191,7 +1203,9 @@ const ParkPick = () => {
                                     {unitList.length>0 && (unitList.map((item, index) => (
                                         <tr className="bg-white border-b dark:hover:bg-gray-300 dark:hover:text-black" key={index} >
                                             <td className="w-4 p-4">
-                                                {index + 1}
+                                               <span className='px-2' >
+                                               {index + 1}
+                                               </span>
                                             </td>
                                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                                 {item.name ? item.name : 'N/A'}
@@ -1203,8 +1217,10 @@ const ParkPick = () => {
                                                 {moment(item.updatedAt).format('LLLL')}
                                             </td>
                                             <td className='px-6 p-4 flex justify-between' >
+                                                <span className='px-2 flex justify-around w-full' >
                                                 <FontAwesomeIcon icon={faEdit} size="1x" className='cursor-pointer ' onClick={() => handleEditUnit(item)} />
                                                 <FontAwesomeIcon icon={faTrash} size="1x" className='cursor-pointer text-red-500 ' onClick={() => handleDeleteUnit(item)} />
+                                                </span>
                                             </td>
                                         </tr>
 
@@ -1340,7 +1356,7 @@ const ParkPick = () => {
                                         {boughtItemsList.length>0 ? (boughtItemsList.map((item, index) => (
                                             <tr className="bg-white border-b dark:hover:bg-gray-300 dark:hover:text-black" key={index} >
                                                 <td className="w-4 p-4">
-                                                    {index + 1}
+                                                    <span className='px-2' >{startingboughtIndex + index + 1}</span>
                                                 </td>
                                                 <td className="w-4 p-4">
                                                     {item.dailyTransactionForMobile ? item.dailyTransactionForMobile.internalTxnId : 'N/A'}
@@ -1399,7 +1415,7 @@ const ParkPick = () => {
                             </div>
                         </div>
                         { boughtItemsList.length>0 && <div className='flex justify-end my-1' >
-                            <Pagination defaultCurrent={10} total={paginatedBoughtItemsList.totalCount} onChange={handlePageboughtItemsChange} className="border p-3 rounded-lg bg-white" />
+                            <Pagination defaultCurrent={1} total={paginatedBoughtItemsList.totalCount} onChange={handlePageboughtItemsChange} className="border p-3 rounded-lg bg-white" />
                         </div>}
                     </div>
                 </div>

@@ -542,7 +542,7 @@ const ParkPick = () => {
     };
 
     // handleLogOut
-    const handleLogOut = () => {
+    const handleLogOut = async () => {
         localStorage.removeItem('user');
         window.location.replace('/');
     };
@@ -1265,7 +1265,7 @@ const ParkPick = () => {
                                             </div>
                                         </div>
                                         <div className='flex flex-col' >
-                                            <span className='py-2' >Filter by category:</span>
+                                            <span className='py-2' >Filter by items:</span>
 
                                             <Select
 

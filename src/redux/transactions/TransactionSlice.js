@@ -119,7 +119,7 @@ const transactionsSlice = createSlice({
             state.isLoading = true;
         }, 
         [fetchAsynNonPaginatedItems.fulfilled]: (state, { payload }) => {
-            return { ...state, isLoading: false, nonPaginatedItemsList: payload.categories
+            return { ...state, isLoading: false, nonPaginatedItemsList: payload.items
             };
         },
         [fetchAsynBoughtItems.fulfilled]: (state, { payload }) => {

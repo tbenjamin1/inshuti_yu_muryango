@@ -16,6 +16,7 @@ const Sidebar = ({ sidebarOpen, closeSidebar }) => {
       const response = await axios.get('https://api.koipay.co/api/v1/auth/signout');
       // Assuming the server responds with a token upon successful authentication
       window.location.replace('/');
+      localStorage.removeItem('user');
     } catch (error) {
       setError('Invalid username or password');
     }

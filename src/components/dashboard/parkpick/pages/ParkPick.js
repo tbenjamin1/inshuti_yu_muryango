@@ -114,7 +114,7 @@ const ParkPick = () => {
     const itemsList = useSelector(getAllparkPickItemsList)
     const [currentPage, setCurrentPage] = useState(1);
     const [startingIndex, setstartingIndex] = useState(0);
-    const [startingboughtIndex, setstartingboughtIndex ]= useState(0);
+    const [startingboughtIndex, setstartingboughtIndex] = useState(0);
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
@@ -541,6 +541,11 @@ const ParkPick = () => {
         seteditItemOpen(!editItemOpen);
     };
 
+    // handleLogOut
+    const handleLogOut = () => {
+        localStorage.removeItem('user');
+        window.location.replace('/');
+    };
     // edit category
 
     const handleChildEditCategoryEvent = () => {
@@ -634,8 +639,6 @@ const ParkPick = () => {
         if (selectedRange.length) {
             dispatch(fetchAsynBoughtItems({ pageboughtItems, filterStatus, filterItem, selectedRange }))
         }
-
-        console.log("selectedRange", selectedRange)
     }, [dispatch, pageboughtItems, filterStatus, filterItem, selectedRange]);
 
     useEffect(() => {
@@ -672,9 +675,9 @@ const ParkPick = () => {
                                 </button>
                                 <ul class="absolute hidden text-gray-700 pt-16 group-hover:block ">
                                     <li class="px-4 logout-button ">
-                                        <a
-                                            class="rounded-t bg-gray-200 hover:bg-gray-200 py-2 px-4 block whitespace-no-wrap"
-                                            href="/"
+                                        <a onClick={() => handleLogOut()}
+                                            class="rounded-t bg-gray-200 hover:bg-gray-200 py-2 px-4 block whitespace-no-wrap cursor-pointer"
+
                                         >Log out</a>
                                     </li>
 
@@ -842,12 +845,12 @@ const ParkPick = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {categoriesList.length>0 && (categoriesList.map((item, index) => (
+                                    {categoriesList.length > 0 && (categoriesList.map((item, index) => (
                                         <tr className="bg-white border-b dark:hover:bg-gray-300 dark:hover:text-black" key={index} >
                                             <td className="w-4 p-4">
-                                               <span className='px-2' >
-                                               {index + 1}
-                                               </span>
+                                                <span className='px-2' >
+                                                    {index + 1}
+                                                </span>
                                             </td>
                                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                                 {item.name ? item.name : 'N/A'}
@@ -860,8 +863,8 @@ const ParkPick = () => {
                                             </td>
                                             <td className='px-6 p-4 flex justify-between' >
                                                 <span className='px-2 flex justify-around w-full' >
-                                                <FontAwesomeIcon icon={faEdit} size="1x" className='cursor-pointer ' onClick={() => handleEditCategory(item)} />
-                                                <FontAwesomeIcon icon={faTrash} size="1x" className='cursor-pointer text-red-500 ' onClick={() => handleDeleteCategory(item)} />
+                                                    <FontAwesomeIcon icon={faEdit} size="1x" className='cursor-pointer ' onClick={() => handleEditCategory(item)} />
+                                                    <FontAwesomeIcon icon={faTrash} size="1x" className='cursor-pointer text-red-500 ' onClick={() => handleDeleteCategory(item)} />
                                                 </span>
                                             </td>
                                         </tr>
@@ -1076,12 +1079,12 @@ const ParkPick = () => {
                                     </tr>
                                 </thead>
                                 <tbody className='' >
-                                    {itemsList.length>0 && (itemsList.map((item, index) => (
+                                    {itemsList.length > 0 && (itemsList.map((item, index) => (
                                         <tr className="bg-white border-b dark:hover:bg-gray-300 dark:hover:text-black" key={index} >
                                             <td className="w-4 p-4">
-                                           <span className='px-2' >
-                                           {startingIndex + index + 1}
-                                           </span>
+                                                <span className='px-2' >
+                                                    {startingIndex + index + 1}
+                                                </span>
                                             </td>
                                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                                 {item.name ? item.name : 'N/A'}
@@ -1104,9 +1107,9 @@ const ParkPick = () => {
                                             </td>
 
                                             <td className='px-6 p-4 flex justify-between' >
-                                                <span className='px-3 flex justify-between  w-full' >  
-                                                <FontAwesomeIcon icon={faEdit} size="1x" className='cursor-pointer ' onClick={() => handleEditItem(item)} />
-                                                <FontAwesomeIcon icon={faTrash} size="1x" className='cursor-pointer text-red-500 ' onClick={() => handleDeleteItem(item)} />
+                                                <span className='px-3 flex justify-between  w-full' >
+                                                    <FontAwesomeIcon icon={faEdit} size="1x" className='cursor-pointer ' onClick={() => handleEditItem(item)} />
+                                                    <FontAwesomeIcon icon={faTrash} size="1x" className='cursor-pointer text-red-500 ' onClick={() => handleDeleteItem(item)} />
                                                 </span>
                                             </td>
                                         </tr>
@@ -1117,7 +1120,7 @@ const ParkPick = () => {
 
 
                         </div>
-                        {itemsList.length>0 && <div className='flex justify-end my-1' >
+                        {itemsList.length > 0 && <div className='flex justify-end my-1' >
                             <Pagination defaultCurrent={1} total={paginatedItemsList.totalCount} onChange={handlePageChange} className="border p-3 rounded-lg bg-white" />
                         </div>}
                     </div>
@@ -1200,12 +1203,12 @@ const ParkPick = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {unitList.length>0 && (unitList.map((item, index) => (
+                                    {unitList.length > 0 && (unitList.map((item, index) => (
                                         <tr className="bg-white border-b dark:hover:bg-gray-300 dark:hover:text-black" key={index} >
                                             <td className="w-4 p-4">
-                                               <span className='px-2' >
-                                               {index + 1}
-                                               </span>
+                                                <span className='px-2' >
+                                                    {index + 1}
+                                                </span>
                                             </td>
                                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                                 {item.name ? item.name : 'N/A'}
@@ -1218,8 +1221,8 @@ const ParkPick = () => {
                                             </td>
                                             <td className='px-6 p-4 flex justify-between' >
                                                 <span className='px-2 flex justify-around w-full' >
-                                                <FontAwesomeIcon icon={faEdit} size="1x" className='cursor-pointer ' onClick={() => handleEditUnit(item)} />
-                                                <FontAwesomeIcon icon={faTrash} size="1x" className='cursor-pointer text-red-500 ' onClick={() => handleDeleteUnit(item)} />
+                                                    <FontAwesomeIcon icon={faEdit} size="1x" className='cursor-pointer ' onClick={() => handleEditUnit(item)} />
+                                                    <FontAwesomeIcon icon={faTrash} size="1x" className='cursor-pointer text-red-500 ' onClick={() => handleDeleteUnit(item)} />
                                                 </span>
                                             </td>
                                         </tr>
@@ -1353,7 +1356,7 @@ const ParkPick = () => {
                                     </div>
                                     <tbody>
 
-                                        {boughtItemsList.length>0 ? (boughtItemsList.map((item, index) => (
+                                        {boughtItemsList.length > 0 ? (boughtItemsList.map((item, index) => (
                                             <tr className="bg-white border-b dark:hover:bg-gray-300 dark:hover:text-black" key={index} >
                                                 <td className="w-4 p-4">
                                                     <span className='px-2' >{startingboughtIndex + index + 1}</span>
@@ -1385,12 +1388,12 @@ const ParkPick = () => {
                                                 </td>
                                             </tr>
                                         ))) : (<tr className="bg-white  dark:hover:bg-gray-300 dark:hover:text-black  text-center"  >
-                                            
-                                                no matching items available
-                                          
+
+                                            no matching items available
+
                                         </tr>)
                                         }
-                                        {boughtItemsList.length>0 && (<tr className="bg-white border-b dark:hover:bg-gray-300 dark:hover:text-black"  >
+                                        {boughtItemsList.length > 0 && (<tr className="bg-white border-b dark:hover:bg-gray-300 dark:hover:text-black"  >
                                             <td className="w-4 p-4">
                                             </td>
                                             <td className="w-4 p-4">
@@ -1414,7 +1417,7 @@ const ParkPick = () => {
                                 </table>
                             </div>
                         </div>
-                        { boughtItemsList.length>0 && <div className='flex justify-end my-1' >
+                        {boughtItemsList.length > 0 && <div className='flex justify-end my-1' >
                             <Pagination defaultCurrent={1} total={paginatedBoughtItemsList.totalCount} onChange={handlePageboughtItemsChange} className="border p-3 rounded-lg bg-white" />
                         </div>}
                     </div>
@@ -1422,7 +1425,7 @@ const ParkPick = () => {
             </div>
 
             <footer class="bg-white  footer   ">
-                <div class=" flex flex-wrap items-center justify-between px-4 py-2">
+                <div class=" flex flex-wrap items-center justify-between px-4 ">
 
                     <div className='flex' >
                         <img class=" w-16   h-16 rounded-full object-cover" src={groupeya} alt="user photo" />

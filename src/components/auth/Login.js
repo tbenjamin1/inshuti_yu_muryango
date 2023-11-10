@@ -40,7 +40,7 @@ function Login() {
             }else{
                  window.location.replace('/statistics');
             }
-            window.location.replace('/park-pick');
+            // window.location.replace('/park-pick');
             setLoading(false);
             //  redirecting the user to the desired page
         } catch (error) {
@@ -57,8 +57,10 @@ function Login() {
                         <img class="  object-cover" src={koipay_logo} alt="user photo" />
                     </a>
                     <div class="flex justify-between  fom-btn-container items-center  bg-white  ">
+                        
                     <Link to="/referee-page" ><button className='fom-btn px-3 py-2 mx-3 cursor-pointer' > Register as referee</button></Link>
                     <Link to="/register-entity" >  <button className='fom-btn px-3 py-2 mx-3 cursor-pointer' >Register your entity</button></Link>
+                    <Link to="/register-business" ><button className='fom-btn px-3 py-2 mx-3 cursor-pointer' >Register Business</button></Link>
                     </div>
 
                 </div>

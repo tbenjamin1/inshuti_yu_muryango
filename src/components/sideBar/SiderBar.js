@@ -58,6 +58,8 @@ const Sidebar = ({ sidebarOpen, closeSidebar }) => {
         </span>
         <h2 className={activeTab === '/startimes' ? ' activeTab p-2':'p-2' }><Link to="/startimes">Startimes</Link></h2>
         <h2 className={activeTab === '/electricity' ? ' activeTab px-2 py-4':'px-2' }><Link to="/electricity">Electricity</Link></h2>
+        <h2 className={activeTab === '/businesses' ? ' activeTab px-2 py-4':'px-2' }><Link to="/businesses">Businesses</Link></h2>
+        
         <h2>settings</h2>
         <div className="sidebar__link">
           <span className="flextems-center  my-2"><i className="fa fa-briefcase mr-2"></i>

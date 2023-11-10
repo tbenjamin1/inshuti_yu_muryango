@@ -15,8 +15,11 @@ import Startimes from './components/dashboard/pages/Startimes';
 import RefereePage from './components/dashboard/pages/RefereePage';
 import ParkPick from './components/dashboard/parkpick/pages/ParkPick';
 import RegisterEntity from './components/dashboard/pages/RegisterEntity';
+import RegisterBusiness from './components/dashboard/pages/RegisterBusiness'
 import { useDispatch, useSelector } from "react-redux"
 import { loggedInStatus } from './redux/transactions/TransactionSlice';
+import Businesses from './components/dashboard/pages/Businesses';
+import TermsConditions from './components/dashboard/pages/TermsConditions';
 
 function App() {
   
@@ -33,6 +36,12 @@ function App() {
           <Route exact path="/" element={<Login />}/>
           <Route  path="/reset" element={<Reset/>}/>
           <Route  path="/sign-up" element={<Signup/>}/>
+
+          <Route exact path="/register-business" element={<RegisterBusiness />}/>
+          <Route  path="/register-entity" element={<RegisterEntity/>}/>
+          <Route  path="/referee-page" element={<RefereePage/>}/>
+          <Route  path="/terms-conditions" element={<TermsConditions/>}/>
+          
 
           <Route
                 path="/dashboard-home/*"
@@ -62,18 +71,16 @@ function App() {
                 path="/startimes"
                 element={loginStatus ? <Startimes /> : <Navigate to="/" />}
               />
-              <Route
-                path="/referee-page"
-                element={loginStatus ? <RefereePage /> : <Navigate to="/" />}
-              />
+              
               <Route
                 path="/park-pick"
                 element={loginStatus ? <ParkPick /> : <Navigate to="/" />}
               />
               <Route
-                path="/register-entity"
-                element={loginStatus ? <RegisterEntity /> : <Navigate to="/" />}
+                path="/businesses"
+                element={loginStatus ? <Businesses/> : <Navigate to="/" />}
               />
+              
 
         </Routes>
 

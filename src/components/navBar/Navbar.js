@@ -11,7 +11,7 @@ const Navbar = ({ sidebarOpen, openSidebar }) => {
         <i className="fa fa-bars" aria-hidden="true"></i>
       </div>
       <div className="navbar__left ">
-        <input type="search" placeholder="search"></input>
+        {/* <input type="search" placeholder="search"></input> */}
       </div>
 
       <div className="navbar__right  p-5">

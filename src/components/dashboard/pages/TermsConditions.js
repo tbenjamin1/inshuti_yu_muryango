@@ -1,12 +1,22 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import {setAcceptTermsConditions, selectAcceptTerms } from '../../../redux/transactions/TransactionSlice';
 
 function TermsConditions() {
+    const dispatch = useDispatch();
+    const acceptTermsState = useSelector(selectAcceptTerms);
+
     const [acceptTerms, setAcceptTerms] = useState(false);
     const HandletermsChange = () => {
         setAcceptTerms(!acceptTerms);
+        dispatch(setAcceptTermsConditions(!acceptTermsState));
     }
+    const handleAcceptBusinessTerms = () => {
+
+    }
+
     return (
         <div className='flex justify-center items-center border terms-container' >
             <div className='flex flex-col justify-center w-1/2 bg-white p-3 rounded-lg terms-condition ' >
@@ -50,10 +60,10 @@ function TermsConditions() {
                     B. No Joint Venture, No Derogation of Rights. You agree that no joint venture, partnership, employment, or agency relationship exists between you and us as a result of these Terms and Conditions or your use of the Site. Our performance of these Terms and Conditions is subject to existing laws and legal process, and nothing contained herein is in derogation of our right to comply with governmental, court and law enforcement requests or requirements relating to your use of the Site or information provided to or gathered by us with respect to such use.
                 </div>
                 <div className='flex justify-between items-center  pt-2 terms-footer' >
-                    <div className='flex justify-start items-center'> <input className='checkbox border cursor-pointer' value={acceptTerms} onChange={HandletermsChange} type="checkbox" />  <span className='mx-2 remeber_forgot' >I confirm that I have read and accept the terms and conditions and privacy</span>  </div>
+                    <div className='flex justify-start items-center'> <input className='checkbox border cursor-pointer' checked={acceptTermsState} value={acceptTerms} onChange={HandletermsChange} type="checkbox" />  <span className='mx-2 remeber_forgot' >I confirm that I have read and accept the terms and conditions and privacy</span>  </div>
                     <div className='flex justify-between items-center terms-footer-btn' >
                         <button className='border mx-3 px-4 py-1 rounded-md terms-Cancel' > <Link to="/register-business">Cancel</Link></button>
-                        <button className={acceptTerms == true ? ' px-4 py-1 rounded-md terms-accept' : ' px-4 py-1 rounded-md terms-accept-disabled'} >Accept</button>
+                        <button disabled={!acceptTermsState} className={acceptTermsState == true ? ' px-4 py-1 rounded-md terms-accept ' : ' px-4 py-1 rounded-md terms-accept-disabled cursor-not-allowed'} onClick={() => handleAcceptBusinessTerms()} ><Link to="/register-business">Accept</Link></button>
                     </div>
                 </div>
             </div>

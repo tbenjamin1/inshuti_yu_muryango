@@ -26,30 +26,39 @@ export const fetchAsynRefree = createAsyncThunk('tranx/fetchAsynRefree', async (
     const response = await axios.get(`https://api.koipay.co/api/v1/referees/total?startDate=2023-03-09&endDate=2023-07-06&page=1&limit=6`)
     return response.data;
 })
-export const fetchAsynParkCatgories= createAsyncThunk('tranx/fetchAsyncategories', async () => {
+export const fetchAsynParkCatgories = createAsyncThunk('tranx/fetchAsyncategories', async () => {
     const response = await axios.get(`https://api.koipay.co/api/v1/park-pick/categories`)
     return response.data.categories;
 })
-export const fetchAsynParkUnit= createAsyncThunk('tranx/fetchAsynUnit', async () => {
+export const fetchAsynParkUnit = createAsyncThunk('tranx/fetchAsynUnit', async () => {
     const response = await axios.get(`https://api.koipay.co/api/v1/park-pick/units/get-all`)
     return response.data.units;
 })
-export const fetchAsynItems= createAsyncThunk('tranx/fetchAsynItems', async (currentPage) => {
+export const fetchAsynItems = createAsyncThunk('tranx/fetchAsynItems', async (currentPage) => {
     const response = await axios.get(`https://api.koipay.co/api/v1/park-pick/items/get-all?page=${currentPage}`)
     return response.data;
 })
-export const fetchAsynNonPaginatedItems= createAsyncThunk('tranx/NonPaginatedItems', async () => {
+
+export const fetchAsynNonPaginatedItems = createAsyncThunk('tranx/NonPaginatedItems', async () => {
     const response = await axios.get(`https://api.koipay.co/api/v1/park-pick/items/get-items`)
     return response.data;
 })
-export const fetchAsynBoughtItems= createAsyncThunk('tranx/fetchAsynBoughtItems', async ({pageboughtItems,selectedRange,filterStatus,filterItem}) => {
-    const response = await axios.get(`https://api.koipay.co/api/v1/park-pick/bought-items/get-all?page=${pageboughtItems}&itemId=${filterItem?filterItem:''}&startDate=${selectedRange[0]}&endDate=${selectedRange[1]}&status=${filterStatus}`)
+
+export const fetchAsynBoughtItems = createAsyncThunk('tranx/fetchAsynBoughtItems', async ({ pageboughtItems, selectedRange, filterStatus, filterItem }) => {
+    const response = await axios.get(`https://api.koipay.co/api/v1/park-pick/bought-items/get-all?page=${pageboughtItems}&itemId=${filterItem ? filterItem : ''}&startDate=${selectedRange[0]}&endDate=${selectedRange[1]}&status=${filterStatus}`)
+    return response.data;
+})
+
+export const fetchAsynBusinessRegistered = createAsyncThunk('tranx/fetchAsynBusinessRegistered', async ({ selectedRange }) => {
+    const response = await axios.get(`https://apidev2.koipay.co/api/business/?page=1`)
     return response.data;
 })
 
 const savedUser = localStorage.getItem('user');
+
 const initialState = {
     isLoading: false,
+    acceptTerms: false,
     transactionsList: [],
     mtnTransationList: [],
     airtelTransationList: [],
@@ -62,10 +71,14 @@ const initialState = {
     paginatedParkCategories: [],
     parkUnitList: [],
     parkBoughtItemsList: [],
-    nonPaginatedItemsList:[],
+    nonPaginatedItemsList: [],
     paginatedBoughtItemsList: [],
     parkPicktItemsList: [],
     parkPicktpaginatedItems: [],
+
+    BusinessList: [],
+    paginatedBusinessList: [],
+
     isLoggedIn: savedUser ? true : false,
     user: savedUser ? JSON.parse(savedUser) : null,
 };
@@ -74,15 +87,21 @@ const transactionsSlice = createSlice({
     initialState,
 
     reducers: {
+        setAcceptTermsConditions: (state, action) => {
+            state.acceptTerms = action.payload;
+          },
         addTransactions: (state, action) => {
-         state.transactionsList = action.payload;
+            state.transactionsList = action.payload;
         },
         setUser: (state, action) => {
-         state.user = action.payload;
+            state.user = action.payload;
         },
     },
-
     extraReducers: {
+        
+        [fetchAsynBusinessRegistered.pending]: (state) => {
+            state.isLoading = true;
+        },
         [fetchAsynNonPaginatedItems.pending]: (state) => {
             state.isLoading = true;
         },
@@ -98,7 +117,7 @@ const transactionsSlice = createSlice({
         [fetchAsynParkCatgories.pending]: (state) => {
             state.isLoading = true;
         },
-        
+
         [fetchAsyncTransaction.pending]: (state) => {
             state.isLoading = true;
         },
@@ -115,19 +134,29 @@ const transactionsSlice = createSlice({
             state.isLoading = true;
         },
         [fetchAsynClients.pending]: (state) => {
-           
+
             state.isLoading = true;
-        }, 
+        },
+        
+        [fetchAsynBusinessRegistered.fulfilled]: (state, { payload }) => {
+            return {
+                ...state, isLoading: false, BusinessList: payload
+            };
+        },
+
         [fetchAsynNonPaginatedItems.fulfilled]: (state, { payload }) => {
-            return { ...state, isLoading: false, nonPaginatedItemsList: payload.items
+            return {
+                ...state, isLoading: false, nonPaginatedItemsList: payload.items
             };
         },
         [fetchAsynBoughtItems.fulfilled]: (state, { payload }) => {
-            return { ...state, isLoading: false, paginatedBoughtItemsList: payload,parkBoughtItemsList: payload.boughtItems
+            return {
+                ...state, isLoading: false, paginatedBoughtItemsList: payload, parkBoughtItemsList: payload.boughtItems
             };
         },
         [fetchAsynItems.fulfilled]: (state, { payload }) => {
-            return { ...state, isLoading: false, parkPicktpaginatedItems: payload,parkPicktItemsList: payload.items
+            return {
+                ...state, isLoading: false, parkPicktpaginatedItems: payload, parkPicktItemsList: payload.items
             };
         },
         [fetchAsynParkUnit.fulfilled]: (state, { payload }) => {
@@ -137,7 +166,7 @@ const transactionsSlice = createSlice({
             return { ...state, isLoading: false, parkCategories: payload };
         },
         [fetchAsynClients.fulfilled]: (state, { payload }) => {
-           
+
             return { ...state, isLoading: false, clientList: payload };
         },
         [fetchAsynRefree.fulfilled]: (state, { payload }) => {
@@ -155,8 +184,11 @@ const transactionsSlice = createSlice({
         [fetchAsynStartimesTransaction.fulfilled]: (state, { payload }) => {
             return { ...state, isLoading: false, startimesTransationList: payload };
         },
+
         
-        
+        [fetchAsynBusinessRegistered.rejected]: (state) => {
+            state.isLoading = false;
+        },
         [fetchAsynNonPaginatedItems.rejected]: (state) => {
             state.isLoading = false;
         },
@@ -189,7 +221,7 @@ const transactionsSlice = createSlice({
         },
         [fetchAsynClients.rejected]: (state) => {
             state.isLoading = false;
-           
+
         },
     }
 })
@@ -215,5 +247,9 @@ export const getAllparkPickBoughtItemsList = (state) => state.transactions.parkB
 export const getAllparkPickPaginatedBoughtItemsList = (state) => state.transactions.paginatedBoughtItemsList;
 
 export const getAllNonPaginatedItems = (state) => state.transactions.nonPaginatedItemsList;
+export const getAllBussinessesRegistered = (state) => state.transactions.BusinessList;
 export const getAllparkPickPaginatedItems = (state) => state.transactions.parkPicktpaginatedItems;
+
+export const selectAcceptTerms = (state) => state.transactions.acceptTerms;
+export const { setAcceptTermsConditions } = transactionsSlice.actions;
 export default transactionsSlice.reducer;

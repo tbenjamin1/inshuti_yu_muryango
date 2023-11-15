@@ -1,7 +1,4 @@
 
-
-
-
 import React, { useEffect, useState } from 'react'
 import DashboardLayout from "../DashboardLayout"
 import moment from 'moment';
@@ -9,9 +6,17 @@ import dayjs from 'dayjs';
 import Modal from "./Modal";
 import { DatePicker } from 'antd';
 import { Pagination } from 'antd';
-import { useDispatch, useSelector } from "react-redux"
-import { fetchAsyncTransaction, getAllTransaction } from '../../../redux/transactions/TransactionSlice';
+import { useDispatch, useSelector } from "react-redux";
+import { FaRegEdit, FaBookReader } from 'react-icons/fa';
+import { CiBitcoin, viewBox } from 'react-icons/ci';
+import { MdEditRoad } from "react-icons/md";
+import { Link } from 'react-router-dom';
+import upload from "../../images/upload.svg";
+import { useToasts } from 'react-toast-notifications';
+import axios from 'axios';
+import { fetchAsynBusinessRegistered, fetchAsyncTransaction, getAllBussinessesRegistered, getAllTransaction } from '../../../redux/transactions/TransactionSlice';
 function Businesses() {
+    const { addToast } = useToasts();
     const defaultStartDate = moment().startOf('month').format('YYYY-MM-DD'); // Example: Set default date to the start of the current month
     const defaultEndDate = moment().format('YYYY-MM-DD'); // Set default end date to current date
     const [searchQuery, setSearchQuery] = useState('');
@@ -21,19 +26,104 @@ function Businesses() {
 
     };
     const [viewRider, setViewRider] = useState(false);
-    // const [viewRiderInfo, setViewRiderInfo] = useState(false);
+    const [viewRiderInfo, setViewRiderInfo] = useState(false);
+    const [editBusiness, seteditBusiness] = useState(false);
 
-    const handleViewRider = () => {
+    const handleViewRider = (busines) => {
+        setViewRiderInfo(busines)
         setViewRider(!viewRider);
-    
-      };
-      const handleViewChildEvent = () => {
+    };
+    const handleEditBusiness = (busines) => {
+        setViewRiderInfo(busines)
+        seteditBusiness(!editBusiness);
+
+    };
+    const handleViewChildEvent = () => {
         setViewRider(!viewRider);
-    
-      };
-      const modalRiderTitle="Business Details";
-      const Moridebtn_name="Name";
-      
+
+    };
+    const handleEditChildEvent = () => {
+        seteditBusiness(!editBusiness);
+
+    };
+    const modalRiderTitle = "Business details";
+    const Moridebtn_name = "Name";
+
+
+
+
+    const [businesName, setbusinesNameValue] = useState('');
+    const [colorCode, setcolorCodeValue] = useState('');
+    const [phoneNumber, setphoneNumber] = useState('');
+    const [contactTel, setcontactTelValue] = useState('');
+    const [isRegistered, setIsregistered] = useState(false);
+    const [rewardType, setrewardType] = useState('');
+    const [businessCategory, setbusinessCategory] = useState('');
+    const [email, setEmail] = useState('');
+
+    const [password, setpassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+
+    const [loading, setLoading] = useState(false);
+    const [isloading, setisLoading] = useState(false);
+
+    const businesNameHandleChange = (event) => {
+        setbusinesNameValue(event.target.value);
+    };
+    const colorCodeHandleChange = (event) => {
+        setcolorCodeValue(event.target.value);
+    };
+    const contactTelHandleChange = (event) => {
+        setcontactTelValue(event.target.value);
+    };
+    const confirmMOMOnumberHandleChange = (event) => {
+        setphoneNumber(event.target.value);
+        validateMtnPhoneNumber(event.target.value);
+
+    };
+    const setrewardTypeHandleChange = (event) => {
+        setrewardType(event.target.value);
+    };
+    const businessCategoryHandleChange = (event) => {
+        setbusinessCategory(event.target.value);
+    };
+    const emailHandleChange = (event) => {
+        setEmail(event.target.value);
+    };
+    const passwordHandleChange = (event) => {
+        setpassword(event.target.value);
+    };
+
+    const confirmPasswordHandleChange = (event) => {
+        setConfirmPassword(event.target.value);
+    };
+    // Define states for profile image and permit image
+    const [file, setFile] = useState('');
+    const [certificate, setcertificate] = useState('');
+    const [certificateFile, setcertificateFile] = useState('');
+    const [renderfile, setrenderFile] = useState('');
+    // Profile image upload
+    function handleChange(e) {
+        setrenderFile(URL.createObjectURL(e.target.files[0]));
+        setFile(e.target.files[0]);
+    }
+    const handleCertificateChange = (e) => {
+        setcertificate(URL.createObjectURL(e.target.files[0]));
+        setcertificateFile(e.target.files[0]);
+    }
+    const validateMtnPhoneNumber = (inputPhoneNumber) => {
+        // Pattern: starts with "078" or "079", followed by 7 digits
+        const pattern = /^(078|079)[0-9]{7}$/;
+        if (
+            inputPhoneNumber === "" ||
+            !pattern.test(inputPhoneNumber) ||
+            inputPhoneNumber.length !== 10
+        ) {
+            setIsregistered(false);
+            return false;
+        }
+        return true;
+    };
 
     const dispatch = useDispatch()
     const [selectedRange, setSelectedRange] = useState([defaultStartDate, defaultEndDate]);
@@ -47,35 +137,100 @@ function Businesses() {
     };
 
     const transactionList = useSelector(getAllTransaction);
+    const allBussinessesRegisteredList = useSelector(getAllBussinessesRegistered);
+    console.log("response", allBussinessesRegisteredList)
+
     const searchInTransactions = (searchQuery) => {
         let search = searchQuery.toLowerCase();
         if (search === "") {
-            setFilteredTransactionList(transactionList);
+            setFilteredTransactionList(allBussinessesRegisteredList);
         } else {
-            let filteredList = transactionList.filter((transaction) => {
-                const customer = transaction.customer;
-                const customerUsername = customer ? customer.username.toLowerCase() : "";
+            let filteredList = allBussinessesRegisteredList.filter((transaction) => {
+                const business = transaction.name;
+                const businessUsername = business ? business.name.toLowerCase() : "";
                 const transactionValues = Object.values(transaction).map((value) =>
                     String(value).toLowerCase()
                 );
                 return (
-                    customerUsername.includes(search) ||
+                    businessUsername.includes(search) ||
                     transactionValues.some((value) => value.includes(search))
                 );
             });
             setFilteredTransactionList(filteredList);
         }
     };
+
+
+    const handleBusinessRegister = async (event) => {
+        const businessInform = {
+            businesName: businesName,
+            colorCode: colorCode,
+            phoneNumber: phoneNumber,
+            contactTel: contactTel,
+            rewardType: rewardType,
+            businessCategory: businessCategory,
+            email: email,
+            password: password,
+            confirmPassword: confirmPassword,
+        }
+        event.preventDefault();
+        const isValidPhoneNumber = validateMtnPhoneNumber(phoneNumber);
+        if (!isValidPhoneNumber) {
+            // Handle invalid phone number case
+            addToast("Something went wrong! please check your momo number", {
+                appearance: 'error', autoDismiss: true, // Enable auto dismissal
+                autoDismissTimeout: 5000,
+                transitionDuration: 300,
+            });
+
+            return;
+        }
+
+        setisLoading(true)
+
+        try {
+            const response = await axios.post('https://apidev2.koipay.co/api/business/', { businessInform }, {
+                // headers: {
+                //     'Access-Control-Allow-Origin': '*',
+                // }
+            });
+
+            addToast(`Successfully registered, your code is : ${response.data.data.referee.code}`, {
+                appearance: 'success',
+            });
+
+            setisLoading(false);
+            setbusinesNameValue("");
+            setcolorCodeValue("");
+            setcontactTelValue("");
+            setphoneNumber("");
+            setrewardType("");
+            setbusinessCategory("");
+            setEmail("");
+            setpassword("");
+            setConfirmPassword("");
+            setIsregistered(false);
+        } catch (error) {
+            addToast("Something went wrong! please try again", {
+                appearance: 'error', autoDismiss: true, // Enable auto dismissal
+                autoDismissTimeout: 5000,
+                transitionDuration: 300,
+            });
+            setisLoading(false);
+        }
+    };
+
+
     const isLoading = useSelector((state) => state.transactions.isLoading);
     useEffect(() => {
-        dispatch(fetchAsyncTransaction(selectedRange))
+        dispatch(fetchAsynBusinessRegistered(selectedRange))
     }, [dispatch, selectedRange]);
 
     return (
         <DashboardLayout>
             <div className='flex justify-center items-center' >
                 <div className='bg-white my-4 rounded-lg border container ' >
-                    <div className='border-b   px-3 py-3' >Electricity transactions </div>
+                    <div className='border-b   px-3 py-3' >Registered Business  </div>
                     <div className='   px-3 py-3' >
                         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                             <div className="flex items-center justify-between pb-4">
@@ -98,35 +253,36 @@ function Businesses() {
                                 <span class="sr-only">Loading...</span>
                             </div>)}
                             {
-                                transactionList.length > 0 ? (
+                                allBussinessesRegisteredList.length > 0 ? (
 
                                     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 border">
                                         <thead className="text-xs text-gray-700 uppercase dark:text-gray-400 border-b">
                                             <tr>
-                                                <th scope="col" className="px-6 py-3">
-                                                    ExternalTxnId
+                                                <th scope="col" className="px-2 py-3">
+                                                    Business_name
                                                 </th>
 
-                                                <th scope="col" className="px-6 py-3">
-                                                    InternalTxnId
+                                                <th scope="col" className="px-1 py-3">
+                                                    category
                                                 </th>
-                                                <th scope="col" className="px-6 py-3">
-                                                    Customer
+                                                <th scope="col" className="px-1 py-3">
+                                                    reward_type
                                                 </th>
-                                                <th scope="col" className="px-6 py-3">
+                                                <th scope="col" className="px-1 py-3">
                                                     Phone
                                                 </th>
-                                                <th scope="col" className="px-6 py-3">
-                                                    Price/RWF
+                                                <th scope="col" className="px-1 py-3">
+                                                    color_code
                                                 </th>
-                                                <th scope="col" className="px-6 py-3">
+                                                <th scope="col" className="px-1 py-3">
                                                     created_At
                                                 </th>
-                                                <th scope="col" className="px-6 py-3">
+                                                <th scope="col" className="px-1 py-3">
                                                     Status
                                                 </th>
-
-
+                                                <th scope="col" className="px-1 py-3">
+                                                    Actions
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -134,70 +290,311 @@ function Businesses() {
 
                                             {
                                                 filteredTransactionList.length ? (filteredTransactionList.map((transaction, index) => (
-                                                    <tr className="bg-white border-b hover:bg-gray-50 dark:hover:bg-gray-600" key={index} >
+                                                    <tr className="bg-white border-b hover:bg-gray-50 " key={index} >
                                                         <td className="w-4 p-4">
-                                                            <div className="flex items-center">
-                                                                <input id="checkbox-table-search-1" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                                <label for="checkbox-table-search-1" className="sr-only">checkbox</label>
-                                                                <span className='px-2'> {transaction.externalTxnId ? transaction.externalTxnId : "N/A"}</span>
-                                                            </div>
+                                                            <span className='px-2'> {transaction.name ? transaction.name : "N/A"}</span>
                                                         </td>
                                                         <td className="px-6 py-4">
-                                                            {transaction.internalTxnId ? transaction.internalTxnId : "N/A"}
+                                                            {transaction.category ? transaction.category : "N/A"}
                                                         </td>
                                                         <td className="px-6 py-4">
-                                                            {transaction.customer ? transaction.customer.username : "N/A"}
+                                                            {transaction.reward_type ? transaction.reward_type : "N/A"}
                                                         </td>
                                                         <td className="px-6 py-4">
-                                                            {transaction.customer ? transaction.customer.phone : "N/A"}
+                                                            {transaction.contact_tel ? transaction.contact_tel : "N/A"}
                                                         </td>
                                                         <td className="px-6 py-4">
-                                                            {transaction.amount ? transaction.amount : "N/A"}
+                                                            {transaction.color_code ? transaction.color_code : "N/A"}
                                                         </td>
                                                         <td className="px-6 py-4">
-
                                                             {moment(transaction.createdAt).format('YYYY-MM-DD HH:mm:ss')}
-
                                                         </td>
                                                         <td className="px-6 py-4" >
-                                                            {transaction.statusDesc === 'FAILED' && <span className="font-medium FAILED">{transaction.statusDesc ? transaction.statusDesc : "N/A"}</span>}
-                                                            {transaction.statusDesc === 'SUCCESS' && <span className="font-medium  SUCCESS">{transaction.statusDesc ? transaction.statusDesc : "N/A"}</span>}
-                                                            {transaction.statusDesc === 'CREATED' && <span className="font-medium  CREATED">{transaction.statusDesc ? transaction.statusDesc : "N/A"}</span>}
-                                                            {transaction.statusDesc === 'PENDING' && <span className="font-medium  PENDING">{transaction.statusDesc ? transaction.statusDesc : "N/A"}</span>}
+                                                            {transaction.status === 'locked' && <span className="font-medium FAILED">{transaction.status ? transaction.status : "N/A"}</span>}
+                                                            {transaction.status === 'SUCCESS' && <span className="font-medium  SUCCESS">{transaction.status ? transaction.status : "N/A"}</span>}
+                                                            {transaction.status === 'CREATED' && <span className="font-medium  CREATED">{transaction.status ? transaction.status : "N/A"}</span>}
+                                                            {transaction.status === 'PENDING' && <span className="font-medium  PENDING">{transaction.status ? transaction.status : "N/A"}</span>}
                                                         </td>
                                                     </tr>
                                                 ))) : (
-                                                    transactionList.map((transaction, index) => (
-                                                        <tr className="bg-white border-b hover:bg-gray-50 dark:hover:bg-gray-600" key={index} >
+                                                    allBussinessesRegisteredList.map((transaction, index) => (
+                                                        <tr className="bg-white border-b hover:bg-gray-50 " key={index} >
                                                             <td className="w-4 p-4">
-                                                                <div className="flex items-center">
-                                                                    <input id="checkbox-table-search-1" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                                    <label for="checkbox-table-search-1" className="sr-only">checkbox</label>
-                                                                    <span className='px-2'> {transaction.externalTxnId ? transaction.externalTxnId : "N/A"}</span>
-                                                                </div>
+                                                                <span className='px-2'> {transaction.name ? transaction.name : "N/A"}</span>
                                                             </td>
                                                             <td className="px-6 py-4">
-                                                                {transaction.internalTxnId ? transaction.internalTxnId : "N/A"}
+                                                                {transaction.category ? transaction.category : "N/A"}
                                                             </td>
                                                             <td className="px-6 py-4">
-                                                                {transaction.customer ? transaction.customer.username : "N/A"}
+                                                                {transaction.reward_type ? transaction.reward_type : "N/A"}
                                                             </td>
                                                             <td className="px-6 py-4">
-                                                                {transaction.customer ? transaction.customer.phone : "N/A"}
+                                                                {transaction.contact_tel ? transaction.contact_tel : "N/A"}
                                                             </td>
                                                             <td className="px-6 py-4">
-                                                                {transaction.amount ? transaction.amount : "N/A"}
+                                                                {transaction.color_code ? transaction.color_code : "N/A"}
                                                             </td>
                                                             <td className="px-6 py-4">
-
                                                                 {moment(transaction.createdAt).format('YYYY-MM-DD HH:mm:ss')}
-
                                                             </td>
                                                             <td className="px-6 py-4" >
-                                                                {transaction.statusDesc === 'FAILED' && <span className="font-medium FAILED">{transaction.statusDesc ? transaction.statusDesc : "N/A"}</span>}
-                                                                {transaction.statusDesc === 'SUCCESS' && <span className="font-medium  SUCCESS">{transaction.statusDesc ? transaction.statusDesc : "N/A"}</span>}
-                                                                {transaction.statusDesc === 'CREATED' && <span className="font-medium  CREATED">{transaction.statusDesc ? transaction.statusDesc : "N/A"}</span>}
-                                                                {transaction.statusDesc === 'PENDING' && <span className="font-medium  PENDING">{transaction.statusDesc ? transaction.statusDesc : "N/A"}</span>}
+                                                                {transaction.status === 'locked' && <span className="font-medium FAILED">{transaction.status ? transaction.status : "N/A"}</span>}
+                                                                {transaction.status === 'SUCCESS' && <span className="font-medium  SUCCESS">{transaction.status ? transaction.status : "N/A"}</span>}
+                                                                {transaction.status === 'CREATED' && <span className="font-medium  CREATED">{transaction.status ? transaction.status : "N/A"}</span>}
+                                                                {transaction.status === 'PENDING' && <span className="font-medium  PENDING">{transaction.status ? transaction.status : "N/A"}</span>}
+                                                            </td>
+                                                            <td className="px-6 py-4 flex justify-around">
+                                                                <FaBookReader className='cursor-pointer ' onClick={() => handleViewRider(transaction)} />
+                                                                <FaRegEdit className='cursor-pointer ' onClick={() => handleEditBusiness(transaction)} />
+                                                                <Modal setOpenModal={editBusiness} onChildEvent={handleEditChildEvent} Title={modalRiderTitle} button={viewRiderInfo.name} >
+                                                                    <div className='flex flex-col my-3  w-3/5 form-width'>
+                    <div className='flex justify-between business-image mobile-fit  ' >
+                        <div className='flex flex-col w-full mr-1' >
+                            <label>
+                                Business name
+                            </label>
+                            <input type="text" className='' placeholder=' Business name' value={businesName} onChange={businesNameHandleChange}  ></input>
+                            <label className='' >
+                                Color code
+                            </label>
+                            <input type="text" className='' placeholder=' Color code' value={colorCode} onChange={colorCodeHandleChange}  ></input>
+                            <span className='flex flex-col' >
+                                <label>
+                                    Contact tel
+                                </label>
+                                <input type="text" className='' placeholder=' contact tel' value={contactTel} onChange={contactTelHandleChange}></input>
+                            </span>
+                        </div>
+                        <div className='flex flex-col' >
+                            <label className='mx-2' >
+                                Business Icon
+                            </label>
+                            <div className="upload_container border rounded-lg m-1 ">
+
+                                {renderfile ? (
+                                    <>
+                                        <img src={renderfile} alt="Selected Image" className="image" />
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={handleChange}
+                                            className="input"
+                                        />
+                                    </>
+                                ) : (
+                                    <>
+                                        <label htmlFor="uploadInput" className="label">
+                                            <img src={upload} alt="Image Icon" className="image" />
+                                        </label>
+                                        <input
+                                            id="uploadInput"
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={handleChange}
+                                            className="input-hidden"
+                                        />
+                                    </>
+                                )}
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <span className='flex flex-col mobile-fit '  >
+                        <label>
+                            MTN MOMO tel
+                        </label>
+                        <span className='flex justify-between momo-number ' >
+                            <input type="number" className='phone-number' placeholder='Phone Number' value={phoneNumber} onChange={confirmMOMOnumberHandleChange} ></input>
+                            <div className='ml-1 flex' >
+                                {loading && (<div role="status">
+                                    <svg aria-hidden="true" class="inline w-4 h-4 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-white" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
+                                        <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
+                                    </svg>
+                                    <span class="sr-only">Loading...</span>
+                                </div>)}
+                                {isRegistered && phoneNumber.length === 10 && <span role="img" aria-label="check mark button" class="react-emojis">✅</span>}
+                                {!isRegistered && phoneNumber.length === 10 && <span role="img" aria-label="cross mark" class="react-emojis">❌</span>}
+                            </div>
+                        </span>
+                    </span>
+
+                    <div className='flex justify-between mobile-fit '>
+                        <div className='flex flex-col w-1/2'  >
+                            <label>
+                                Reward type
+                            </label>
+                            <select required value={rewardType} onChange={setrewardTypeHandleChange} className='rounded border'  >
+                                <option value='' >pick one</option>
+                                <option value='cashback'>cashback</option>
+                                <option value='points'>points</option>
+                            </select>
+                        </div>
+
+                        <div className='flex flex-col w-1/2 mx-2'  >
+                            <label>
+                                Business category
+                            </label>
+                            <select required value={businessCategory} onChange={businessCategoryHandleChange} className='rounded border'  >
+                                <option value='' >pick one</option>
+                                <option value='cashback'>cashback</option>
+                                <option value='points'>points</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div className='flex justify-between business-image mobile-fit  ' >
+                        <div className='flex flex-col w-full mr-1' >
+                            <span className='flex flex-col' >
+                                <label>
+                                    Email (admin account)
+                                </label>
+                                <input type="text" className='' placeholder=' contact tel' value={email} onChange={emailHandleChange}></input>
+                            </span>
+                            <span className='flex flex-col' >
+                                <label>
+                                    Password
+                                </label>
+                                <input type="text" className='' placeholder=' contact tel' value={password} onChange={passwordHandleChange}></input>
+                            </span>
+                            <span className='flex flex-col' >
+                                <label>
+                                    Confirm password
+                                </label>
+                                <input type="text" className='' placeholder=' contact tel' value={confirmPassword} onChange={confirmPasswordHandleChange}></input>
+                            </span>
+                        </div>
+                        <div className='flex flex-col' >
+                            <label className='mx-2' >
+                                Business certificate
+                            </label>
+                            <div className="upload_container border rounded-lg m-1 ">
+
+                                {certificate ? (
+                                    <>
+                                        <img src={certificate} alt="Selected Image" className="image" />
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={handleCertificateChange}
+                                            className="input"
+                                        />
+                                    </>
+                                ) : (
+                                    <>
+                                        <label htmlFor="uploadInput" className="label">
+                                            <img src={upload} alt="Image Icon" className="image" />
+                                        </label>
+                                        <input
+                                            id="uploadInput"
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={handleCertificateChange}
+                                            className="input-hidden"
+                                        />
+                                    </>
+                                )}
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div className='  flex justify-between items-center py-3  mobile-fit '>
+                        <div className='flex justify-start items-center   w-4/5'> <input className='checkbox border cursor-pointer' type="checkbox" /> <Link to="/terms-conditions"> <span className='mx-2 remeber_forgot underline cursor-pointer' >terms and conditions</span> </Link> </div>
+                        <Link to="/"> <span className='remeber_forgot underline cursor-pointer '>Back</span> </Link>
+                    </div>
+                    <span className=' '>
+                        <button className='fom-btn w-full p-2' onClick={handleBusinessRegister} >
+                            {!isloading ? (<div className='mr-4 submit-btn-center' >Submit</div>) : (<div role="status">
+                                <svg aria-hidden="true" class="inline w-4 h-4 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-white" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
+                                    <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
+                                </svg>
+                                <span class="sr-only">Loading...</span>
+                            </div>)} </button>
+                    </span>
+                </div>
+                                                                </Modal>
+                                                                <Modal setOpenModal={viewRider} onChildEvent={handleViewChildEvent} Title={modalRiderTitle} button={viewRiderInfo.name} >
+                                                                    <div className='flex flex-col my-3   form-width'>
+                                                                        <div className='flex justify-between business-image mobile-fit  ' >
+                                                                            <div className='flex flex-col w-full mr-1' >
+                                                                                <label>
+                                                                                    Business name
+                                                                                </label>
+                                                                                <span> {viewRiderInfo.name ? viewRiderInfo.name : "N/A"} </span>
+                                                                                <label className='' >
+                                                                                    Color code
+                                                                                </label>
+                                                                                <span>{viewRiderInfo.color_code ? viewRiderInfo.color_code : "N/A"}</span>
+                                                                                <span className='flex flex-col' >
+                                                                                    <label>
+                                                                                        Contact tel
+                                                                                    </label>
+                                                                                    <span>{viewRiderInfo.contact_tel ? viewRiderInfo.contact_tel : "N/A"}</span>
+                                                                                </span>
+                                                                            </div>
+                                                                            <div className='flex flex-col' >
+                                                                                <label className='mx-2' >
+                                                                                    Business Icon
+                                                                                </label>
+                                                                                <div className="upload_container border rounded-lg m-1 ">
+                                                                                    <img src={`https://apidev2.koipay.co/${viewRiderInfo.icon}`} alt="Selected Image" className="image" />
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>
+
+                                                                        <span className='flex flex-col mobile-fit  my-2 '  >
+                                                                            <label>
+                                                                                MTN MOMO tel
+                                                                            </label>
+                                                                            <span>{viewRiderInfo.momo_tel ? viewRiderInfo.momo_tel : "N/A"}</span>
+
+                                                                        </span>
+
+                                                                        <div className='flex justify-between mobile-fit my-2  '>
+                                                                            <div className='flex flex-col '  >
+                                                                                <label>
+                                                                                    Reward type
+                                                                                </label>
+                                                                                <span>{viewRiderInfo.reward_type ? viewRiderInfo.reward_type : "N/A"}</span>
+
+                                                                            </div>
+
+                                                                            <div className='flex flex-col  mx-2'  >
+                                                                                <label>
+                                                                                    Business category
+                                                                                </label>
+                                                                                <span>{viewRiderInfo.category ? viewRiderInfo.category : "N/A"}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className='flex justify-between business-image mobile-fit  ' >
+                                                                            <div className='flex flex-col w-full mr-1' >
+                                                                                <span className='flex flex-col' >
+                                                                                    <label>
+                                                                                        Email (admin account)
+                                                                                    </label>
+                                                                                    <span>{viewRiderInfo.reward_type ? viewRiderInfo.reward_type : "N/A"}</span>
+                                                                                </span>
+                                                                                
+                                                                            </div>
+                                                                            <div className='flex flex-col' >
+                                                                                <label className='mx-2' >
+                                                                                    Business certificate
+                                                                                </label>
+                                                                                <div className="upload_container border rounded-lg m-1 ">
+                                                                                    <img src={`https://apidev2.koipay.co/${viewRiderInfo.business_certificate}`} alt="Selected Image" className="image" />
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>
+
+
+
+                                                                    </div>
+                                                                </Modal>
+
                                                             </td>
                                                         </tr>
                                                     ))
@@ -208,104 +605,7 @@ function Businesses() {
 
                                 ) : (
                                     <div className='flex justify-center m-5 p-4'>
-                                        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 border">
-                                            <thead className="text-xs text-gray-700 uppercase dark:text-gray-400 border-b">
-                                                <tr>
-                                                    <th scope="col" className="px-6 py-3">
-                                                        Id
-                                                    </th>
-                                                    <th scope="col" className="px-6 py-3">
-                                                        Product name
-                                                    </th>
-                                                    <th scope="col" className="px-6 py-3">
-                                                        Color
-                                                    </th>
-                                                    <th scope="col" className="px-6 py-3">
-                                                        Category
-                                                    </th>
-                                                    <th scope="col" className="px-6 py-3">
-                                                        Price
-                                                    </th>
-                                                    <th scope="col" className="px-6 py-3">
-                                                        Action
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr className="bg-white border-b hover:bg-gray-50 dark:hover:bg-gray-600">
-                                                    <td className="w-4 p-4">
-                                                        <div className="flex items-center">
-                                                            #
-                                                        </div>
-                                                    </td>
-                                                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
-                                                        Apple
-                                                    </th>
-                                                    <td className="px-6 py-4">
-                                                        Silver
-                                                    </td>
-                                                    <td className="px-6 py-4">
-                                                        Laptop
-                                                    </td>
-                                                    <td className="px-6 py-4">
-                                                        $2999
-                                                    </td>
-                                                    <td className="px-6 py-4 flex justify-around ">
-                                                    <Modal setOpenModal={viewRider} onChildEvent={handleViewChildEvent} Title={modalRiderTitle} button={Moridebtn_name} >
-                                                        modal
-                                                    </Modal>
-                                                        <span className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={() => handleViewRider()} >view</span>
-                                                        <span className="font-medium text-blue-600 dark:text-blue-500 hover:underline">edit</span>
-                                                    </td>
-                                                </tr>
-                                                <tr className="bg-white border-b hover:bg-gray-50 dark:hover:bg-gray-600">
-                                                    <td className="w-4 p-4">
-                                                        <div className="flex items-center">
-                                                            # 
-                                                        </div>
-                                                    </td>
-                                                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                                        Magic
-                                                    </th>
-                                                    <td className="px-6 py-4">
-                                                        Black
-                                                    </td>
-                                                    <td className="px-6 py-4">
-                                                        Accessories
-                                                    </td>
-                                                    <td className="px-6 py-4">
-                                                        $99
-                                                    </td>
-                                                    <td className="px-6 py-4 flex justify-around ">
-                                                        <span className="font-medium text-blue-600 dark:text-blue-500 hover:underline">view</span>
-                                                        <span className="font-medium text-blue-600 dark:text-blue-500 hover:underline">edit</span>
-                                                    </td>
-                                                </tr>
-                                                <tr className="bg-white border-b hover:bg-gray-50 dark:hover:bg-gray-600">
-                                                    <td className="w-4 p-4">
-                                                        <div className="flex items-center">
-                                                            #
-                                                        </div>
-                                                    </td>
-                                                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                                        Apple Watch
-                                                    </th>
-                                                    <td className="px-6 py-4">
-                                                        Silver
-                                                    </td>
-                                                    <td className="px-6 py-4">
-                                                        Accessories
-                                                    </td>
-                                                    <td className="px-6 py-4">
-                                                        $179
-                                                    </td>
-                                                    <td className="px-6 py-4 flex justify-around ">
-                                                        <span className="font-medium text-blue-600 dark:text-blue-500 hover:underline">view</span>
-                                                        <span className="font-medium text-blue-600 dark:text-blue-500 hover:underline">edit</span>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+
                                     </div>
                                 )}
 

@@ -49,6 +49,13 @@ function Electricity() {
         }
     };
     const isLoading = useSelector((state) => state.transactions.isLoading);
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
+
     useEffect(() => {
         dispatch(fetchAsyncTransaction(selectedRange))
     }, [dispatch, selectedRange]);
@@ -202,7 +209,7 @@ function Electricity() {
 
                         {transactionList && (
                             <div className='flex justify-end my-3'>
-                                <Pagination defaultCurrent={6} total={transactionList.length} className="border p-3 rounded-lg" />
+                                <Pagination defaultCurrent={6} total={transactionList.length} onChange={handlePageChange}  className="border p-3 rounded-lg" />
                             </div>
                         )}
 

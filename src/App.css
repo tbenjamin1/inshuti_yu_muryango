@@ -640,6 +640,11 @@ select:required:invalid {
   border-radius: 6px;
   color: white;
 }
+.fom-btn-approve{
+  background: #946EC4;
+  border-radius: 6px;
+  color: white;
+}
 .page-content {
   width: 100%;
 }

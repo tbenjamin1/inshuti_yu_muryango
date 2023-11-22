@@ -14,7 +14,7 @@ function TermsConditions() {
         dispatch(setAcceptTermsConditions(!acceptTermsState));
     }
     const handleAcceptBusinessTerms = () => {
-
+        
     }
 
     return (

@@ -11,11 +11,15 @@ import axios from 'axios';
 import { FaBeer } from 'react-icons/fa';
 import upload from "../../images/upload.svg";
 import { useDispatch, useSelector } from 'react-redux';
-import { selectAcceptTerms, setAcceptTermsConditions } from '../../../redux/transactions/TransactionSlice';
+import Select from 'react-select';
+import { fetchAsynBusinessCatgeory, getAllBussinessesCategories, selectAcceptTerms, setAcceptTermsConditions } from '../../../redux/transactions/TransactionSlice';
+import { MdCategory } from 'react-icons/md';
 
 function RefereePage() {
     const { addToast } = useToasts();
     const dispatch = useDispatch();
+
+    const allbusinesscategories = useSelector(getAllBussinessesCategories);
 
     const [businesName, setbusinesNameValue] = useState('');
     const [colorCode, setcolorCodeValue] = useState('');
@@ -33,8 +37,24 @@ function RefereePage() {
     const [isloading, setisLoading] = useState(false);
     const [termsCondidtions, settermsCondidtions] = useState(false);
     const [termsError, settermsError] = useState(false);
-
+    const [selectedPlate, setSelectedplate] = useState('');
     const acceptTermsState = useSelector(selectAcceptTerms);
+
+
+    // errors
+
+    const [businesNameError, seterror_name] = useState('');
+    const [colorCodeError, setcolor_code] = useState('');
+    const [phoneNumberError, setcontact_tel] = useState('');
+    const [reward_type, setreward_type] = useState('');
+    const [iconError, seticonError] = useState('');
+    const [businessCategoryError, setcategory] = useState('');
+    const [business_certificate, setbusiness_certificate] = useState('');
+    const [momo_tel, setmomo_tel] = useState('');
+    const [emailError, setemailError] = useState('');
+    const [passwordError, setpassword_error] = useState('');
+
+
     const termsHandleChange = (event) => {
         dispatch(setAcceptTermsConditions(!acceptTermsState));
         settermsCondidtions(!termsCondidtions);
@@ -70,6 +90,10 @@ function RefereePage() {
     const confirmPasswordHandleChange = (event) => {
         setConfirmPassword(event.target.value);
     };
+
+    const handleSelectPlate = (option) => {
+        setSelectedplate(option);
+    };
     // Define states for profile image and permit image
     const [file, setFile] = useState('');
     const [certificate, setcertificate] = useState('');
@@ -78,6 +102,7 @@ function RefereePage() {
     // Profile image upload
     function handleChange(e) {
         setrenderFile(URL.createObjectURL(e.target.files[0]));
+
         setFile(e.target.files[0]);
     }
     const handleCertificateChange = (e) => {
@@ -142,66 +167,80 @@ function RefereePage() {
         handleSubmit();
     }, [phoneNumber]);
 
+    useEffect(() => {
+        console.log("useEffect")
+        dispatch(fetchAsynBusinessCatgeory())
+    }, []);
+
 
     const handleBusinessRegister = async (event) => {
         event.preventDefault();
-        const businessInform = {
-            businesName: businesName,
-            colorCode: colorCode,
-            phoneNumber: phoneNumber,
-            contactTel: contactTel,
-            rewardType: rewardType,
-            businessCategory: businessCategory,
-            email: email,
-            password: password,
-            confirmPassword: confirmPassword,
-        }
-        
-        const isValidPhoneNumber = validateMtnPhoneNumber(phoneNumber);
-        if (!isValidPhoneNumber) {
-            // Handle invalid phone number case
-            addToast("Something went wrong! please check your momo number", {
-                appearance: 'error', autoDismiss: true, // Enable auto dismissal
-                autoDismissTimeout: 5000,
-                transitionDuration: 300,
-            });
 
-            return;
-        }
-        if (password.toLowerCase != confirmPassword.toLowerCase) {
-            // Handle invalid phone number case
-            addToast("Something went wrong! password must be matching !", {
-                appearance: 'error', autoDismiss: true, // Enable auto dismissal
-                autoDismissTimeout: 5000,
-                transitionDuration: 300,
-            });
+        seterror_name('');
+        setcolor_code('');
+        setcontact_tel('');
+        setreward_type('');
+        setemailError('');
+        seticonError('');
+        setbusiness_certificate('');
+        setpassword_error('');
+        setmomo_tel('');
 
-            return;
-        }
-        if (!acceptTermsState) {
-            settermsError(!termsError)
-            // Handle invalid phone number case
-            addToast("please confirm you have  read terms and conditions!", {
-                appearance: 'error', autoDismiss: true, // Enable auto dismissal
-                autoDismissTimeout: 5000,
-                transitionDuration: 300,
-            });
+        const businessInform = new FormData();
 
-            return;
-        }
-        
+        businessInform.append('name', businesName);
+        businessInform.append('color_code', colorCode);
+        businessInform.append('momo_tel', phoneNumber);
+        businessInform.append('contact_tel', contactTel);
+        businessInform.append('reward_type', rewardType);
+        businessInform.append('category', 1);
+        businessInform.append('email', email);
+        businessInform.append('password', password);
+        businessInform.append('icon', file);
+        businessInform.append('business_certificate', certificateFile);
+
+        // const isValidPhoneNumber = validateMtnPhoneNumber(phoneNumber);
+        // if (!isValidPhoneNumber) {
+        //     addToast("Something went wrong! please check your momo number", {
+        //         appearance: 'error', autoDismiss: true, // Enable auto dismissal
+        //         autoDismissTimeout: 5000,
+        //         transitionDuration: 300,
+        //     });
+
+        //     return;
+        // }
+        // if (password.toLowerCase != confirmPassword.toLowerCase) {
+        //     addToast("Something went wrong! password must be matching !", {
+        //         appearance: 'error', autoDismiss: true, // Enable auto dismissal
+        //         autoDismissTimeout: 5000,
+        //         transitionDuration: 300,
+        //     });
+
+        //     return;
+        // }
+        // if (!acceptTermsState) {
+        //     settermsError(!termsError)
+        //     addToast("please confirm you have  read terms and conditions!", {
+        //         appearance: 'error', autoDismiss: true, // Enable auto dismissal
+        //         autoDismissTimeout: 5000,
+        //         transitionDuration: 300,
+        //     });
+
+        //     return;
+        // }
+
 
 
         setisLoading(true)
 
         try {
-            const response = await axios.post('https://apidev2.koipay.co/api/business/', { businessInform }, {
+            const response = await axios.post('https://apidev2.koipay.co/api/business/', businessInform, {
                 // headers: {
                 //     'Access-Control-Allow-Origin': '*',
                 // }
             });
 
-            addToast(`Successfully registered, your code is : ${response.data.data.referee.code}`, {
+            addToast(`Successfully registered`, {
                 appearance: 'success',
             });
 
@@ -217,6 +256,10 @@ function RefereePage() {
             setConfirmPassword("");
             setIsregistered(false);
         } catch (error) {
+
+            let riderErros = Object.keys(error.response.data);
+            ErrorHandler(riderErros);
+
             addToast("Something went wrong! please try again", {
                 appearance: 'error', autoDismiss: true, // Enable auto dismissal
                 autoDismissTimeout: 5000,
@@ -225,6 +268,43 @@ function RefereePage() {
             setisLoading(false);
         }
     };
+    const ErrorHandler = (fields) => {
+        fields.map((field) => {
+            if (field === "name") {
+                seterror_name("This field may not be blank.");
+            }
+            if (field === "color_code") {
+                setcolor_code("This field may not be blank.");
+            }
+            if (field === "contact_tel") {
+                setcontact_tel("Date has wrong format.YYYY-MM-DD.");
+            }
+            if (field === "reward_type") {
+                setreward_type("select a valid choice .");
+            }
+            if (field === "category") {
+                setcategory("select a valid choice .");
+            }
+            if (field === "email") {
+                setemailError("This field may not be blank.");
+            }
+            if (field === "icon") {
+                seticonError("This field may not be blank.");
+            }
+            if (field === "business_certificate") {
+                setbusiness_certificate("This field may not be blank.");
+            }
+            if (field === "password") {
+                setpassword_error("This field may not be blank.");
+            }
+            if (field === "momo_tel") {
+
+                setmomo_tel("This field may not be blank.");
+            } else {
+                return true;
+            }
+        });
+    }
 
     return (
         <div className='flex bg-slate-100 py-20   px-10 busines-container' >
@@ -252,21 +332,35 @@ function RefereePage() {
                                 Business name
                             </label>
                             <input type="text" className='' placeholder=' Business name' value={businesName} onChange={businesNameHandleChange}  ></input>
+
+                            {businesNameError&&<p class="mt-2   text-pink-600 text-sm">
+                               {businesNameError}
+                            </p>}
+
                             <label className='' >
                                 Color code
                             </label>
                             <input type="text" className='' placeholder=' Color code' value={colorCode} onChange={colorCodeHandleChange}  ></input>
+                            {businesNameError&&<p class="mt-2   text-pink-600 text-sm">
+                               {businesNameError}
+                            </p>}
                             <span className='flex flex-col' >
                                 <label>
                                     Contact tel
                                 </label>
                                 <input type="text" className='' placeholder=' contact tel' value={contactTel} onChange={contactTelHandleChange}></input>
+                                {businesNameError&&<p class="mt-2   text-pink-600 text-sm">
+                               {businesNameError}
+                            </p>}
                             </span>
                         </div>
                         <div className='flex flex-col' >
                             <label className='mx-2' >
                                 Business Icon
                             </label>
+                            {businesNameError&&<p class="mt-2   text-pink-600 text-sm">
+                               {businesNameError}
+                            </p>}
                             <div className="upload_container border rounded-lg m-1 ">
 
                                 {renderfile ? (
@@ -316,6 +410,9 @@ function RefereePage() {
                                 {!isRegistered && phoneNumber.length === 10 && <span role="img" aria-label="cross mark" class="react-emojis">❌</span>}
                             </div>
                         </span>
+                        {businesNameError&&<p class="mt-2   text-pink-600 text-sm">
+                               {businesNameError}
+                            </p>}
                     </span>
 
                     <div className='flex justify-between mobile-fit '>
@@ -328,6 +425,9 @@ function RefereePage() {
                                 <option value='cashback'>cashback</option>
                                 <option value='points'>points</option>
                             </select>
+                            {businesNameError&&<p class="mt-2   text-pink-600 text-sm">
+                               {businesNameError}
+                            </p>}
                         </div>
 
                         <div className='flex flex-col w-1/2 mx-2'  >
@@ -335,10 +435,17 @@ function RefereePage() {
                                 Business category
                             </label>
                             <select required value={businessCategory} onChange={businessCategoryHandleChange} className='rounded border'  >
-                                <option value='' >pick one</option>
-                                <option value='cashback'>cashback</option>
-                                <option value='points'>points</option>
+                                <option value=''  >pick one</option>
+                                {allbusinesscategories &&
+                                    allbusinesscategories.map((category) => (
+                                        <option key={category.id} value={category.name}>
+                                            {category.name}
+                                        </option>
+                                    ))}
                             </select>
+                            {businesNameError&&<p class="mt-2   text-pink-600 text-sm">
+                               {businesNameError}
+                            </p>}
                         </div>
                     </div>
                     <div className='flex justify-between business-image mobile-fit  ' >
@@ -348,24 +455,36 @@ function RefereePage() {
                                     Email (admin account)
                                 </label>
                                 <input type="text" className='' placeholder=' contact tel' value={email} onChange={emailHandleChange}></input>
+                                {businesNameError&&<p class="mt-2   text-pink-600 text-sm">
+                               {businesNameError}
+                            </p>}
                             </span>
                             <span className='flex flex-col' >
                                 <label>
                                     Password
                                 </label>
                                 <input type="text" className='' placeholder=' contact tel' value={password} onChange={passwordHandleChange}></input>
+                                {businesNameError&&<p class="mt-2   text-pink-600 text-sm">
+                               {businesNameError}
+                            </p>}
                             </span>
                             <span className='flex flex-col' >
                                 <label>
                                     Confirm password
                                 </label>
                                 <input type="text" className='' placeholder=' contact tel' value={confirmPassword} onChange={confirmPasswordHandleChange}></input>
+                                {businesNameError&&<p class="mt-2   text-pink-600 text-sm">
+                               {businesNameError}
+                            </p>}
                             </span>
                         </div>
                         <div className='flex flex-col' >
                             <label className='mx-2' >
                                 Business certificate
                             </label>
+                            {businesNameError&&<p class="mt-2   text-pink-600 text-sm">
+                               {businesNameError}
+                            </p>}
                             <div className="upload_container border rounded-lg m-1 ">
 
                                 {certificate ? (
@@ -398,7 +517,7 @@ function RefereePage() {
                     </div>
 
                     <div className='  flex justify-between items-center py-3  mobile-fit '>
-                        <div className='flex justify-start items-center   w-4/5'> <input className='checkbox border cursor-pointer' type="checkbox" checked={acceptTermsState}  value='yes' onChange={termsHandleChange} /> <Link to="/terms-conditions"> <span  className={acceptTermsState===false?'mx-2 termsError underline cursor-pointer':'mx-2 remeber_forgot underline cursor-pointer'} >terms and conditions {termsError} </span> </Link> </div>
+                        <div className='flex justify-start items-center   w-4/5'> <input className='checkbox border cursor-pointer' type="checkbox" checked={acceptTermsState} value='yes' onChange={termsHandleChange} /> <Link to="/terms-conditions"> <span className={acceptTermsState === false ? 'mx-2 termsError underline cursor-pointer' : 'mx-2 remeber_forgot underline cursor-pointer'} >terms and conditions {termsError} </span> </Link> </div>
                         <Link to="/"> <span className='remeber_forgot underline cursor-pointer '>Back</span> </Link>
                     </div>
                     <span className=' '>

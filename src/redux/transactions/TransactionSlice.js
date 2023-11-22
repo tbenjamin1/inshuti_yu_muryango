@@ -49,10 +49,20 @@ export const fetchAsynBoughtItems = createAsyncThunk('tranx/fetchAsynBoughtItems
     return response.data;
 })
 
-export const fetchAsynBusinessRegistered = createAsyncThunk('tranx/fetchAsynBusinessRegistered', async ({ selectedRange }) => {
-    const response = await axios.get(`https://apidev2.koipay.co/api/business/?page=1`)
+export const fetchAsynBusinessRegistered = createAsyncThunk('tranx/fetchAsynBusinessRegistered', async ({ selectedRange,currentPage }) => {
+    const response = await axios.get(`https://apidev2.koipay.co/api/business/?page=${currentPage}`)
+
     return response.data;
+
 })
+
+
+export const fetchAsynBusinessCatgeory = createAsyncThunk('tranx/fetchAsynBusinessCatgeory', async () => {
+    const response = await axios.get(`https://apidev2.koipay.co/api/categories/`)
+    return response.data;
+
+})
+
 
 const savedUser = localStorage.getItem('user');
 
@@ -78,6 +88,7 @@ const initialState = {
 
     BusinessList: [],
     paginatedBusinessList: [],
+    businessCatgeoryList: [],
 
     isLoggedIn: savedUser ? true : false,
     user: savedUser ? JSON.parse(savedUser) : null,
@@ -89,7 +100,7 @@ const transactionsSlice = createSlice({
     reducers: {
         setAcceptTermsConditions: (state, action) => {
             state.acceptTerms = action.payload;
-          },
+        },
         addTransactions: (state, action) => {
             state.transactionsList = action.payload;
         },
@@ -98,7 +109,10 @@ const transactionsSlice = createSlice({
         },
     },
     extraReducers: {
-        
+
+        [fetchAsynBusinessCatgeory.pending]: (state) => {
+            state.isLoading = true;
+        },
         [fetchAsynBusinessRegistered.pending]: (state) => {
             state.isLoading = true;
         },
@@ -137,10 +151,17 @@ const transactionsSlice = createSlice({
 
             state.isLoading = true;
         },
-        
+
+        [fetchAsynBusinessCatgeory.fulfilled]: (state, { payload }) => {
+            return {
+                ...state, isLoading: false, businessCatgeoryList: payload.results
+            };
+        },
+
         [fetchAsynBusinessRegistered.fulfilled]: (state, { payload }) => {
             return {
-                ...state, isLoading: false, BusinessList: payload
+                ...state, isLoading: false, BusinessList: payload.results,paginatedBusinessList:payload
+
             };
         },
 
@@ -185,7 +206,10 @@ const transactionsSlice = createSlice({
             return { ...state, isLoading: false, startimesTransationList: payload };
         },
 
-        
+        [fetchAsynBusinessCatgeory.rejected]: (state) => {
+            state.isLoading = false;
+        },
+
         [fetchAsynBusinessRegistered.rejected]: (state) => {
             state.isLoading = false;
         },
@@ -248,6 +272,9 @@ export const getAllparkPickPaginatedBoughtItemsList = (state) => state.transacti
 
 export const getAllNonPaginatedItems = (state) => state.transactions.nonPaginatedItemsList;
 export const getAllBussinessesRegistered = (state) => state.transactions.BusinessList;
+export const getAllBussinessesCategories = (state) => state.transactions.businessCatgeoryList;
+export const getAllPaginatedBussinesses= (state) => state.transactions.paginatedBusinessList;
+
 export const getAllparkPickPaginatedItems = (state) => state.transactions.parkPicktpaginatedItems;
 
 export const selectAcceptTerms = (state) => state.transactions.acceptTerms;

@@ -47,17 +47,21 @@ body {
 .text-lightblue {
   color: #469cac;
 }
-.unavailable-items{
+
+.unavailable-items {
   width: 100%;
 }
+
 .text-red {
   color: #cc3d38;
 }
-.termsError{
+
+.termsError {
   color: #cc3d38;
   font-weight: 400;
-    font-size: 12px;
+  font-size: 12px;
 }
+
 .text-yellow {
   color: #a98921;
 }
@@ -93,6 +97,10 @@ font-size: 10px;
 .myTabContent {
   padding-top: 100px;
   /* height: vh; */
+}
+
+.success-card {
+  background-color: #EAF7FF;
 }
 
 .my_TabContent {
@@ -147,50 +155,61 @@ select {
 textarea {
   height: 100px;
 }
-.terms-container{
+
+.terms-container {
   height: 100vh;
   background-color: #E5E5E5;
 }
-.terms-description{
+
+.terms-description {
   height: 70vh;
   overflow-y: auto;
 }
-.terms-title{
+
+.terms-title {
   font-weight: 400;
   font-size: 20px;
   color: #946EC4;
 }
-.terms-sub-title{
+
+.terms-sub-title {
   font-weight: 400;
   font-size: 20px;
 }
-.terms-accept{
+
+.terms-accept {
   background-color: #1BA97F;
   color: white;
   font-size: 15px;
 }
-.terms-accept-disabled{
+
+.terms-accept-disabled {
   background-color: #81dcc0;
   color: white;
   font-size: 15px;
 }
+
 /* Add this in your CSS or style tag */
 .checkbox:checked {
-  background-color: #1BA97F; /* Replace with your desired color */
+  background-color: #1BA97F;
+  /* Replace with your desired color */
 }
+
 input[type='checkbox'] {
   accent-color: #1BA97F;
-  
+
 }
-.checkbox{
+
+.checkbox {
   height: 40px;
 }
 
-.terms-Cancel{
-  border:2px solid #1BA97F;
+.terms-Cancel {
+  border: 2px solid #1BA97F;
   color: #1BA97F;
   font-size: 15px;
 }
+
 .footer {
 
   /* bottom: 0;
@@ -223,13 +242,16 @@ input[type='checkbox'] {
 .border_green {
   border-bottom: 4px solid #1BA97F;
 }
+
 thead tr th {
   font-size: 11px;
 }
-.spinner-w{
+
+.spinner-w {
   width: 100%;
   position: absolute;
 }
+
 tbody tr td {
   font-size: 12px;
   padding: 19px 4px !important;
@@ -241,57 +263,76 @@ tbody tr th {
 }
 
 @media only screen and (max-width: 820px) {
-  .login-screen{
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
+  .success-card {
+    font-size: 10px;
+    padding: 0px;
   }
-  .terms-condition{
+
+  .login-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .terms-condition {
     width: 95%;
     height: 95%;
   }
-  .terms-footer{
+
+  .terms-footer {
     display: flex;
     flex-direction: column;
   }
-  .terms-footer-btn{
+
+  .terms-footer-btn {
     width: 100%;
     padding: 10px 0px;
   }
+
   .terms-description {
-  font-size: 11px;
+    font-size: 11px;
   }
-  .upload_container{
+
+  .upload_container {
     height: 90px !important;
     width: 90px !important;
   }
-  .busines-container{
+
+  .busines-container {
     display: flex;
-   justify-content: center;
+    justify-content: center;
     width: 100%;
     padding: 25px 0px;
 
   }
-  .submit-btn-center{
+  .submit-btn-center {
     margin: 0px;
   }
-  .busines-container-right{
+  .busines-container-right {
     width: 58%;
-    height: 100%;
+    /* height: 100%; */
   }
-  .busines-container-left{
+  .fom-btn-approve {
+    padding: 5px 10px;
+    font-size: 10px;
+  }
+  .approve-container {
+    width: 100%;
+  }
+  .busines-container-left {
     width: 38%;
     border-radius: 10px 0px 0px 10px;
   }
-  .business-image{
+  .business-image {
     display: flex;
     flex-direction: column;
   }
-  .mobile-fit{
+  .mobile-fit {
     width: 100%;
     padding: 0px 10px;
   }
+
   .my_TabContent {
     overflow: auto;
   }
@@ -329,15 +370,18 @@ align-items: center;
     padding: 0px;
   }
 }
-.active_filter{
+
+.active_filter {
   background-color: #1BA97F;
   color: white;
 }
+
 /* mine css */
 .login-screen {
   height: 100vh;
   background-color: #E5E5E5;
 }
+
 .login-page {
   border-radius: 10px;
   position: relative;
@@ -347,26 +391,32 @@ align-items: center;
 .sidebar__menu h2 {
   padding: 10px 10px !important;
 }
+
 .filter-section {
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.total-unit{
+
+.total-unit {
   font-size: 12px;
 }
-.main-login-container{
+
+.main-login-container {
   height: 50%;
 }
-.login-container-image{
+
+.login-container-image {
   height: 300px;
   width: 500px;
 }
-.login-container-image img{
+
+.login-container-image img {
   height: 100%;
   width: 100%;
 }
+
 @media screen and (max-width: 768) {
   .fom-btn {
     font-size: 9px;
@@ -377,11 +427,13 @@ align-items: center;
   .my_TabContent {
     overflow: auto;
   }
+
   .login-container-image {
     height: 200px;
     width: 117px;
-}
-/* .sub-main-container{
+  }
+
+  /* .sub-main-container{
   margin-top: 100px;
 } */
   thead tr th {
@@ -428,10 +480,12 @@ align-items: center;
     align-items: center;
     padding: 0px 0px 0px 0px;
   }
-  .fom-btn{
-    padding: 5px 3px ;
+
+  .fom-btn {
+    padding: 5px 3px;
   }
-  .navbar-btn-container{
+
+  .navbar-btn-container {
     padding: 5px 0px;
   }
 
@@ -486,7 +540,7 @@ align-items: center;
   } */
 
   .login-page {
-    
+
     width: 100%;
     height: 70%;
   }
@@ -611,40 +665,47 @@ label {
   border: 1px solid #3b9668;
 }
 
-input{
+input {
   border: 1px solid #828282;
   padding: 3px 5px;
   font-size: 12px;
   border-radius: 5px;
   height: 36px;
 }
+
 select {
   padding: 3px 5px;
   font-size: 12px;
   border-radius: 5px;
   height: 36px;
 }
+
 select:required:invalid {
   color: #b0b2b3;
 }
+
 ::placeholder {
   color: #946EC4;
 }
+
 .remeber_forgot {
   font-weight: 400;
   font-size: 12px;
   color: #946EC4;
 }
+
 .fom-btn {
   background: #1BA97F;
   border-radius: 6px;
   color: white;
 }
-.fom-btn-approve{
+
+.fom-btn-approve {
   background: #946EC4;
   border-radius: 6px;
   color: white;
 }
+
 .page-content {
   width: 100%;
 }
@@ -653,6 +714,7 @@ select:required:invalid {
   font-size: 30px;
   cursor: pointer;
 }
+
 /* upload image css */
 .upload_container {
   position: relative;
@@ -676,6 +738,7 @@ select:required:invalid {
   cursor: pointer;
   border-radius: 6px;
 }
+
 .legend {
   color: #334154;
   font-size: 11px;

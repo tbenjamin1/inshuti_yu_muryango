@@ -141,11 +141,11 @@ function RefereePage() {
                     <span className='flex flex-col  ' >
                         <img src={employee} className="App-logo" alt="logo" />
                         <span className=' referee-emoji' role="img" aria-label="partying-face">🥳</span>
-                        <span className='my-3 ml-4 font-serif referal-content' >Refer, Earn, and Give Back with Koipay! Invite your friends to join Koipay and earn cash back every time they use our platform. Support charities close to your heart by donating your cash back rewards</span>
+                        <span className='my-3 ml-4 font_serif referal-content' >Refer, Earn, and Give Back with Koipay! Invite your friends to join Koipay and earn cash back every time they use our platform. Support charities close to your heart by donating your cash back rewards</span>
                     </span>
                 </div>
                 <div className='flex flex-col w-1/2 justify-center items-center bg-white py-4 referee-form '>
-                    <span className='Referral-title flex flex-col    font-serif   '>
+                    <span className='Referral-title flex flex-col    font_serif   '>
                         <span className='pl-2' >Join Koipay's Referral Program and Multiply Your Rewards!</span>
                         
                     </span>

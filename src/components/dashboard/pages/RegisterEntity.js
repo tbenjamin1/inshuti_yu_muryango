@@ -133,11 +133,11 @@ function RegisterEntity() {
                     <span className='flex flex-col  ' >
                         <img src={employee} className="App-logo" alt="logo" />
                         <span className=' referee-emoji' role="img" aria-label="partying-face">🥳</span>
-                        <span className='my-3 ml-4 font-serif referal-content' >Empower your cause like never before by joining our platform. Unlock the potential of cashback rewards as a source of generous donations from our network and supporters passionate about your mission. <strong>Why Register with Us?</strong>Expand  Your Reach: Connect with individuals who genuinely care about your cause.Receive Direct Support: Tap into a unique source of funding from cashback rewards !</span>
+                        <span className='my-3 ml-4 font_serif referal-content' >Empower your cause like never before by joining our platform. Unlock the potential of cashback rewards as a source of generous donations from our network and supporters passionate about your mission. <strong>Why Register with Us?</strong>Expand  Your Reach: Connect with individuals who genuinely care about your cause.Receive Direct Support: Tap into a unique source of funding from cashback rewards !</span>
                     </span>
                 </div>
                 <div className='flex flex-col w-1/2 justify-center items-center bg-white py-4 referee-form '>
-                    <span className='Referral-title flex flex-col    font-serif   '>
+                    <span className='Referral-title flex flex-col    font_serif   '>
                         <span className='pl-2'>Register Your Charity and Fuel Your Mission!</span>
                        
                     </span>

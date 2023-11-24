@@ -20,6 +20,7 @@ function RefereePage() {
     const dispatch = useDispatch();
 
     const allbusinesscategories = useSelector(getAllBussinessesCategories);
+    const [registered, setregistered] = useState(false);
 
     const [businesName, setbusinesNameValue] = useState('');
     const [colorCode, setcolorCodeValue] = useState('');
@@ -239,7 +240,7 @@ function RefereePage() {
                 //     'Access-Control-Allow-Origin': '*',
                 // }
             });
-
+            setregistered(!registered)
             addToast(`Successfully registered`, {
                 appearance: 'success',
             });
@@ -313,19 +314,19 @@ function RefereePage() {
                 <span className='flex flex-col  ' >
                     <img src={undraw_interview} className="App-logo" alt="logo" />
                     <span className=' referee-emoji' role="img" aria-label="partying-face">🥳</span>
-                    <span className='my-3 ml-4 font-serif referal-content' >Refer, Earn, and Give Back with Koipay! Invite your friends to
+                    <span className='my-3 ml-4 font_serif referal-content' >Refer, Earn, and Give Back with Koipay! Invite your friends to
                         join Koipay and earn cash back every time they use our platform. Support charities close to your heart by donating your cash back rewards</span>
                 </span>
             </div>
-            <div className='flex flex-col w-1/2 justify-center items-center bg-white py-4 referee-form  busines-container-right '>
-                <span className='Referral-title flex flex-col    font-serif   '>
+            <div className='flex flex-col w-1/2 justify-center items-center bg-white py-4 referee-form  busines-container-right  '>
+                <span className='Referral-title flex flex-col    font_serif   '>
                     <span className='pl-2' >Join Koipay's Referral Program and Multiply Your Rewards!</span>
 
                 </span>
                 <span className='login-sub-title p-2' ></span>
                 <span className='login-sub-title my-3'>------ Join Koipay's Referral --------</span>
 
-                <div className='flex flex-col my-3  w-3/5 form-width'>
+                {!registered && <div className='flex flex-col my-3  w-3/5 form-width'>
                     <div className='flex justify-between business-image mobile-fit  ' >
                         <div className='flex flex-col w-full mr-1' >
                             <label>
@@ -333,33 +334,33 @@ function RefereePage() {
                             </label>
                             <input type="text" className='' placeholder=' Business name' value={businesName} onChange={businesNameHandleChange}  ></input>
 
-                            {businesNameError&&<p class="mt-2   text-pink-600 text-sm">
-                               {businesNameError}
+                            {businesNameError && <p class="mt-2   text-pink-600 text-sm">
+                                {businesNameError}
                             </p>}
 
                             <label className='' >
                                 Color code
                             </label>
                             <input type="text" className='' placeholder=' Color code' value={colorCode} onChange={colorCodeHandleChange}  ></input>
-                            {businesNameError&&<p class="mt-2   text-pink-600 text-sm">
-                               {businesNameError}
+                            {businesNameError && <p class="mt-2   text-pink-600 text-sm">
+                                {businesNameError}
                             </p>}
                             <span className='flex flex-col' >
                                 <label>
                                     Contact tel
                                 </label>
                                 <input type="text" className='' placeholder=' contact tel' value={contactTel} onChange={contactTelHandleChange}></input>
-                                {businesNameError&&<p class="mt-2   text-pink-600 text-sm">
-                               {businesNameError}
-                            </p>}
+                                {businesNameError && <p class="mt-2   text-pink-600 text-sm">
+                                    {businesNameError}
+                                </p>}
                             </span>
                         </div>
                         <div className='flex flex-col' >
                             <label className='mx-2' >
                                 Business Icon
                             </label>
-                            {businesNameError&&<p class="mt-2   text-pink-600 text-sm">
-                               {businesNameError}
+                            {businesNameError && <p class="mt-2   text-pink-600 text-sm">
+                                {businesNameError}
                             </p>}
                             <div className="upload_container border rounded-lg m-1 ">
 
@@ -410,9 +411,9 @@ function RefereePage() {
                                 {!isRegistered && phoneNumber.length === 10 && <span role="img" aria-label="cross mark" class="react-emojis">❌</span>}
                             </div>
                         </span>
-                        {businesNameError&&<p class="mt-2   text-pink-600 text-sm">
-                               {businesNameError}
-                            </p>}
+                        {businesNameError && <p class="mt-2   text-pink-600 text-sm">
+                            {businesNameError}
+                        </p>}
                     </span>
 
                     <div className='flex justify-between mobile-fit '>
@@ -425,8 +426,8 @@ function RefereePage() {
                                 <option value='cashback'>cashback</option>
                                 <option value='points'>points</option>
                             </select>
-                            {businesNameError&&<p class="mt-2   text-pink-600 text-sm">
-                               {businesNameError}
+                            {businesNameError && <p class="mt-2   text-pink-600 text-sm">
+                                {businesNameError}
                             </p>}
                         </div>
 
@@ -443,8 +444,8 @@ function RefereePage() {
                                         </option>
                                     ))}
                             </select>
-                            {businesNameError&&<p class="mt-2   text-pink-600 text-sm">
-                               {businesNameError}
+                            {businesNameError && <p class="mt-2   text-pink-600 text-sm">
+                                {businesNameError}
                             </p>}
                         </div>
                     </div>
@@ -455,35 +456,35 @@ function RefereePage() {
                                     Email (admin account)
                                 </label>
                                 <input type="text" className='' placeholder=' contact tel' value={email} onChange={emailHandleChange}></input>
-                                {businesNameError&&<p class="mt-2   text-pink-600 text-sm">
-                               {businesNameError}
-                            </p>}
+                                {businesNameError && <p class="mt-2   text-pink-600 text-sm">
+                                    {businesNameError}
+                                </p>}
                             </span>
                             <span className='flex flex-col' >
                                 <label>
                                     Password
                                 </label>
                                 <input type="text" className='' placeholder=' contact tel' value={password} onChange={passwordHandleChange}></input>
-                                {businesNameError&&<p class="mt-2   text-pink-600 text-sm">
-                               {businesNameError}
-                            </p>}
+                                {businesNameError && <p class="mt-2   text-pink-600 text-sm">
+                                    {businesNameError}
+                                </p>}
                             </span>
                             <span className='flex flex-col' >
                                 <label>
                                     Confirm password
                                 </label>
                                 <input type="text" className='' placeholder=' contact tel' value={confirmPassword} onChange={confirmPasswordHandleChange}></input>
-                                {businesNameError&&<p class="mt-2   text-pink-600 text-sm">
-                               {businesNameError}
-                            </p>}
+                                {businesNameError && <p class="mt-2   text-pink-600 text-sm">
+                                    {businesNameError}
+                                </p>}
                             </span>
                         </div>
                         <div className='flex flex-col' >
                             <label className='mx-2' >
                                 Business certificate
                             </label>
-                            {businesNameError&&<p class="mt-2   text-pink-600 text-sm">
-                               {businesNameError}
+                            {businesNameError && <p class="mt-2   text-pink-600 text-sm">
+                                {businesNameError}
                             </p>}
                             <div className="upload_container border rounded-lg m-1 ">
 
@@ -530,7 +531,16 @@ function RefereePage() {
                                 <span class="sr-only">Loading...</span>
                             </div>)} </button>
                     </span>
-                </div>
+                </div>}{registered && <div className='border p-4  flex justify-center items-center  flex-col    font_serif  h-full m-3 rounded-lg success-card' >
+
+                    <div className='py-4 capitalize'  >
+                        thank you,
+                    </div>
+                    <div className='px-5 text-center ' >
+                        Your account is under review you will be contacted by email on the way forward
+                    </div>
+
+                </div>}
 
             </div>
 

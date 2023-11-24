@@ -177,7 +177,7 @@ function Businesses() {
     };
     const allBussinessesRegisteredList = useSelector(getAllBussinessesRegistered);
 
-    const allPaginatedBussinesses=useSelector(getAllPaginatedBussinesses)
+    const allPaginatedBussinesses = useSelector(getAllPaginatedBussinesses)
 
     const searchInTransactions = (searchQuery) => {
         let search = searchQuery.toLowerCase();
@@ -289,9 +289,9 @@ function Businesses() {
             setLoading(false);
         }
     };
-    
 
-    const fillBussinesForm =(busines)=>{
+
+    const fillBussinesForm = (busines) => {
 
         setbusinesNameValue(busines.name);
         setcolorCodeValue(busines.color_code);
@@ -300,15 +300,15 @@ function Businesses() {
         setrewardType(busines.reward_type);
         setbusinessCategory(busines.category);
         setEmail('');
-        setcertificate( `https://apidev2.koipay.co/${busines.business_certificate}`);
+        setcertificate(`https://apidev2.koipay.co/${busines.business_certificate}`);
         setrenderFile(`https://apidev2.koipay.co/${busines.icon}`);
-        
-        
+
+
     };
 
     useEffect(() => {
-        dispatch(fetchAsynBusinessRegistered(selectedRange,currentPage))
-    }, [dispatch, selectedRange,currentPage]);
+        dispatch(fetchAsynBusinessRegistered(selectedRange, currentPage))
+    }, [dispatch, selectedRange, currentPage]);
 
     return (
         <DashboardLayout>
@@ -427,7 +427,7 @@ function Businesses() {
                                                                 {transaction.status === 'CREATED' && <span className="font-medium  CREATED">{transaction.status ? transaction.status : "N/A"}</span>}
                                                                 {transaction.status === 'PENDING' && <span className="font-medium  PENDING">{transaction.status ? transaction.status : "N/A"}</span>}
                                                             </td>
-                                                            <td className="px-6 py-4 flex justify-around">
+                                                            <td className="px-6 py-4 flex justify-around   items-center">
                                                                 <FaBookReader className='cursor-pointer ' onClick={() => handleViewRider(transaction)} />
                                                                 <FaRegEdit className='cursor-pointer ' onClick={() => handleEditBusiness(transaction)} />
                                                                 <Modal setOpenModal={editBusiness} onChildEvent={handleEditChildEvent} Title={modalRiderTitle} button={viewRiderInfo.name} >
@@ -581,8 +581,8 @@ function Businesses() {
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        
-                                                                        <span className='flex justify-between items-center '>
+
+                                                                        <span className='flex justify-between items-center approve-container '>
                                                                             <button className='fom-btn w-1/3 p-2 my-3' onClick={handleBusinessRegister} >
                                                                                 {!isloading ? (<div className='mr-4 submit-btn-center' >Update</div>) : (<div role="status">
                                                                                     <svg aria-hidden="true" class="inline w-4 h-4 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-white" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -591,7 +591,7 @@ function Businesses() {
                                                                                     </svg>
                                                                                     <span class="sr-only">Loading...</span>
                                                                                 </div>)} </button>
-                                                                                <button className='fom-btn-approve w-1/3 p-2 my-3' onClick={() => handleApproveBusiness()} >
+                                                                            <button className='fom-btn-approve w-1/3 p-2 my-3' onClick={() => handleApproveBusiness()} >
                                                                                 {!loading ? (<div className='mr-4 submit-btn-center' >Approve</div>) : (<div role="status">
                                                                                     <svg aria-hidden="true" class="inline w-4 h-4 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-white" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                                         <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
@@ -599,7 +599,7 @@ function Businesses() {
                                                                                     </svg>
                                                                                     <span class="sr-only">Loading...</span>
                                                                                 </div>)}
-                                                                                </button>
+                                                                            </button>
                                                                         </span>
                                                                     </div>
                                                                 </Modal>

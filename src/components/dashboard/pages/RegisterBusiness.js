@@ -200,35 +200,35 @@ function RefereePage() {
         businessInform.append('icon', file);
         businessInform.append('business_certificate', certificateFile);
 
-        // const isValidPhoneNumber = validateMtnPhoneNumber(phoneNumber);
-        // if (!isValidPhoneNumber) {
-        //     addToast("Something went wrong! please check your momo number", {
-        //         appearance: 'error', autoDismiss: true, // Enable auto dismissal
-        //         autoDismissTimeout: 5000,
-        //         transitionDuration: 300,
-        //     });
+        const isValidPhoneNumber = validateMtnPhoneNumber(phoneNumber);
+        if (!isValidPhoneNumber) {
+            addToast("Something went wrong! please check your momo number", {
+                appearance: 'error', autoDismiss: true, // Enable auto dismissal
+                autoDismissTimeout: 5000,
+                transitionDuration: 300,
+            });
 
-        //     return;
-        // }
-        // if (password.toLowerCase != confirmPassword.toLowerCase) {
-        //     addToast("Something went wrong! password must be matching !", {
-        //         appearance: 'error', autoDismiss: true, // Enable auto dismissal
-        //         autoDismissTimeout: 5000,
-        //         transitionDuration: 300,
-        //     });
+            return;
+        }
+        if (password.toLowerCase != confirmPassword.toLowerCase) {
+            addToast("Something went wrong! password must be matching !", {
+                appearance: 'error', autoDismiss: true, // Enable auto dismissal
+                autoDismissTimeout: 5000,
+                transitionDuration: 300,
+            });
 
-        //     return;
-        // }
-        // if (!acceptTermsState) {
-        //     settermsError(!termsError)
-        //     addToast("please confirm you have  read terms and conditions!", {
-        //         appearance: 'error', autoDismiss: true, // Enable auto dismissal
-        //         autoDismissTimeout: 5000,
-        //         transitionDuration: 300,
-        //     });
+            return;
+        }
+        if (!acceptTermsState) {
+            settermsError(!termsError)
+            addToast("please confirm you have  read terms and conditions!", {
+                appearance: 'error', autoDismiss: true, // Enable auto dismissal
+                autoDismissTimeout: 5000,
+                transitionDuration: 300,
+            });
 
-        //     return;
-        // }
+            return;
+        }
 
 
 

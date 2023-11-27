@@ -14,12 +14,15 @@ import { Link } from 'react-router-dom';
 import upload from "../../images/upload.svg";
 import { useToasts } from 'react-toast-notifications';
 import axios from 'axios';
-import { fetchAsynBusinessRegistered, fetchAsyncTransaction, getAllBussinessesRegistered, getAllPaginatedBussinesses, getAllTransaction } from '../../../redux/transactions/TransactionSlice';
+import { fetchAsynBusinessCatgeory, fetchAsynBusinessRegistered, fetchAsyncTransaction, getAllBussinessesCategories, getAllBussinessesRegistered, getAllPaginatedBussinesses, getAllTransaction } from '../../../redux/transactions/TransactionSlice';
 function Businesses() {
     const { addToast } = useToasts();
     const defaultStartDate = moment().startOf('month').format('YYYY-MM-DD'); // Example: Set default date to the start of the current month
     const defaultEndDate = moment().format('YYYY-MM-DD'); // Set default end date to current date
     const [searchQuery, setSearchQuery] = useState('');
+
+    const allbusinesscategories = useSelector(getAllBussinessesCategories);
+
     const queryHandleChange = (event) => {
         setSearchQuery(event.target.value);
         searchInTransactions(searchQuery)
@@ -28,6 +31,8 @@ function Businesses() {
     const [viewRider, setViewRider] = useState(false);
     const [viewRiderInfo, setViewRiderInfo] = useState(false);
     const [editBusiness, seteditBusiness] = useState(false);
+    const [reward_percentage, setreward_percentage] = useState('');
+
 
     const handleViewRider = (busines) => {
         setViewRiderInfo(busines)
@@ -62,6 +67,21 @@ function Businesses() {
     const [password, setpassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
+    // errors
+
+    const [businesNameError, seterror_name] = useState('');
+    const [colorCodeError, setcolor_code] = useState('');
+    const [phoneNumberError, setcontact_tel] = useState('');
+    const [reward_type, setreward_type] = useState('');
+    const [iconError, seticonError] = useState('');
+    const [businessCategoryError, setcategory] = useState('');
+    const [business_certificate, setbusiness_certificate] = useState('');
+    const [momo_tel, setmomo_tel] = useState('');
+    const [emailError, setemailError] = useState('');
+    const [reward_percentageError, setreward_percentageError] = useState('');
+
+    const [passwordError, setpassword_error] = useState('');
+
     const [loading, setLoading] = useState(false);
     const [isloading, setisLoading] = useState(false);
 
@@ -91,7 +111,9 @@ function Businesses() {
     const passwordHandleChange = (event) => {
         setpassword(event.target.value);
     };
-
+    const reward_percentageHandleChange = (event) => {
+        setreward_percentage(event.target.value);
+    };
     const confirmPasswordHandleChange = (event) => {
         setConfirmPassword(event.target.value);
     };
@@ -201,17 +223,21 @@ function Businesses() {
 
 
     const handleBusinessRegister = async (event) => {
-        const businessInform = {
-            businesName: businesName,
-            colorCode: colorCode,
-            phoneNumber: phoneNumber,
-            contactTel: contactTel,
-            rewardType: rewardType,
-            businessCategory: businessCategory,
-            email: email,
-            password: password,
-            confirmPassword: confirmPassword,
-        }
+
+        const businessInform = new FormData();
+
+        businessInform.append('name', businesName);
+        businessInform.append('color_code', colorCode);
+        businessInform.append('momo_tel', phoneNumber);
+        businessInform.append('contact_tel', contactTel);
+        businessInform.append('reward_type', rewardType);
+        businessInform.append('category', businessCategory);
+        businessInform.append('reward_percentage', reward_percentage);
+        businessInform.append('email', email);
+        businessInform.append('password', password);
+        businessInform.append('icon', file);
+        businessInform.append('business_certificate', certificateFile);
+
         event.preventDefault();
         const isValidPhoneNumber = validateMtnPhoneNumber(phoneNumber);
         if (!isValidPhoneNumber) {
@@ -247,7 +273,7 @@ function Businesses() {
             setbusinessCategory("");
             setEmail("");
             setpassword("");
-            setConfirmPassword("");
+            setreward_percentage("");
             setIsregistered(false);
         } catch (error) {
             addToast("Something went wrong! please try again", {
@@ -293,21 +319,24 @@ function Businesses() {
 
     const fillBussinesForm = (busines) => {
 
+        console.log("busines.reward_type", busines.reward_type)
         setbusinesNameValue(busines.name);
         setcolorCodeValue(busines.color_code);
         setcontactTelValue(busines.contact_tel);
         setphoneNumber(busines.momo_tel);
         setrewardType(busines.reward_type);
-        setbusinessCategory(busines.category);
+
         setEmail('');
-        setcertificate(`https://apidev2.koipay.co/${busines.business_certificate}`);
-        setrenderFile(`https://apidev2.koipay.co/${busines.icon}`);
+        setcertificate(busines.business_certificate ? `https://apidev2.koipay.co/${busines.business_certificate}` : '');
+        setrenderFile(busines.icon ? `https://apidev2.koipay.co/${busines.icon}` : '');
+        setbusinessCategory(busines.category);
 
 
     };
 
     useEffect(() => {
         dispatch(fetchAsynBusinessRegistered(selectedRange, currentPage))
+        dispatch(fetchAsynBusinessCatgeory())
     }, [dispatch, selectedRange, currentPage]);
 
     return (
@@ -489,7 +518,7 @@ function Businesses() {
                                                                                 MTN MOMO tel
                                                                             </label>
                                                                             <span className='flex justify-between momo-number ' >
-                                                                                <input type="number" className='phone-number' placeholder='Phone Number' value={phoneNumber} onChange={confirmMOMOnumberHandleChange} ></input>
+                                                                                <input type="number" className='phone-number' placeholder='MTN MOMO tel' value={phoneNumber} onChange={confirmMOMOnumberHandleChange} ></input>
                                                                                 <div className='ml-1 flex' >
                                                                                     {loading && (<div role="status">
                                                                                         <svg aria-hidden="true" class="inline w-4 h-4 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-white" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -511,8 +540,8 @@ function Businesses() {
                                                                                 </label>
                                                                                 <select required value={rewardType} onChange={setrewardTypeHandleChange} className='rounded border'  >
                                                                                     <option value='' >pick one</option>
-                                                                                    <option value='CASHBACK'>cashback</option>
-                                                                                    <option value='POINTS'>points</option>
+                                                                                    <option value='cashback'>cashback</option>
+                                                                                    <option value='points'>points</option>
                                                                                 </select>
                                                                             </div>
 
@@ -521,9 +550,13 @@ function Businesses() {
                                                                                     Business category
                                                                                 </label>
                                                                                 <select required value={businessCategory} onChange={businessCategoryHandleChange} className='rounded border'  >
-                                                                                    <option value='' >pick one</option>
-                                                                                    <option value='cashback'>cashback</option>
-                                                                                    <option value='points'>points</option>
+                                                                                    <option value=''  >pick one</option>
+                                                                                    {allbusinesscategories &&
+                                                                                        allbusinesscategories.map((category) => (
+                                                                                            <option key={category.id} value={category.id}>
+                                                                                                {category.name}
+                                                                                            </option>
+                                                                                        ))}
                                                                                 </select>
                                                                             </div>
                                                                         </div>
@@ -531,10 +564,20 @@ function Businesses() {
                                                                             <div className='flex flex-col w-full mr-1' >
                                                                                 <span className='flex flex-col' >
                                                                                     <label>
+                                                                                        Reward percentage
+                                                                                    </label>
+                                                                                    <input type="text" className='' placeholder=' Reward percentage' value={reward_percentage} onChange={reward_percentageHandleChange}></input>
+                                                                                    {reward_percentageError && <p class="mt-2   text-pink-600 text-sm">
+                                                                                        {reward_percentageError}
+                                                                                    </p>}
+                                                                                </span>
+                                                                                <span className='flex flex-col' >
+                                                                                    <label>
                                                                                         Email (admin account)
                                                                                     </label>
-                                                                                    <input type="text" className='' placeholder=' contact tel' value={email} onChange={emailHandleChange}></input>
+                                                                                    <input type="text" className='' placeholder='Email' value={email} onChange={emailHandleChange}></input>
                                                                                 </span>
+
                                                                                 {/* <span className='flex flex-col' >
                                                                                     <label>
                                                                                         Password
@@ -591,15 +634,7 @@ function Businesses() {
                                                                                     </svg>
                                                                                     <span class="sr-only">Loading...</span>
                                                                                 </div>)} </button>
-                                                                            <button className='fom-btn-approve w-1/3 p-2 my-3' onClick={() => handleApproveBusiness()} >
-                                                                                {!loading ? (<div className='mr-4 submit-btn-center' >Approve</div>) : (<div role="status">
-                                                                                    <svg aria-hidden="true" class="inline w-4 h-4 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-white" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                                        <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
-                                                                                        <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
-                                                                                    </svg>
-                                                                                    <span class="sr-only">Loading...</span>
-                                                                                </div>)}
-                                                                            </button>
+
                                                                         </span>
                                                                     </div>
                                                                 </Modal>
@@ -627,7 +662,8 @@ function Businesses() {
                                                                                     Business Icon
                                                                                 </label>
                                                                                 <div className="upload_container border rounded-lg m-1 ">
-                                                                                    <img src={`https://apidev2.koipay.co/${viewRiderInfo.icon}`} alt="Selected Image" className="image" />
+                                                                                    {viewRiderInfo.icon ? <img src={`https://apidev2.koipay.co/${viewRiderInfo.icon}`} alt="Selected Image" className="image" /> : <img src={upload} alt="Selected Image" className="image" />}
+
                                                                                 </div>
                                                                             </div>
 
@@ -672,13 +708,21 @@ function Businesses() {
                                                                                     Business certificate
                                                                                 </label>
                                                                                 <div className="upload_container border rounded-lg m-1 ">
-                                                                                    <img src={`https://apidev2.koipay.co/${viewRiderInfo.business_certificate}`} alt="Selected Image" className="image" />
+                                                                                    {viewRiderInfo.business_certificate ? <img src={`https://apidev2.koipay.co/${viewRiderInfo.business_certificate}`} alt="Selected Image" className="image" /> : <img src={upload} alt="Selected Image" className="image" />}
                                                                                 </div>
                                                                             </div>
 
                                                                         </div>
 
-
+                                                                        <button className='fom-btn-approve w-1/3 p-2 my-3' onClick={() => handleApproveBusiness()} >
+                                                                            {!loading ? (<div className='mr-4 submit-btn-center' >Approve</div>) : (<div role="status">
+                                                                                <svg aria-hidden="true" class="inline w-4 h-4 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-white" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                                    <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
+                                                                                    <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
+                                                                                </svg>
+                                                                                <span class="sr-only">Loading...</span>
+                                                                            </div>)}
+                                                                        </button>
 
                                                                     </div>
                                                                 </Modal>

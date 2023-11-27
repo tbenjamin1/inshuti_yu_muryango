@@ -30,10 +30,8 @@ function RefereePage() {
     const [rewardType, setrewardType] = useState('');
     const [businessCategory, setbusinessCategory] = useState('');
     const [email, setEmail] = useState('');
-
     const [password, setpassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-
+    const [reward_percentage, setreward_percentage] = useState('');
     const [loading, setLoading] = useState(false);
     const [isloading, setisLoading] = useState(false);
     const [termsCondidtions, settermsCondidtions] = useState(false);
@@ -53,6 +51,8 @@ function RefereePage() {
     const [business_certificate, setbusiness_certificate] = useState('');
     const [momo_tel, setmomo_tel] = useState('');
     const [emailError, setemailError] = useState('');
+    const [reward_percentageError, setreward_percentageError] = useState('');
+    
     const [passwordError, setpassword_error] = useState('');
 
 
@@ -88,8 +88,8 @@ function RefereePage() {
         setpassword(event.target.value);
     };
 
-    const confirmPasswordHandleChange = (event) => {
-        setConfirmPassword(event.target.value);
+    const reward_percentageHandleChange = (event) => {
+        setreward_percentage(event.target.value);
     };
 
     const handleSelectPlate = (option) => {
@@ -169,14 +169,12 @@ function RefereePage() {
     }, [phoneNumber]);
 
     useEffect(() => {
-        console.log("useEffect")
         dispatch(fetchAsynBusinessCatgeory())
     }, []);
 
 
     const handleBusinessRegister = async (event) => {
         event.preventDefault();
-
         seterror_name('');
         setcolor_code('');
         setcontact_tel('');
@@ -186,15 +184,14 @@ function RefereePage() {
         setbusiness_certificate('');
         setpassword_error('');
         setmomo_tel('');
-
         const businessInform = new FormData();
-
         businessInform.append('name', businesName);
         businessInform.append('color_code', colorCode);
         businessInform.append('momo_tel', phoneNumber);
         businessInform.append('contact_tel', contactTel);
         businessInform.append('reward_type', rewardType);
-        businessInform.append('category', 1);
+        businessInform.append('category',businessCategory);
+        businessInform.append('reward_percentage',reward_percentage);
         businessInform.append('email', email);
         businessInform.append('password', password);
         businessInform.append('icon', file);
@@ -210,15 +207,15 @@ function RefereePage() {
 
             return;
         }
-        if (password.toLowerCase != confirmPassword.toLowerCase) {
-            addToast("Something went wrong! password must be matching !", {
-                appearance: 'error', autoDismiss: true, // Enable auto dismissal
-                autoDismissTimeout: 5000,
-                transitionDuration: 300,
-            });
+        // if (password.toLowerCase != confirmPassword.toLowerCase) {
+        //     addToast("Something went wrong! password must be matching !", {
+        //         appearance: 'error', autoDismiss: true, // Enable auto dismissal
+        //         autoDismissTimeout: 5000,
+        //         transitionDuration: 300,
+        //     });
 
-            return;
-        }
+        //     return;
+        // }
         if (!acceptTermsState) {
             settermsError(!termsError)
             addToast("please confirm you have  read terms and conditions!", {
@@ -229,9 +226,6 @@ function RefereePage() {
 
             return;
         }
-
-
-
         setisLoading(true)
 
         try {
@@ -254,7 +248,6 @@ function RefereePage() {
             setbusinessCategory("");
             setEmail("");
             setpassword("");
-            setConfirmPassword("");
             setIsregistered(false);
         } catch (error) {
 
@@ -285,6 +278,9 @@ function RefereePage() {
             }
             if (field === "category") {
                 setcategory("select a valid choice .");
+            } 
+            if (field === "reward_percentage") {
+                setreward_percentageError("This field may not be blank.");
             }
             if (field === "email") {
                 setemailError("This field may not be blank.");
@@ -325,6 +321,10 @@ function RefereePage() {
                 </span>
                 <span className='login-sub-title p-2' ></span>
                 <span className='login-sub-title my-3'>------ Join Koipay's Referral --------</span>
+                <img src={undraw_interview} className="App-logo mobile-screen-view" alt="logo"   />
+                <span className='my-3 ml-4 font_serif referal-content mobile-screen-view' >Refer, Earn, and Give Back with Koipay! Invite your friends to
+                        join Koipay and earn cash back every time they use our platform. Support charities close to your heart by donating your cash back rewards</span>
+                
 
                 {!registered && <div className='flex flex-col my-3  w-3/5 form-width'>
                     <div className='flex justify-between business-image mobile-fit  ' >
@@ -342,16 +342,16 @@ function RefereePage() {
                                 Color code
                             </label>
                             <input type="text" className='' placeholder=' Color code' value={colorCode} onChange={colorCodeHandleChange}  ></input>
-                            {businesNameError && <p class="mt-2   text-pink-600 text-sm">
-                                {businesNameError}
+                            {colorCodeError && <p class="mt-2   text-pink-600 text-sm">
+                                {colorCodeError}
                             </p>}
                             <span className='flex flex-col' >
                                 <label>
                                     Contact tel
                                 </label>
                                 <input type="text" className='' placeholder=' contact tel' value={contactTel} onChange={contactTelHandleChange}></input>
-                                {businesNameError && <p class="mt-2   text-pink-600 text-sm">
-                                    {businesNameError}
+                                {phoneNumberError && <p class="mt-2   text-pink-600 text-sm">
+                                    {phoneNumberError}
                                 </p>}
                             </span>
                         </div>
@@ -359,8 +359,8 @@ function RefereePage() {
                             <label className='mx-2' >
                                 Business Icon
                             </label>
-                            {businesNameError && <p class="mt-2   text-pink-600 text-sm">
-                                {businesNameError}
+                            {iconError && <p class="mt-2   text-pink-600 text-sm">
+                                {iconError}
                             </p>}
                             <div className="upload_container border rounded-lg m-1 ">
 
@@ -398,7 +398,7 @@ function RefereePage() {
                             MTN MOMO tel
                         </label>
                         <span className='flex justify-between momo-number ' >
-                            <input type="number" className='phone-number' placeholder='Phone Number' value={phoneNumber} onChange={confirmMOMOnumberHandleChange} ></input>
+                            <input type="number" className='phone-number' placeholder='MTN MOMO tel' value={phoneNumber} onChange={confirmMOMOnumberHandleChange} ></input>
                             <div className='ml-1 flex' >
                                 {loading && (<div role="status">
                                     <svg aria-hidden="true" class="inline w-4 h-4 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-white" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -411,8 +411,8 @@ function RefereePage() {
                                 {!isRegistered && phoneNumber.length === 10 && <span role="img" aria-label="cross mark" class="react-emojis">❌</span>}
                             </div>
                         </span>
-                        {businesNameError && <p class="mt-2   text-pink-600 text-sm">
-                            {businesNameError}
+                        {momo_tel && <p class="mt-2   text-pink-600 text-sm">
+                            {momo_tel}
                         </p>}
                     </span>
 
@@ -426,8 +426,8 @@ function RefereePage() {
                                 <option value='cashback'>cashback</option>
                                 <option value='points'>points</option>
                             </select>
-                            {businesNameError && <p class="mt-2   text-pink-600 text-sm">
-                                {businesNameError}
+                            {reward_type && <p class="mt-2   text-pink-600 text-sm">
+                                {reward_type}
                             </p>}
                         </div>
 
@@ -439,52 +439,53 @@ function RefereePage() {
                                 <option value=''  >pick one</option>
                                 {allbusinesscategories &&
                                     allbusinesscategories.map((category) => (
-                                        <option key={category.id} value={category.name}>
+                                        <option key={category.id} value={category.id}>
                                             {category.name}
                                         </option>
                                     ))}
                             </select>
-                            {businesNameError && <p class="mt-2   text-pink-600 text-sm">
-                                {businesNameError}
+                            {businessCategoryError && <p class="mt-2   text-pink-600 text-sm">
+                                {businessCategoryError}
                             </p>}
                         </div>
                     </div>
                     <div className='flex justify-between business-image mobile-fit  ' >
                         <div className='flex flex-col w-full mr-1' >
+                        <span className='flex flex-col' >
+                                <label>
+                                Reward percentage
+                                </label>
+                                <input type="text" className='' placeholder='Reward percentage' value={reward_percentage} onChange={reward_percentageHandleChange}></input>
+                                {reward_percentageError && <p class="mt-2   text-pink-600 text-sm">
+                                    {reward_percentageError}
+                                </p>}
+                            </span>
                             <span className='flex flex-col' >
                                 <label>
                                     Email (admin account)
                                 </label>
-                                <input type="text" className='' placeholder=' contact tel' value={email} onChange={emailHandleChange}></input>
-                                {businesNameError && <p class="mt-2   text-pink-600 text-sm">
-                                    {businesNameError}
+                                <input type="text" className='' placeholder='Email' value={email} onChange={emailHandleChange}></input>
+                                {emailError && <p class="mt-2   text-pink-600 text-sm">
+                                    {emailError}
                                 </p>}
                             </span>
                             <span className='flex flex-col' >
                                 <label>
                                     Password
                                 </label>
-                                <input type="text" className='' placeholder=' contact tel' value={password} onChange={passwordHandleChange}></input>
-                                {businesNameError && <p class="mt-2   text-pink-600 text-sm">
-                                    {businesNameError}
+                                <input type="text" className='' placeholder='Password' value={password} onChange={passwordHandleChange}></input>
+                                {passwordError && <p class="mt-2   text-pink-600 text-sm">
+                                    {passwordError}
                                 </p>}
                             </span>
-                            <span className='flex flex-col' >
-                                <label>
-                                    Confirm password
-                                </label>
-                                <input type="text" className='' placeholder=' contact tel' value={confirmPassword} onChange={confirmPasswordHandleChange}></input>
-                                {businesNameError && <p class="mt-2   text-pink-600 text-sm">
-                                    {businesNameError}
-                                </p>}
-                            </span>
+                            
                         </div>
                         <div className='flex flex-col' >
                             <label className='mx-2' >
                                 Business certificate
                             </label>
-                            {businesNameError && <p class="mt-2   text-pink-600 text-sm">
-                                {businesNameError}
+                            {business_certificate && <p class="mt-2   text-pink-600 text-sm">
+                                {business_certificate}
                             </p>}
                             <div className="upload_container border rounded-lg m-1 ">
 

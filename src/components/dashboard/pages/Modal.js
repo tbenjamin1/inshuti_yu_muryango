@@ -11,7 +11,7 @@ export default function PopModal({ setOpenModal, onChildEvent, Title, button, ch
 
     const [open, setOpen] = useState(false);
     const handleClick = () => {
-       
+
         onChildEvent()
     }
 
@@ -43,8 +43,8 @@ export default function PopModal({ setOpenModal, onChildEvent, Title, button, ch
                     <div className="fixed  bg-gray-500 bg-opacity-75   transition-opacity" />
                 </Transition.Child>
 
-                <div className="fixed inset-0 overflow-hidden">
-                    <div className="absolute inset-0 overflow-hidden">
+                <div className="fixed inset-0 overflow-hidden ">
+                    <div className="absolute inset-0 overflow-hidden ">
                         <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
                             <Transition.Child
                                 as={Fragment}
@@ -55,7 +55,7 @@ export default function PopModal({ setOpenModal, onChildEvent, Title, button, ch
                                 leaveFrom="translate-x-0"
                                 leaveTo="translate-x-full"
                             >
-                                <Dialog.Panel  className="pointer-events-auto relative w-screen max-w-lg  ">
+                                <Dialog.Panel className="pointer-events-auto relative  ">
                                     <Transition.Child
                                         as={Fragment}
                                         enter="ease-in-out duration-500"

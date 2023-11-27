@@ -12,8 +12,9 @@ import { FaBeer } from 'react-icons/fa';
 import upload from "../../images/upload.svg";
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
+import { Document, Page, pdfjs } from 'react-pdf';
 import { fetchAsynBusinessCatgeory, getAllBussinessesCategories, selectAcceptTerms, setAcceptTermsConditions } from '../../../redux/transactions/TransactionSlice';
-import { MdCategory } from 'react-icons/md';
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 function RefereePage() {
     const { addToast } = useToasts();
@@ -52,7 +53,7 @@ function RefereePage() {
     const [momo_tel, setmomo_tel] = useState('');
     const [emailError, setemailError] = useState('');
     const [reward_percentageError, setreward_percentageError] = useState('');
-    
+
     const [passwordError, setpassword_error] = useState('');
 
 
@@ -101,15 +102,34 @@ function RefereePage() {
     const [certificateFile, setcertificateFile] = useState('');
     const [renderfile, setrenderFile] = useState('');
     // Profile image upload
-    function handleChange(e) {
+    const handleChange = (e) => {
+        console.log("setrenderFile")
         setrenderFile(URL.createObjectURL(e.target.files[0]));
-
         setFile(e.target.files[0]);
-    }
+    };
     const handleCertificateChange = (e) => {
-        setcertificate(URL.createObjectURL(e.target.files[0]));
-        setcertificateFile(e.target.files[0]);
-    }
+
+        const selectedFile = e.target.files[0];
+
+        if (selectedFile) {
+            if (selectedFile.type.startsWith('image/')) {
+                // It's an image
+                setcertificate(URL.createObjectURL(selectedFile));
+                setcertificateFile(selectedFile);
+            } else if (selectedFile.type === 'application/pdf') {
+                setcertificate("https://cdn4.iconfinder.com/data/icons/files-and-folders-2-2/512/77-1024.png");
+
+                setcertificateFile(selectedFile);
+            } else {
+                addToast("Unsupported file type! please try again", {
+                    appearance: 'error', autoDismiss: true, // Enable auto dismissal
+                    autoDismissTimeout: 5000,
+                    transitionDuration: 300,
+                });
+
+            }
+        }
+    };
     const validateMtnPhoneNumber = (inputPhoneNumber) => {
         // Pattern: starts with "078" or "079", followed by 7 digits
         const pattern = /^(078|079)[0-9]{7}$/;
@@ -190,8 +210,8 @@ function RefereePage() {
         businessInform.append('momo_tel', phoneNumber);
         businessInform.append('contact_tel', contactTel);
         businessInform.append('reward_type', rewardType);
-        businessInform.append('category',businessCategory);
-        businessInform.append('reward_percentage',reward_percentage);
+        businessInform.append('category', businessCategory);
+        businessInform.append('reward_percentage', reward_percentage);
         businessInform.append('email', email);
         businessInform.append('password', password);
         businessInform.append('icon', file);
@@ -278,7 +298,7 @@ function RefereePage() {
             }
             if (field === "category") {
                 setcategory("select a valid choice .");
-            } 
+            }
             if (field === "reward_percentage") {
                 setreward_percentageError("This field may not be blank.");
             }
@@ -321,10 +341,10 @@ function RefereePage() {
                 </span>
                 <span className='login-sub-title p-2' ></span>
                 <span className='login-sub-title my-3'>------ Join Koipay's Referral --------</span>
-                <img src={undraw_interview} className="App-logo mobile-screen-view" alt="logo"   />
+                <img src={undraw_interview} className="App-logo mobile-screen-view" alt="logo" />
                 <span className='my-3 ml-4 font_serif referal-content mobile-screen-view' >Refer, Earn, and Give Back with Koipay! Invite your friends to
-                        join Koipay and earn cash back every time they use our platform. Support charities close to your heart by donating your cash back rewards</span>
-                
+                    join Koipay and earn cash back every time they use our platform. Support charities close to your heart by donating your cash back rewards</span>
+
 
                 {!registered && <div className='flex flex-col my-3  w-3/5 form-width'>
                     <div className='flex justify-between business-image mobile-fit  ' >
@@ -370,7 +390,8 @@ function RefereePage() {
                                         <input
                                             type="file"
                                             accept="image/*"
-                                            onChange={handleChange}
+                                            onChange={(e) => handleChange(e)}
+
                                             className="input"
                                         />
                                     </>
@@ -383,7 +404,8 @@ function RefereePage() {
                                             id="uploadInput"
                                             type="file"
                                             accept="image/*"
-                                            onChange={handleChange}
+                                            onChange={(e) => handleChange(e)}
+
                                             className="input-hidden"
                                         />
                                     </>
@@ -451,9 +473,9 @@ function RefereePage() {
                     </div>
                     <div className='flex justify-between business-image mobile-fit  ' >
                         <div className='flex flex-col w-full mr-1' >
-                        <span className='flex flex-col' >
+                            <span className='flex flex-col' >
                                 <label>
-                                Reward percentage
+                                    Reward percentage
                                 </label>
                                 <input type="text" className='' placeholder='Reward percentage' value={reward_percentage} onChange={reward_percentageHandleChange}></input>
                                 {reward_percentageError && <p class="mt-2   text-pink-600 text-sm">
@@ -478,7 +500,7 @@ function RefereePage() {
                                     {passwordError}
                                 </p>}
                             </span>
-                            
+
                         </div>
                         <div className='flex flex-col' >
                             <label className='mx-2' >
@@ -492,23 +514,24 @@ function RefereePage() {
                                 {certificate ? (
                                     <>
                                         <img src={certificate} alt="Selected Image" className="image" />
+
                                         <input
                                             type="file"
-                                            accept="image/*"
-                                            onChange={handleCertificateChange}
+                                            accept="application/pdf,image/*"
+                                            onChange={(e) => handleCertificateChange(e)}
                                             className="input"
                                         />
                                     </>
                                 ) : (
                                     <>
-                                        <label htmlFor="uploadInput" className="label">
+                                        <label htmlFor="certificateUploadInput" className="label">
                                             <img src={upload} alt="Image Icon" className="image" />
                                         </label>
                                         <input
-                                            id="uploadInput"
+                                            id="certificateUploadInput"
                                             type="file"
-                                            accept="image/*"
-                                            onChange={handleCertificateChange}
+                                            accept="application/pdf,image/*"
+                                            onChange={(e) => handleCertificateChange(e)}
                                             className="input-hidden"
                                         />
                                     </>

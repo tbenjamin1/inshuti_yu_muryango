@@ -12,11 +12,16 @@ import { CiBitcoin, viewBox } from 'react-icons/ci';
 import { MdEditRoad } from "react-icons/md";
 import { Link } from 'react-router-dom';
 import upload from "../../images/upload.svg";
+import { Document, Page, pdfjs } from 'react-pdf';
 import { useToasts } from 'react-toast-notifications';
 import axios from 'axios';
+
 import { fetchAsynBusinessCatgeory, fetchAsynBusinessRegistered, fetchAsyncTransaction, getAllBussinessesCategories, getAllBussinessesRegistered, getAllPaginatedBussinesses, getAllTransaction } from '../../../redux/transactions/TransactionSlice';
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+
 function Businesses() {
     const { addToast } = useToasts();
+
     const defaultStartDate = moment().startOf('month').format('YYYY-MM-DD'); // Example: Set default date to the start of the current month
     const defaultEndDate = moment().format('YYYY-MM-DD'); // Set default end date to current date
     const [searchQuery, setSearchQuery] = useState('');
@@ -33,10 +38,36 @@ function Businesses() {
     const [editBusiness, seteditBusiness] = useState(false);
     const [reward_percentage, setreward_percentage] = useState('');
 
+    const [certificatepdf, setcertificatepdf] = useState(false);
+    const [certificateImg, setcertificateImg] = useState(false);
+    const [certificateNoNeImagepdf, setcertificateNoNeImagepdf] = useState(false);
 
     const handleViewRider = (busines) => {
-        setViewRiderInfo(busines)
-        setViewRider(!viewRider);
+
+        if (busines.business_certificate) {
+            if (busines.business_certificate.includes('image/')) {
+
+                setcertificateImg(!certificateImg)
+                setViewRiderInfo(busines)
+                setViewRider(!viewRider);
+            } else if (busines.business_certificate.includes('.pdf')){
+                setcertificatepdf(!certificatepdf)
+                setViewRiderInfo(busines)
+                setViewRider(!viewRider);
+            } else {
+                setcertificateNoNeImagepdf(!certificateNoNeImagepdf)
+                setViewRiderInfo(busines)
+                setViewRider(!viewRider);
+
+            }
+        }else{
+            setcertificateNoNeImagepdf(!certificateNoNeImagepdf)
+            setViewRiderInfo(busines)
+                setViewRider(!viewRider);
+        }
+
+
+
     };
     const handleEditBusiness = (busines) => {
         setViewRiderInfo(busines);
@@ -120,6 +151,7 @@ function Businesses() {
     // Define states for profile image and permit image
     const [file, setFile] = useState('');
     const [certificate, setcertificate] = useState('');
+    const [certificateImgae, setcertificateImage] = useState('');
     const [certificateFile, setcertificateFile] = useState('');
     const [renderfile, setrenderFile] = useState('');
     // Profile image upload
@@ -128,8 +160,34 @@ function Businesses() {
         setFile(e.target.files[0]);
     }
     const handleCertificateChange = (e) => {
-        setcertificate(URL.createObjectURL(e.target.files[0]));
-        setcertificateFile(e.target.files[0]);
+        // setcertificate(URL.createObjectURL(e.target.files[0]));
+        // setcertificateFile(e.target.files[0]);
+
+
+        const selectedFile = e.target.files[0];
+
+        if (selectedFile) {
+            if (selectedFile.type.startsWith('image/')) {
+                // It's an image
+                setcertificateImage(URL.createObjectURL(selectedFile));
+                setcertificateFile(selectedFile);
+                setcertificate('')
+            } else if (selectedFile.type === 'application/pdf') {
+                setcertificate(URL.createObjectURL(e.target.files[0]));
+                setcertificateFile(e.target.files[0]);
+                setcertificateImage('')
+            } else {
+                addToast("Unsupported file type! please try again", {
+                    appearance: 'error', autoDismiss: true, // Enable auto dismissal
+                    autoDismissTimeout: 5000,
+                    transitionDuration: 300,
+                });
+
+            }
+        }
+
+
+
     }
     const validateMtnPhoneNumber = (inputPhoneNumber) => {
         // Pattern: starts with "078" or "079", followed by 7 digits
@@ -225,7 +283,6 @@ function Businesses() {
     const handleBusinessRegister = async (event) => {
 
         const businessInform = new FormData();
-
         businessInform.append('name', businesName);
         businessInform.append('color_code', colorCode);
         businessInform.append('momo_tel', phoneNumber);
@@ -254,16 +311,18 @@ function Businesses() {
         setisLoading(true)
 
         try {
-            const response = await axios.post('https://apidev2.koipay.co/api/business/', { businessInform }, {
+            const response = await axios.patch(`https://apidev2.koipay.co/api/business/${viewRiderInfo.id}/   
+            `, businessInform, {
                 // headers: {
                 //     'Access-Control-Allow-Origin': '*',
                 // }
             });
 
-            addToast(`Successfully registered, your code is : ${response.data.data.referee.code}`, {
+            addToast('Successfully updated ', {
                 appearance: 'success',
             });
-
+            seteditBusiness(!editBusiness);
+            dispatch(fetchAsynBusinessRegistered(selectedRange, currentPage));
             setisLoading(false);
             setbusinesNameValue("");
             setcolorCodeValue("");
@@ -288,6 +347,8 @@ function Businesses() {
 
     const isLoading = useSelector((state) => state.transactions.isLoading);
     const [currentPage, setCurrentPage] = useState(1);
+    const [numPages, setNumPages] = useState(null);
+    const [pageNumber, setPageNumber] = useState(1);
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
@@ -295,7 +356,7 @@ function Businesses() {
     const handleApproveBusiness = async () => {
         setLoading(true);
         try {
-            const response = await axios.post(`https://apidev2.koipay.co/api/approve/${viewRiderInfo.id}`, {
+            const response = await axios.post(`https://apidev2.koipay.co/api/approve/${viewRiderInfo.id}/`, {
                 // headers: {
                 //     'Access-Control-Allow-Origin': '*',
                 // }
@@ -304,7 +365,8 @@ function Businesses() {
             addToast(`Successfully approved`, {
                 appearance: 'success',
             });
-
+            setViewRider(!viewRider);
+            dispatch(fetchAsynBusinessRegistered(selectedRange, currentPage));
             setLoading(false);
         } catch (error) {
             addToast("Something went wrong! please try again", {
@@ -319,17 +381,17 @@ function Businesses() {
 
     const fillBussinesForm = (busines) => {
 
-        console.log("busines.reward_type", busines.reward_type)
+        console.log("busines.business_certificate ", busines.business_certificate)
         setbusinesNameValue(busines.name);
         setcolorCodeValue(busines.color_code);
         setcontactTelValue(busines.contact_tel);
         setphoneNumber(busines.momo_tel);
         setrewardType(busines.reward_type);
-
+        setreward_percentage(busines.reward_percentage);
         setEmail('');
-        setcertificate(busines.business_certificate ? `https://apidev2.koipay.co/${busines.business_certificate}` : '');
+        setcertificate(busines.business_certificate ? `https://apidev2.koipay.co${busines.business_certificate}` : '');
         setrenderFile(busines.icon ? `https://apidev2.koipay.co/${busines.icon}` : '');
-        setbusinessCategory(busines.category);
+        setbusinessCategory(busines.category.id);
 
 
     };
@@ -408,7 +470,7 @@ function Businesses() {
                                                             <span className='px-2'> {transaction.name ? transaction.name : "N/A"}</span>
                                                         </td>
                                                         <td className="px-6 py-4">
-                                                            {transaction.category ? transaction.category : "N/A"}
+                                                            {transaction.category ? transaction.category.name : "N/A"}
                                                         </td>
                                                         <td className="px-6 py-4">
                                                             {transaction.reward_type ? transaction.reward_type : "N/A"}
@@ -436,7 +498,7 @@ function Businesses() {
                                                                 <span className='px-2'> {transaction.name ? transaction.name : "N/A"}</span>
                                                             </td>
                                                             <td className="px-6 py-4">
-                                                                {transaction.category ? transaction.category : "N/A"}
+                                                                {transaction.category ? transaction.category.name : "N/A"}
                                                             </td>
                                                             <td className="px-6 py-4">
                                                                 {transaction.reward_type ? transaction.reward_type : "N/A"}
@@ -452,7 +514,7 @@ function Businesses() {
                                                             </td>
                                                             <td className="px-6 py-4" >
                                                                 {transaction.status === 'locked' && <span className="font-medium FAILED">{transaction.status ? transaction.status : "N/A"}</span>}
-                                                                {transaction.status === 'SUCCESS' && <span className="font-medium  SUCCESS">{transaction.status ? transaction.status : "N/A"}</span>}
+                                                                {transaction.status === 'building' && <span className="font-medium  SUCCESS">{transaction.status ? transaction.status : "N/A"}</span>}
                                                                 {transaction.status === 'CREATED' && <span className="font-medium  CREATED">{transaction.status ? transaction.status : "N/A"}</span>}
                                                                 {transaction.status === 'PENDING' && <span className="font-medium  PENDING">{transaction.status ? transaction.status : "N/A"}</span>}
                                                             </td>
@@ -560,62 +622,54 @@ function Businesses() {
                                                                                 </select>
                                                                             </div>
                                                                         </div>
+                                                                        <div className='flex justify-between mobile-fit '>
+                                                                            <span className='flex flex-col w-1/2'>
+                                                                                <label>
+                                                                                    Reward percentage
+                                                                                </label>
+                                                                                <input type="text" className='' placeholder=' Reward percentage' value={reward_percentage} onChange={reward_percentageHandleChange}></input>
+                                                                                {reward_percentageError && <p class="mt-2   text-pink-600 text-sm">
+                                                                                    {reward_percentageError}
+                                                                                </p>}
+                                                                            </span>
+                                                                            <span className='flex flex-col w-1/2 mx-2'>
+                                                                                <label>
+                                                                                    Email (admin account)
+                                                                                </label>
+                                                                                <input type="text" className='' placeholder='Email' value={email} onChange={emailHandleChange}></input>
+                                                                            </span>
+                                                                        </div>
                                                                         <div className='flex justify-between business-image mobile-fit  ' >
-                                                                            <div className='flex flex-col w-full mr-1' >
-                                                                                <span className='flex flex-col' >
-                                                                                    <label>
-                                                                                        Reward percentage
-                                                                                    </label>
-                                                                                    <input type="text" className='' placeholder=' Reward percentage' value={reward_percentage} onChange={reward_percentageHandleChange}></input>
-                                                                                    {reward_percentageError && <p class="mt-2   text-pink-600 text-sm">
-                                                                                        {reward_percentageError}
-                                                                                    </p>}
-                                                                                </span>
-                                                                                <span className='flex flex-col' >
-                                                                                    <label>
-                                                                                        Email (admin account)
-                                                                                    </label>
-                                                                                    <input type="text" className='' placeholder='Email' value={email} onChange={emailHandleChange}></input>
-                                                                                </span>
 
-                                                                                {/* <span className='flex flex-col' >
-                                                                                    <label>
-                                                                                        Password
-                                                                                    </label>
-                                                                                    <input type="text" className='' placeholder=' contact tel' value={password} onChange={passwordHandleChange}></input>
-                                                                                </span>
-                                                                                <span className='flex flex-col' >
-                                                                                    <label>
-                                                                                        Confirm password
-                                                                                    </label>
-                                                                                    <input type="text" className='' placeholder=' contact tel' value={confirmPassword} onChange={confirmPasswordHandleChange}></input>
-                                                                                </span> */}
-                                                                            </div>
                                                                             <div className='flex flex-col' >
                                                                                 <label className='mx-2' >
                                                                                     Business certificate
                                                                                 </label>
-                                                                                <div className="upload_container border rounded-lg m-1 ">
+                                                                                <div className="certificate-container p-3 border rounded-lg m-1 ">
 
-                                                                                    {certificate ? (
+                                                                                    {certificate || certificateImgae ? (
                                                                                         <>
-                                                                                            <img src={certificate} alt="Selected Image" className="image" />
+                                                                                            {certificateImgae && <img src={certificateImgae} alt="Selected Image" className="image-certificate" />}
+                                                                                            {certificate && <Document file={certificate} onLoadSuccess={({ numPages }) => setNumPages(numPages)} style={{ width: '100%', height: '100px' }}>
+                                                                                                <Page pageNumber={pageNumber} />
+                                                                                            </Document>}
                                                                                             <input
+                                                                                                id="certificateUploadInput"
                                                                                                 type="file"
-                                                                                                accept="image/*"
+                                                                                                accept="application/pdf,image/*"
                                                                                                 onChange={handleCertificateChange}
                                                                                                 className="input"
                                                                                             />
                                                                                         </>
                                                                                     ) : (
                                                                                         <>
-                                                                                            <label htmlFor="uploadInput" className="label">
+                                                                                            <label htmlFor="certificateUploadInput" className="label">
                                                                                                 <img src={upload} alt="Image Icon" className="image" />
                                                                                             </label>
                                                                                             <input
-                                                                                                id="uploadInput"
+                                                                                                id="certificateUploadInput"
                                                                                                 type="file"
-                                                                                                accept="image/*"
+                                                                                                accept="application/pdf,image/*"
                                                                                                 onChange={handleCertificateChange}
                                                                                                 className="input-hidden"
                                                                                             />
@@ -686,30 +740,45 @@ function Businesses() {
 
                                                                             </div>
 
+
                                                                             <div className='flex flex-col  mx-2'  >
                                                                                 <label>
                                                                                     Business category
                                                                                 </label>
-                                                                                <span>{viewRiderInfo.category ? viewRiderInfo.category : "N/A"}</span>
+                                                                                <span>{viewRiderInfo.category ? viewRiderInfo.category.name : "N/A"}</span>
                                                                             </div>
                                                                         </div>
-                                                                        <div className='flex justify-between business-image mobile-fit  ' >
-                                                                            <div className='flex flex-col w-full mr-1' >
-                                                                                <span className='flex flex-col' >
-                                                                                    <label>
-                                                                                        Email (admin account)
-                                                                                    </label>
-                                                                                    <span>{viewRiderInfo.reward_type ? viewRiderInfo.reward_type : "N/A"}</span>
-                                                                                </span>
+                                                                        <div className='flex justify-between mobile-fit my-2  ' >
+                                                                            <span className='flex flex-col' >
+                                                                                <label>
+                                                                                    Reward percentage
+                                                                                </label>
+                                                                                <span>{viewRiderInfo.reward_percentage ? viewRiderInfo.reward_percentage : "N/A"} %</span>
+                                                                            </span>
+                                                                            <span className='flex flex-col' >
+                                                                                <label>
+                                                                                    Email (admin account)
+                                                                                </label>
+                                                                                <span>{viewRiderInfo.email ? viewRiderInfo.email : "N/A"}</span>
+                                                                            </span>
 
-                                                                            </div>
+                                                                        </div>
+
+                                                                        <div className='flex justify-between business-image mobile-fit  ' >
+
                                                                             <div className='flex flex-col' >
                                                                                 <label className='mx-2' >
                                                                                     Business certificate
                                                                                 </label>
-                                                                                <div className="upload_container border rounded-lg m-1 ">
-                                                                                    {viewRiderInfo.business_certificate ? <img src={`https://apidev2.koipay.co/${viewRiderInfo.business_certificate}`} alt="Selected Image" className="image" /> : <img src={upload} alt="Selected Image" className="image" />}
-                                                                                </div>
+                                                                              {viewRiderInfo.business_certificate && <div className=" certificate-container  p-3 border rounded-lg m-1 ">
+                                                                                    {certificateImg && <img src={`https://apidev2.koipay.co/${viewRiderInfo.business_certificate}`} alt="Selected Image" className="image" />}
+
+                                                                                    {certificatepdf && <Document file={`https://apidev2.koipay.co${viewRiderInfo.business_certificate}`} onLoadSuccess={({ numPages }) => setNumPages(numPages)} style={{ width: '100%', height: '500px' }}>
+                                                                                        <Page pageNumber={pageNumber} />
+                                                                                    </Document>}
+                                                                                     
+                                                                                </div>}
+                                                                                {!viewRiderInfo.business_certificate && <img src={upload} alt="Selected Image" className="image" />}
                                                                             </div>
 
                                                                         </div>

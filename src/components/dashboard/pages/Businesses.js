@@ -351,6 +351,7 @@ function Businesses() {
     const [pageNumber, setPageNumber] = useState(1);
 
     const handlePageChange = (page) => {
+        console.log("page",page)
         setCurrentPage(page);
     };
     const handleApproveBusiness = async () => {
@@ -397,8 +398,9 @@ function Businesses() {
     };
 
     useEffect(() => {
-        dispatch(fetchAsynBusinessRegistered(selectedRange, currentPage))
+        dispatch(fetchAsynBusinessRegistered({selectedRange, currentPage}))
         dispatch(fetchAsynBusinessCatgeory())
+        console.log("currentPageuse",currentPage)
     }, [dispatch, selectedRange, currentPage]);
 
     return (
@@ -467,7 +469,7 @@ function Businesses() {
                                                 filteredTransactionList.length ? (filteredTransactionList.map((transaction, index) => (
                                                     <tr className="bg-white border-b hover:bg-gray-50 " key={index} >
                                                         <td className="w-4 p-4">
-                                                            <span className='px-2'> {transaction.name ? transaction.name : "N/A"}</span>
+                                                            <span className='px-2 business-name'> {transaction.name ? transaction.name : "N/A"}</span>
                                                         </td>
                                                         <td className="px-6 py-4">
                                                             {transaction.category ? transaction.category.name : "N/A"}
@@ -494,8 +496,8 @@ function Businesses() {
                                                 ))) : (
                                                     allBussinessesRegisteredList.map((transaction, index) => (
                                                         <tr className="bg-white border-b hover:bg-gray-50 " key={index} >
-                                                            <td className="w-4 p-4">
-                                                                <span className='px-2'> {transaction.name ? transaction.name : "N/A"}</span>
+                                                            <td className="w-4 px-4">
+                                                                <span className='px-2 business-name'> {transaction.name ? transaction.name : "N/A"}</span>
                                                             </td>
                                                             <td className="px-6 py-4">
                                                                 {transaction.category ? transaction.category.name : "N/A"}

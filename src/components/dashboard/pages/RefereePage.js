@@ -135,7 +135,7 @@ function RefereePage() {
         }
     };
     return (
-        <div className='flex bg-slate-100 py-20  main-refree-container px-10' >
+        <div className='flex bg-slate-100 py-20   px-10' >
             <Link to="/"> <span className='remeber_forgot underline cursor-pointer top-2 mx-3 absolute '><FontAwesomeIcon icon={faBackward} color="#13b9668DA1F2"  className='mx-3'/>Back</span> </Link>
                 <div className='banner-background w-1/2  px-2 '>
                     <span className='flex flex-col  ' >

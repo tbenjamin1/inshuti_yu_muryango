@@ -440,6 +440,19 @@ tbody tr th {
   width: 100%;
 }
 
+.referal-content {
+  font-size: 12px;
+}
+
+.business-name {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: capitalize;
+}
+
 @media screen and (max-width: 768) {
   .fom-btn {
     font-size: 9px;
@@ -761,8 +774,9 @@ select:required:invalid {
   cursor: pointer;
   border-radius: 6px;
 }
-#certificateUploadInput{
-}
+
+#certificateUploadInput {}
+
 .certificate-container {
   position: relative;
   width: 90%;
@@ -783,6 +797,7 @@ select:required:invalid {
   width: 100%;
   height: auto;
 }
+
 .legend {
   color: #334154;
   font-size: 11px;
@@ -840,4 +855,27 @@ input {
 
 .input-hidden {
   display: none;
+}
+
+.reward-title {
+  font-size: 12px;
+  color: #a5aaad;
+}
+
+.chart-card {
+  width: 55%;
+}
+
+.chart-card-sales {
+  width: 30%;
+}
+
+.reward-card {
+  width: 15%;
+}
+
+.Customers-title {
+  position: absolute;
+  top: 10px;
+  left: 10px;
 }

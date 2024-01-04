@@ -103,7 +103,6 @@ function RefereePage() {
     const [renderfile, setrenderFile] = useState('');
     // Profile image upload
     const handleChange = (e) => {
-        console.log("setrenderFile")
         setrenderFile(URL.createObjectURL(e.target.files[0]));
         setFile(e.target.files[0]);
     };
@@ -154,6 +153,8 @@ function RefereePage() {
 
         setLoading(true);
         try {
+
+
             const response = await axios.get(
                 `https://pay.koipay.co/api/v1/accountholder/information?msisdn=25${phoneNumber}`,
                 {
@@ -163,6 +164,7 @@ function RefereePage() {
                     },
                 }
             );
+
 
             addToast(`${response.data.data.firstname} you are registered in momo`, {
                 appearance: 'success',
@@ -330,20 +332,32 @@ function RefereePage() {
                 <span className='flex flex-col  ' >
                     <img src={undraw_interview} className="App-logo" alt="logo" />
                     <span className=' referee-emoji' role="img" aria-label="partying-face">🥳</span>
-                    <span className='my-3 ml-4 font_serif referal-content' >Refer, Earn, and Give Back with Koipay! Invite your friends to
-                        join Koipay and earn cash back every time they use our platform. Support charities close to your heart by donating your cash back rewards</span>
+                    <div className='my-3 ml-4 font_serif referal-content  flex flex-col justify-center items-center ' >
+                        <span className=' flex flex-col justify-center items-center' >Getting Started is a Breeze <br></br> <strong>Sign Up:</strong>
+                        </span>
+                        Quick and easy registration to get you started
+                        <span><strong>Customize Rewards:</strong> Choose rewards that fit your business and brand</span>
+                        <span><strong>Drive Sales, Build Loyalty:</strong>  Activate your rewards and watch your business grow</span>
+                        <span> <strong>See Your Success:</strong> Check out your dashboard to see the impact of your rewards</span>
+                    </div>
                 </span>
             </div>
             <div className='flex flex-col w-1/2 justify-center items-center bg-white py-4 referee-form  busines-container-right  '>
                 <span className='Referral-title flex flex-col    font_serif   '>
-                    <span className='pl-2' >Join Koipay's Referral Program and Multiply Your Rewards!</span>
+                    <span className='pl-2' > Power Up Your Business with Rewards and Insights!</span>
 
                 </span>
                 <span className='login-sub-title p-2' ></span>
-                <span className='login-sub-title my-3'>------ Join Koipay's Referral --------</span>
+                <span className='login-sub-title my-3'>------ Welcome to Koipay --------</span>
                 <img src={undraw_interview} className="App-logo mobile-screen-view" alt="logo" />
-                <span className='my-3 ml-4 font_serif referal-content mobile-screen-view' >Refer, Earn, and Give Back with Koipay! Invite your friends to
-                    join Koipay and earn cash back every time they use our platform. Support charities close to your heart by donating your cash back rewards</span>
+                <span className='my-3 ml-4 font_serif referal-content mobile-screen-view' >
+                    <span className=' flex flex-col justify-center items-center' >Getting Started is a Breeze <br></br> <strong>Sign Up:</strong>
+                    </span>
+                    Quick and easy registration to get you started
+                    <span><strong>Customize Rewards:</strong> Choose rewards that fit your business and brand</span>
+                    <span className='px-1' ><strong>Drive Sales, Build Loyalty:</strong>  Activate your rewards and watch your business grow</span>
+                    <span> <strong>See Your Success:</strong> Check out your dashboard to see the impact of your rewards</span>
+                </span>
 
 
                 {!registered && <div className='flex flex-col my-3  w-3/5 form-width'>
@@ -495,7 +509,7 @@ function RefereePage() {
                                 <label>
                                     Password
                                 </label>
-                                <input type="text" className='' placeholder='Password' value={password} onChange={passwordHandleChange}></input>
+                                <input type="password" className='' placeholder='Password' value={password} onChange={passwordHandleChange}></input>
                                 {passwordError && <p class="mt-2   text-pink-600 text-sm">
                                     {passwordError}
                                 </p>}

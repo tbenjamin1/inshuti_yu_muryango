@@ -2,7 +2,9 @@
 import './App.css';
 import Signup from "./components/auth/Signup"
 import Login from "./components/auth/Login"
-import Reset from "./components/auth/Reset"
+import BusinessReport from "./components/dashboard/pages/BusinessReport";
+
+import Reset from "./components/auth/Reset";
 import DashboardLayout from "./components/dashboard/DashboardLayout"
 import Statistics from "./components/dashboard/pages/Statistics"
 import FuelEssance from "./components/dashboard/pages/FuelEssance"
@@ -30,10 +32,10 @@ function App() {
     <ToastProvider>
     <div>
       <Router>
-      <div className=" justify-center  ">
+      <div className="justify-center">
 
         <Routes>
-          <Route exact path="/" element={<Login />}/>
+          <Route exact path="/" element={<Login/>}/>
           <Route  path="/reset" element={<Reset/>}/>
           <Route  path="/sign-up" element={<Signup/>}/>
 
@@ -41,8 +43,6 @@ function App() {
           <Route  path="/register-entity" element={<RegisterEntity/>}/>
           <Route  path="/referee-page" element={<RefereePage/>}/>
           <Route  path="/terms-conditions" element={<TermsConditions/>}/>
-          
-
           <Route
                 path="/dashboard-home/*"
                 element={loginStatus ? <DashboardLayout /> : <Navigate to="/" />}
@@ -79,6 +79,10 @@ function App() {
               <Route
                 path="/businesses"
                 element={loginStatus ? <Businesses/> : <Navigate to="/" />}
+              />
+               <Route
+                path="/business-report"
+                element={loginStatus ? <BusinessReport/> : <Navigate to="/" />}
               />
               
 

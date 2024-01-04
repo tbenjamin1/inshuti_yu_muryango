@@ -50,7 +50,7 @@ export const fetchAsynBoughtItems = createAsyncThunk('tranx/fetchAsynBoughtItems
 })
 
 export const fetchAsynBusinessRegistered = createAsyncThunk('tranx/fetchAsynBusinessRegistered', async ({ selectedRange,currentPage }) => {
-    console.log("currentPages",currentPage)
+    
     const response = await axios.get(`https://apidev2.koipay.co/api/business/?page=${currentPage}`)
 
     return response.data;
@@ -80,10 +80,8 @@ export const fetchAsynBusinessReport = createAsyncThunk('tranx/fetchAsynBusiness
     return response.data;
 
 })
-
-
 const savedUser = localStorage.getItem('user');
-
+console.log("savedUser",savedUser)
 const initialState = {
     isLoading: false,
     acceptTerms: false,

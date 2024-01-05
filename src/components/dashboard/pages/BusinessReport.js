@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
-import main_logo from "../../images/park.jpeg";
+// import main_logo from "../../images/park.jpeg";
+import main_logo from "../../images/main_logo.png";
 import groupeya from "../../images/Groupeya_logo .png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -13,7 +14,7 @@ import dayjs from 'dayjs';
 import { DatePicker, Select } from 'antd';
 import { Pagination } from 'antd';
 import { useToasts } from 'react-toast-notifications';
-import { fetchAsynBoughtItems, fetchAsynBusinessReport, fetchAsynBusinessTransactionList, fetchAsynItems, fetchAsynNonPaginatedItems, fetchAsynParkCatgories, fetchAsynParkUnit, fetchAsynSingleBusiness, getAllBusinessReport, getAllfetchAsynBusinessTransactionList, getAllNonPaginatedItems, getAllparkCategories, getAllparkPickBoughtItemsList, getAllparkPickItemsList, getAllparkPickPaginatedBoughtItemsList, getAllparkPickPaginatedItems, getAllparkUnitList, getsingleBussiness, getUser } from '../../../redux/transactions/TransactionSlice';
+import { fetchAsynBoughtItems, fetchAsynBusinessCatgeory, fetchAsynBusinessReport, fetchAsynBusinessTransactionList, fetchAsynItems, fetchAsynNonPaginatedItems, fetchAsynParkCatgories, fetchAsynParkUnit, fetchAsynSingleBusiness, getAllBusinessReport, getAllBussinessesCategories, getAllfetchAsynBusinessTransactionList, getAllNonPaginatedItems, getAllparkCategories, getAllparkPickBoughtItemsList, getAllparkPickItemsList, getAllparkPickPaginatedBoughtItemsList, getAllparkPickPaginatedItems, getAllparkUnitList, getsingleBussiness, getUser } from '../../../redux/transactions/TransactionSlice';
 import ExcelExport from '../parkpick/pages/ExcelExport';
 import Chart from './Chart';
 import TopCustomer from './charts/TopCustomer';
@@ -23,7 +24,9 @@ import { Document, Page, pdfjs } from 'react-pdf';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const ParkPick = () => {
+
     const user = useSelector(getUser);
+
     const dispatch = useDispatch();
     const { addToast } = useToasts();
     const defaultStartDate = moment().startOf('month').format('YYYY-MM-DD'); // Example: Set default date to the start of the current month
@@ -90,7 +93,7 @@ const ParkPick = () => {
     const filterOption = (input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
 
 
-    const [activeTab, setActiveTab] = useState('summary');
+    const [activeTab, setActiveTab] = useState('profile');
     const [open, setOpen] = useState(false);
     const [pageboughtItems, setPageboughtItems] = useState(1);
     const [category, setcategoryOpen] = useState(false);
@@ -144,7 +147,8 @@ const ParkPick = () => {
         setstartingboughtIndex((page - 1) * 10);
     };
     const paginatedItemsList = useSelector(getAllparkPickPaginatedItems)
-
+    const [loading, setLoading] = useState(false);
+    const [isloading, setisLoading] = useState(false);
     const isLoading = useSelector((state) => state.transactions.isLoading);
     //  Item form 
     const [Name, setNameValue] = useState('');
@@ -460,99 +464,7 @@ const ParkPick = () => {
 
     }
 
-    // handle Delete unit
-    const handleDeleteUnit = async (item) => {
-        const confirmed = window.confirm('Are you sure you want to delete this unit ?');
-        if (confirmed) {
 
-            try {
-                await axios.delete(`https://api.koipay.co/api/v1/park-pick/units/delete/${item.id}/`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                });
-                dispatch(fetchAsynParkUnit())
-                addToast(`deleted`, {
-                    appearance: 'success', autoDismiss: true, // Enable auto dismissal
-                    autoDismissTimeout: 5000,
-                    transitionDuration: 300,
-                });
-            } catch (error) {
-                addToast(error.response.statusText, {
-                    appearance: 'error', autoDismiss: true, // Enable auto dismissal
-                    autoDismissTimeout: 5000,
-                    transitionDuration: 300,
-                });
-            }
-        }
-    }
-    // handle Delete Category
-    const handleDeleteCategory = async (category) => {
-        const confirmed = window.confirm('Are you sure you want to delete this category ?');
-        if (confirmed) {
-
-            try {
-                await axios.delete(`https://api.koipay.co/api/v1/park-pick/categories/${category.id}/`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                });
-                dispatch(fetchAsynParkCatgories())
-                addToast(`deleted`, {
-                    appearance: 'success', autoDismiss: true, // Enable auto dismissal
-                    autoDismissTimeout: 5000,
-                    transitionDuration: 300,
-                });
-            } catch (error) {
-                addToast(error.response.statusText, {
-                    appearance: 'error', autoDismiss: true, // Enable auto dismissal
-                    autoDismissTimeout: 5000,
-                    transitionDuration: 300,
-                });
-            }
-        }
-    }
-    // edit unit
-    const handleEditUnit = async (item) => {
-        setEditUnit(!editUnit);
-        setEditUnitDAta(item);
-        fillEditUnitForm(item);
-    }
-    // edit category
-    const handleEditCategory = async (item) => {
-        setEditCategory(!editCategory);
-        setEditCategoryDAta(item);
-        fillEditCategoryForm(item);
-    }
-    // delete item
-    const handleDeleteItem = async (item) => {
-        const confirmed = window.confirm('Are you sure you want to delete this item?');
-        if (confirmed) {
-
-            try {
-                await axios.delete(`https://api.koipay.co/api/v1/park-pick/items/delete-item/${item.id}/`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                });
-                dispatch(fetchAsynItems(currentPage))
-                addToast(`deleted`, {
-                    appearance: 'success', autoDismiss: true, // Enable auto dismissal
-                    autoDismissTimeout: 5000,
-                    transitionDuration: 300,
-                });
-            } catch (error) {
-                addToast(error.response.statusText, {
-                    appearance: 'error', autoDismiss: true, // Enable auto dismissal
-                    autoDismissTimeout: 5000,
-                    transitionDuration: 300,
-                });
-            }
-        }
-    }
 
     // edit items
 
@@ -575,85 +487,255 @@ const ParkPick = () => {
     const handleChildEditUnitEvent = () => {
         setEditUnit(!editUnit);
     };
+    const allbusinesscategories = useSelector(getAllBussinessesCategories);
+    const [viewBusinessInfo, setViewBusinessInfo] = useState(false);
+    const [editBusiness, seteditBusiness] = useState(false);
 
-    const handleEditItem = async (item) => {
-        seteditItemOpen(!editItemOpen);
-        setEditItem(item)
-        fillEditForm(item)
+
+    const modalRiderTitle = "Business details";
+    const Moridebtn_name = "Name";
+
+    const handleEditChildEvent = () => {
+        seteditBusiness(!editBusiness);
+
+    };
+    const [businesName, setbusinesNameValue] = useState('');
+    const [colorCode, setcolorCodeValue] = useState('');
+    const [phoneNumber, setphoneNumber] = useState('');
+    const [contactTel, setcontactTelValue] = useState('');
+    const [isRegistered, setIsregistered] = useState(false);
+    const [rewardType, setrewardType] = useState('');
+    const [businessCategory, setbusinessCategory] = useState('');
+    const [email, setEmail] = useState('');
+    const [reward_percentage, setreward_percentage] = useState('');
+    // const [password, setpassword] = useState('');
+    // const [confirmPassword, setConfirmPassword] = useState('');
+
+    // Define states for profile image and permit image
+    const [file, setFile] = useState('');
+    const [certificate, setcertificate] = useState('');
+    const [certificateImgae, setcertificateImage] = useState('');
+    const [certificateFile, setcertificateFile] = useState('');
+    const [renderfile, setrenderFile] = useState('');
+
+    // set values
+    const businesNameHandleChange = (event) => {
+        setbusinesNameValue(event.target.value);
+    };
+    const colorCodeHandleChange = (event) => {
+        setcolorCodeValue(event.target.value);
+    };
+    const contactTelHandleChange = (event) => {
+        setcontactTelValue(event.target.value);
+    };
+    const confirmMOMOnumberHandleChange = (event) => {
+        setphoneNumber(event.target.value);
+        validateMtnPhoneNumber(event.target.value);
+
+    };
+    const setrewardTypeHandleChange = (event) => {
+        setrewardType(event.target.value);
+    };
+    const businessCategoryHandleChange = (event) => {
+        setbusinessCategory(event.target.value);
+    };
+    const emailHandleChange = (event) => {
+        setEmail(event.target.value);
+    };
+
+    const reward_percentageHandleChange = (event) => {
+        setreward_percentage(event.target.value);
+    };
+
+    //  image upload
+
+    function handleChange(e) {
+        setrenderFile(URL.createObjectURL(e.target.files[0]));
+        setFile(e.target.files[0]);
+    }
+    const handleCertificateChange = (e) => {
+        const selectedFile = e.target.files[0];
+
+        if (selectedFile) {
+            if (selectedFile.type.startsWith('image/')) {
+                // It's an image
+                setcertificateImage(URL.createObjectURL(selectedFile));
+                setcertificateFile(selectedFile);
+                setcertificate('')
+            } else if (selectedFile.type === 'application/pdf') {
+                setcertificate(URL.createObjectURL(e.target.files[0]));
+                setcertificateFile(e.target.files[0]);
+                setcertificateImage('')
+            } else {
+                addToast("Unsupported file type! please try again", {
+                    appearance: 'error', autoDismiss: true, // Enable auto dismissal
+                    autoDismissTimeout: 5000,
+                    transitionDuration: 300,
+                });
+
+            }
+        }
+
+
 
     }
-    // fill  fill Unit Form
-    const fillEditUnitForm = (item) => {
-        setUnitNameValue(item.name);
-    }
-    // fill category fillEditUnitForm
-    const fillEditCategoryForm = (item) => {
-        setcategoryNameValue(item.name);
-    }
-    const fillEditForm = (item) => {
-        setNameValue(item.name);
-        setPriceValue(item.price);
-        setAvailabilityValue(item.available);
-        setCategoryValue(item.category.id);
-        setUnityValue(item.unit.id);
-        setPreferredValue(item.isPreferred);
-        setDescriptionValue(item.description);
-    }
-    const handleUpdateItem = async (event) => {
-        event.preventDefault();
+    const validateMtnPhoneNumber = (inputPhoneNumber) => {
+        // Pattern: starts with "078" or "079", followed by 7 digits
+        const pattern = /^(078|079)[0-9]{7}$/;
+        if (
+            inputPhoneNumber === "" ||
+            !pattern.test(inputPhoneNumber) ||
+            inputPhoneNumber.length !== 10
+        ) {
+            setIsregistered(false);
+            return false;
+        }
+        return true;
+    };
+    const handleSubmit = async () => {
+        const isValidPhoneNumber = validateMtnPhoneNumber(phoneNumber);
+        if (!isValidPhoneNumber) {
+            // Handle invalid phone number case
+            return;
+        }
 
-        const item = {
-            'name': Name,
-            'description': Description,
-            'available': Availability,
-            'price': Price,
-            'categoryId': Category,
-            'unitId': Unity,
-            'isPreferred': Preferred,
-        };
-
-
+        setLoading(true);
         try {
-            await axios.patch(`https://api.koipay.co/api/v1/park-pick/items/update-item/${editItem.id}`, item, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-            });
-            dispatch(fetchAsynItems(currentPage))
-            addToast(`successful updated`, {
-                appearance: 'success', autoDismiss: true,
+            const response = await axios.get(
+                `https://pay.koipay.co/api/v1/accountholder/information?msisdn=25${phoneNumber}`,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${process.env.REACT_APP_TOKEN_REFEREE}`,
+                    },
+                }
+            );
+
+            addToast(`${response.data.data.firstname} you are registered in momo`, {
+                appearance: 'success',
+                autoDismiss: true, // Enable auto dismissal
                 autoDismissTimeout: 5000,
                 transitionDuration: 300,
             });
-            setNameValue('');
-            setPriceValue('');
-            setAvailabilityValue(false);
-            setCategoryValue('');
-            setUnityValue('');
-            setPreferredValue(false);
-            setDescriptionValue('');
-            seteditItemOpen(!editItemOpen);
+
+            setIsregistered(true);
+            setLoading(false);
+            //  redirecting the user to the desired page
         } catch (error) {
-            if (error.response.status === 400) {
-                // Request was successful
-                addToast('please fill the required field', {
-                    appearance: 'error', autoDismiss: true,
-                    autoDismissTimeout: 5000,
-                    transitionDuration: 300,
-                });
+            addToast("Invalid,use your phone number registered in momo", {
+                appearance: 'error', autoDismiss: true, // Enable auto dismissal
+                autoDismissTimeout: 5000,
+                transitionDuration: 300,
+            });
+            setIsregistered(false);
+            setLoading(false);
+        }
+    };
+    useEffect(() => {
+        handleSubmit();
+    }, [phoneNumber]);
+    // errors
 
-            } else {
-                addToast(error.response.statusText, {
-                    appearance: 'error', autoDismiss: true,
-                    autoDismissTimeout: 5000,
-                    transitionDuration: 300,
-                });
-            }
+    const [businesNameError, seterror_name] = useState('');
+    const [colorCodeError, setcolor_code] = useState('');
+    const [phoneNumberError, setcontact_tel] = useState('');
+    const [reward_type, setreward_type] = useState('');
+    const [iconError, seticonError] = useState('');
+    const [businessCategoryError, setcategory] = useState('');
+    const [business_certificate, setbusiness_certificate] = useState('');
+    const [momo_tel, setmomo_tel] = useState('');
+    const [emailError, setemailError] = useState('');
+    const [reward_percentageError, setreward_percentageError] = useState('');
 
+    const [passwordError, setpassword_error] = useState('');
+
+
+    const handleEditBusiness = (busines) => {
+        setViewBusinessInfo(busines);
+        seteditBusiness(!editBusiness);
+        fillBussinesForm(busines);
+
+    };
+
+    const fillBussinesForm = (busines) => {
+        setbusinesNameValue(busines.name);
+        setcolorCodeValue(busines.color_code);
+        setcontactTelValue(busines.contact_tel);
+        setphoneNumber(busines.momo_tel);
+        setrewardType(busines.reward_type);
+        setreward_percentage(busines.reward_percentage);
+        setEmail('');
+        setcertificate(busines.business_certificate ? busines.business_certificate : '');
+        setrenderFile(busines.icon ? busines.icon : '');
+        setbusinessCategory(busines.category.id);
+
+
+    };
+
+
+    const handleBusinessRegister = async (event) => {
+
+        const businessInform = new FormData();
+        businessInform.append('name', businesName);
+        businessInform.append('color_code', colorCode);
+        businessInform.append('momo_tel', phoneNumber);
+        businessInform.append('contact_tel', contactTel);
+        businessInform.append('reward_type', rewardType);
+        businessInform.append('category', businessCategory);
+        businessInform.append('reward_percentage', reward_percentage);
+        businessInform.append('email', email);
+        businessInform.append('icon', file);
+        businessInform.append('business_certificate', certificateFile);
+
+        event.preventDefault();
+        const isValidPhoneNumber = validateMtnPhoneNumber(phoneNumber);
+        if (!isValidPhoneNumber) {
+            // Handle invalid phone number case
+            addToast("Something went wrong! please check your momo number", {
+                appearance: 'error', autoDismiss: true, // Enable auto dismissal
+                autoDismissTimeout: 5000,
+                transitionDuration: 300,
+            });
+
+            return;
         }
 
-    }
+        setisLoading(true)
+
+        try {
+            const response = await axios.patch(`https://apidev2.koipay.co/api/business/${viewBusinessInfo.id}/   
+            `, businessInform, {
+                // headers: {
+                //     'Access-Control-Allow-Origin': '*',
+                // }
+            });
+
+            addToast('Successfully updated ', {
+                appearance: 'success',
+            });
+            seteditBusiness(!editBusiness);
+            dispatch(fetchAsynSingleBusiness({ user }));
+            setisLoading(false);
+            setbusinesNameValue("");
+            setcolorCodeValue("");
+            setcontactTelValue("");
+            setphoneNumber("");
+            setrewardType("");
+            setbusinessCategory("");
+            setEmail("");
+
+            setreward_percentage("");
+            setIsregistered(false);
+        } catch (error) {
+            addToast("Something went wrong! please try again", {
+                appearance: 'error', autoDismiss: true, // Enable auto dismissal
+                autoDismissTimeout: 5000,
+                transitionDuration: 300,
+            });
+            setisLoading(false);
+        }
+    };
+
     useEffect(() => {
         if (selectedRange.length) {
             dispatch(fetchAsynBoughtItems({ pageboughtItems, filterStatus, filterItem, selectedRange }))
@@ -662,23 +744,24 @@ const ParkPick = () => {
 
     useEffect(() => {
         dispatch(fetchAsynParkCatgories())
-        dispatch(fetchAsynParkUnit())
-        dispatch(fetchAsynBusinessReport())
-        dispatch(fetchAsynBusinessTransactionList())
-        dispatch(fetchAsynSingleBusiness())
+        dispatch(fetchAsynParkUnit());
+        dispatch(fetchAsynBusinessReport({ user }));
+        dispatch(fetchAsynBusinessTransactionList({ user }));
+        dispatch(fetchAsynSingleBusiness({ user }));
+        dispatch(fetchAsynBusinessCatgeory())
     }, [dispatch, currentPage]);
 
 
     return (
         <div className='bg-gray-100'>
-            <nav class="bg-white border-solid border-b-4 nav-bar border-red-500 z-50">
+            <nav class="bg-white border-solid border-b-4 nav-bar border_green-500 z-50">
                 <div class=" flex flex-wrap items-center justify-between  px-4 py-2">
-                    <img class=" w-16   h-16 rounded-full object-cover" src={main_logo} alt="user photo" />
+                    <img class=" " src={main_logo} alt="user photo" />
                     <div class="flex items-center  bg-white  ">
                         <div className='flex flex-col mx-2' >
                             <span>{user.name}</span>
                             <div class="group flex justify-between items-center relative">
-                                <span className='text-red-500' >@ {user.role ? user.role.title : 'N/A'}</span>
+                                <span className='text_red-500' >@ {user.role ? user.role.title : 'N/A'}</span>
                                 <button
                                     class="bg-white text-gray-700 font-semibold px-4 rounded inline-flex items-center"
                                 >
@@ -707,7 +790,7 @@ const ParkPick = () => {
                             <span className="avatar  flex justify-center items-center p-2 bg-slate-400 text-slate-400">
                                 <svg class="absolute w-12 h-8 text-white -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
                             </span>
-                            <span class="top-0 left-7 absolute  w-5 h-5 bg-red-500 border-2 border-white  rounded-full"></span>
+                            <span class="top-0 left-7 absolute  w-5 h-5 bg_red-500 border-2 border-white  rounded-full"></span>
                         </div>
                     </div>
 
@@ -720,7 +803,7 @@ const ParkPick = () => {
 
                     <li role="presentation">
                         <button
-                            className={`inline-block p-4 border-b-4 rounded-t-lg ${activeTab === 'profile' ? 'border-red-500' : 'border-transparent hover:border-slate-400'}`}
+                            className={`inline-block p-4 border-b-4 rounded-t-lg ${activeTab === 'profile' ? 'border_green-500' : 'border-transparent hover:border-slate-400'}`}
                             onClick={() => handleTabClick('profile')}
                             role="tab"
                             aria-controls="profile"
@@ -731,7 +814,7 @@ const ParkPick = () => {
                     </li>
                     <li role="presentation">
                         <button
-                            className={`inline-block p-4 border-b-4 rounded-t-lg ${activeTab === 'payments' ? 'border-red-500' : 'border-transparent hover:border-slate-400'}`}
+                            className={`inline-block p-4 border-b-4 rounded-t-lg ${activeTab === 'payments' ? 'border_green-500' : 'border-transparent hover:border-slate-400'}`}
                             onClick={() => handleTabClick('payments')}
                             role="tab"
                             aria-controls="payments"
@@ -742,7 +825,7 @@ const ParkPick = () => {
                     </li>
                     <li className="mx-2" role="presentation">
                         <button
-                            className={`inline-block p-4 border-b-4 rounded-t-lg  ${activeTab === 'summary' ? 'border-red-500' : 'border-transparent hover:border-slate-400'}`}
+                            className={`inline-block p-4 border-b-4 rounded-t-lg  ${activeTab === 'summary' ? 'border_green-500' : 'border-transparent hover:border-slate-400'}`}
                             onClick={() => handleTabClick('summary')}
                             role="tab"
                             aria-controls="summary"
@@ -760,7 +843,7 @@ const ParkPick = () => {
                         role="tabpanel"
                         aria-labelledby="summary-tab"
                     >
-                        <div className='bg-red-500  p-3 mb-4 rounded-lg w-full'> <Filter /> </div>
+                        <div className='bg_red-500  p-3 mb-4 rounded-lg w-full'> <Filter /> </div>
 
                         {businessReport && <div className='flex w-full' >
                             <div className='flex flex-col bg-white p-3 rounded-lg reward-card ' >
@@ -779,300 +862,10 @@ const ParkPick = () => {
                                 <TopCustomer />
                             </div>
                             <div className='bg-white chart-card flex flex-col p-3 rounded-lg relative'>
-                                    <Chart />
+                                <Chart />
                             </div>
                         </div>}
                     </div>
-                    <div
-                        className={`p-4 my_TabContent my_TabContent_mobile rounded-lg bg-gray-100   px-20 ${activeTab === 'category' ? '' : 'hidden'}`}
-                        id="category"
-                        role="tabpanel"
-                        aria-labelledby="category-tab"
-                    >
-                        <div className='bg-white rounded-md py-2' >
-                            <div className='flex justify-between items-center p-4' >
-                                <div>
-                                    Categories
-                                </div>
-                                <div className='flex justify-center items-center ' >
-                                    {isLoading && <div role="status" className='flex justify-center items-center  w-full' >
-                                        <svg aria-hidden="true" class="inline w-6 h-6 mr-2 text-gray-200 animate-spin dark:text-red-600 fill-white" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
-                                            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
-                                        </svg>
-                                        <span class="sr-only">Loading...</span>
-                                    </div>}
-                                </div>
-                                <div>
-                                    <button onClick={handleCategoryModal} className='bg-red-500 text-white font-bold rounded-lg py-2 px-3' >
-                                        Add Category
-                                    </button>
-                                    <Modal setOpenModal={editCategory} onChildEvent={handleChildEditCategoryEvent} Title={categoryupdate} button={btn_name}  >
-                                        <div className="flex flex-col justify-center m-12 " >
-                                            <div className='flex justify-between ' >
-                                                <label className="block  w-4/5   ">
-                                                    <span className="block text-sm font-medium text-slate-700 py-2">Category Name </span>
-                                                    <input type="text" className="border-gray-300 " placeholder='Category Name ' value={categoryName} onChange={handlecategoryName} />
-
-                                                </label>
-                                            </div>
-                                            <div className='flex justify-between my-3' >
-                                                <button className='bg-red-500 text-white px-10 py-1 rounded-md cursor-pointer' onClick={handleUpdateCategory} >Update</button>
-                                            </div>
-                                        </div>
-                                    </Modal>
-                                    <Modal setOpenModal={category} onChildEvent={handleChildCatgeoryEvent} Title={categoryTitle} button={btn_name}  >
-                                        <div className="flex flex-col justify-center m-12 " >
-                                            <div className='flex justify-between ' >
-                                                <label className="block  w-4/5   ">
-                                                    <span className="block text-sm font-medium text-slate-700 py-2">Category Name </span>
-                                                    <input type="text" className="border-gray-300 " placeholder='Category Name ' value={categoryName} onChange={handlecategoryName} />
-                                                </label>
-                                            </div>
-                                            <div className='flex justify-between my-3' >
-                                                <button className='bg-red-500 text-white px-10 py-1 rounded-md cursor-pointer' onClick={handleCreateCategory}>Create</button>
-                                            </div>
-                                        </div>
-                                    </Modal>
-                                </div>
-                            </div>
-                            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 rounded-md ">
-                                <thead className="text-xs text-gray-700 uppercase dark:text-gray-400 border-b dark:bg-gray-100">
-                                    <tr>
-                                        <th scope="col" className="px-6 py-3">
-                                            #
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            name
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            created_at
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            updated_at
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            actions
-                                        </th>
-                                    </tr>
-                                </thead>
-
-                            </table>
-                        </div>
-
-
-
-
-                    </div>
-
-                    <div
-                        className={`p-4 rounded-lg my_TabContent my_TabContent_mobile bg-gray-100  px-20 ${activeTab === 'item' ? '' : 'hidden'}`}
-                        id="item"
-                        role="tabpanel"
-                        aria-labelledby="item-tab"
-                    >
-
-
-                        <div className='bg-white rounded-md py-2 border tab-section' >
-                            <div className='flex justify-between items-center p-4' >
-                                <div>
-                                    Items
-                                </div>
-                                <div className='flex justify-center items-center ' >
-                                    {isLoading && <div role="status" className='flex justify-center items-center  w-full' >
-                                        <svg aria-hidden="true" class="inline w-6 h-6 mr-2 text-gray-200 animate-spin dark:text-red-600 fill-white" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
-                                            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
-                                        </svg>
-                                        <span class="sr-only">Loading...</span>
-                                    </div>}
-                                </div>
-                                <div>
-                                    <button onClick={handleOpenModal} className='bg-red-500 text-white font-bold rounded-lg py-2 px-3' >
-                                        Add New Item
-                                    </button>
-
-                                    <Modal setOpenModal={editItemOpen} onChildEvent={handleChildEditItemEvent} Title={updateTitle} button={btn_name}  >
-                                        <div className="flex flex-col justify-center mt-12 " >
-
-                                            <div className='flex justify-between ' >
-                                                <label className="block  w-1/2  mr-3  ">
-                                                    <span className="block text-sm font-medium text-slate-700 py-2">Name </span>
-                                                    <input type="text" className="border-gray-300 " placeholder=' Item Name' value={Name} onChange={handleName} />
-                                                    {/* {production_year && <p className="  text-pink-600 text-sm">{production_year}</p>} */}
-                                                </label>
-                                                <label className="block   w-1/2  ">
-                                                    <span className="block text-sm font-medium text-slate-700 py-2 ">Price</span>
-                                                    <input type="text" className="border-gray-300" placeholder='Price ' value={Price} onChange={handlePrice} />
-                                                    {/* {plate_number && <p className=" mt-2 text-pink-600 text-sm">{plate_number}</p>} */}
-                                                </label>
-                                            </div>
-                                            <div className='flex justify-between ' >
-                                                <label className="block  w-1/2  mr-3  ">
-                                                    <span className="block text-sm font-medium text-slate-700 py-2">Availability</span>
-                                                    <select className=' border border-gray-300 rounded-md h-3/5' value={Availability} onChange={handleAvailability}  >
-                                                        <option>pick one</option>
-                                                        <option value={true}>yes</option>
-                                                        <option value={false}>No</option>
-                                                    </select>
-                                                    {/* {production_year && <p className="  text-pink-600 text-sm">{production_year}</p>} */}
-                                                </label>
-                                                <label className="block   w-1/2  ">
-                                                    <span className="block text-sm font-medium text-slate-700 py-2 ">Category</span>
-                                                    <select className=' border border-gray-300 rounded-md h-3/5' value={Category} onChange={handleCategory}  >
-                                                        <option>pick one</option>
-                                                        {categoriesList.length && categoriesList.map((category) => (
-                                                            <option key={category.id} value={category.id}>{category.name}</option>
-                                                        ))}
-                                                    </select>
-                                                    {/* {plate_number && <p className=" mt-2 text-pink-600 text-sm">{plate_number}</p>} */}
-                                                </label>
-
-                                            </div>
-                                            <div className='flex justify-between ' >
-                                                <label className="block  w-1/2  mr-3  ">
-                                                    <span className="block text-sm font-medium text-slate-700 py-2">Unity </span>
-                                                    <select className=' border border-gray-300 rounded-md h-3/5' value={Unity} onChange={handleUnity}  >
-                                                        <option value="true">pick one</option>
-                                                        {unitList.length && unitList.map((unit) => (
-                                                            <option key={unit.id} value={unit.id}>{unit.name}</option>
-                                                        ))}
-                                                    </select>
-                                                    {/* {production_year && <p className="  text-pink-600 text-sm">{production_year}</p>} */}
-                                                </label>
-                                                <label className="block  w-1/2    ">
-                                                    <span className="block text-sm font-medium text-slate-700 py-2">Preferred </span>
-                                                    <select className=' border border-gray-300 rounded-md h-1/2' value={Preferred} onChange={handlePreferred}  >
-                                                        <option>pick one</option>
-                                                        <option value="true">yes</option>
-                                                        <option value="false">No</option>
-                                                    </select>
-                                                    {/* {production_year && <p className="  text-pink-600 text-sm">{production_year}</p>} */}
-                                                </label>
-                                            </div>
-                                            <div className='flex justify-between ' >
-                                                <label className="block  w-full ">
-                                                    <span className="block text-sm font-medium text-slate-700 py-2">Description</span>
-                                                    <textarea type="text" className="border-gray-300 p-2 rounded-md " placeholder='Description' value={Description} onChange={handleDescription} />
-                                                    {/* {production_year && <p className="  text-pink-600 text-sm">{production_year}</p>} */}
-                                                </label>
-                                            </div>
-                                            <div className='flex justify-between my-3' >
-                                                <button className='bg-red-500 text-white px-10 py-1 rounded-md cursor-pointer' onClick={handleUpdateItem}  >update</button>
-                                            </div>
-                                        </div>
-                                    </Modal>
-                                    <Modal setOpenModal={open} onChildEvent={handleChildEvent} Title={modalTitle} button={btn_name}  >
-                                        <div className="flex flex-col justify-center mt-12 " >
-
-                                            <div className='flex justify-between ' >
-                                                <label className="block  w-1/2  mr-3  ">
-                                                    <span className="block text-sm font-medium text-slate-700 py-2">Name </span>
-                                                    <input type="text" className="border-gray-300 " placeholder=' Item Name' value={Name} onChange={handleName} />
-                                                    {/* {production_year && <p className="  text-pink-600 text-sm"> {production_year} </p>} */}
-                                                </label>
-                                                <label className="block   w-1/2  ">
-                                                    <span className="block text-sm font-medium text-slate-700 py-2 ">Price</span>
-                                                    <input type="text" className="border-gray-300" placeholder='Price ' value={Price} onChange={handlePrice} />
-                                                    {/* {plate_number && <p className=" mt-2 text-pink-600 text-sm">{plate_number} </p>} */}
-                                                </label>
-                                            </div>
-                                            <div className='flex justify-between ' >
-                                                <label className="block  w-1/2  mr-3  ">
-                                                    <span className="block text-sm font-medium text-slate-700 py-2">Availability</span>
-                                                    <select className=' border border-gray-300 rounded-md h-3/5' value={Availability} onChange={handleAvailability}  >
-                                                        <option >pick one</option>
-                                                        <option value="true">yes</option>
-                                                        <option value="false">No</option>
-                                                    </select>
-                                                    {/* {production_year && <p className="  text-pink-600 text-sm"> {production_year} </p>} */}
-                                                </label>
-                                                <label className="block   w-1/2  ">
-                                                    <span className="block text-sm font-medium text-slate-700 py-2 ">Category</span>
-                                                    <select className=' border border-gray-300 rounded-md h-3/5' value={Category} onChange={handleCategory}  >
-                                                        <option value="true">pick one</option>
-                                                        {categoriesList.length && categoriesList.map((category) => (
-                                                            <option key={category.id} value={category.id}>{category.name}</option>
-                                                        ))}
-                                                    </select>
-                                                    {/* {plate_number && <p className=" mt-2 text-pink-600 text-sm">{plate_number</p>} */}
-                                                </label>
-                                            </div>
-                                            <div className='flex justify-between ' >
-                                                <label className="block  w-1/2  mr-3  ">
-                                                    <span className="block text-sm font-medium text-slate-700 py-2">Unity </span>
-                                                    <select className=' border border-gray-300 rounded-md h-3/5' value={Unity} onChange={handleUnity}  >
-                                                        <option value="true">pick one</option>
-                                                        {unitList.length && unitList.map((unit) => (
-                                                            <option key={unit.id} value={unit.id}>{unit.name}</option>
-                                                        ))}
-                                                    </select>
-                                                    {/* {production_year && <p className="  text-pink-600 text-sm">{production_year}</p>} */}
-                                                </label>
-
-                                                <label className="block  w-1/2    ">
-                                                    <span className="block text-sm font-medium text-slate-700 py-2">Preferred </span>
-                                                    <select className=' border border-gray-300 rounded-md h-1/2' value={Preferred} onChange={handlePreferred}  >
-                                                        <option >pick one</option>
-                                                        <option value="true">yes</option>
-                                                        <option value="false">No</option>
-                                                    </select>
-                                                    {/* {production_year && <p className="  text-pink-600 text-sm">{production_year} </p>} */}
-                                                </label>
-                                            </div>
-                                            <div className='flex justify-between ' >
-                                                <label className="block  w-full ">
-                                                    <span className="block text-sm font-medium text-slate-700 py-2">Description</span>
-                                                    <textarea type="text" className="border-gray-300 p-2 rounded-md " placeholder='Description' value={Description} onChange={handleDescription} />
-                                                    {/* {production_year && <p className="  text-pink-600 text-sm">{production_year}</p>} */}
-                                                </label>
-                                            </div>
-                                            <div className='flex justify-between my-3' >
-                                                <button className='bg-red-500 text-white px-10 py-1 rounded-md cursor-pointer' onClick={handleCreateItem}  >Create</button>
-                                            </div>
-                                        </div>
-                                    </Modal>
-                                </div>
-                            </div>
-                            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 rounded-md ">
-                                <thead className="text-xs text-gray-700 uppercase dark:text-gray-400 border-b dark:bg-gray-100">
-                                    <tr>
-                                        <th scope="col" className="px-6 py-3">
-                                            #
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            name
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            category
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            price/unit
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            unit
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            Availability
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            Preferred
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            actions
-                                        </th>
-                                    </tr>
-                                </thead>
-
-                            </table>
-
-
-                        </div>
-                        {itemsList.length > 0 && <div className='flex justify-end my-1' >
-                            <Pagination defaultCurrent={1} total={paginatedItemsList.totalCount} onChange={handlePageChange} className="border p-3 rounded-lg bg-white" />
-                        </div>}
-                    </div>
-
                     <div
                         className={`p-4 rounded-lg my_TabContent my_TabContent_mobile  bg-gray-100  px-20 ${activeTab === 'profile' ? '' : 'hidden'}`}
                         id="profile"
@@ -1109,43 +902,55 @@ const ParkPick = () => {
 
                             </div>
 
-                            <span className='flex flex-col mobile-fit  my-2 '  >
-                                <label>
-                                    MTN MOMO tel
-                                </label>
-                                <span>{singleBusinessdetails.momo_tel ? singleBusinessdetails.momo_tel : "N/A"}</span>
 
-                            </span>
 
-                            <div className='flex justify-between mobile-fit my-2  w-4/5'>
+                            <div className='flex justify-between mobile-fit my-2  w-4/5 '>
+                                <span className='flex flex-col mobile-fit  my-2 '  >
+                                    <label>
+                                        MTN MOMO tel
+                                    </label>
+                                    <span>{singleBusinessdetails.momo_tel ? singleBusinessdetails.momo_tel : "N/A"}</span>
+
+                                </span>
+
+
+                                <span className='flex flex-col' >
+                                    <label>
+                                        Business status
+                                    </label>
+                                    <span className='text-end'>{singleBusinessdetails.status ? singleBusinessdetails.status : "N/A"}</span>
+                                </span>
+                            </div>
+
+                            <div className='flex justify-between mobile-fit my-2  w-4/5 '>
                                 <div className='flex flex-col '  >
                                     <label>
                                         Reward type
                                     </label>
-                                    <span>{singleBusinessdetails.reward_type ? singleBusinessdetails.reward_type : "N/A"}</span>
+                                    <span >{singleBusinessdetails.reward_type ? singleBusinessdetails.reward_type : "N/A"}</span>
 
                                 </div>
 
 
-                                <div className='flex flex-col  mx-2'  >
+                                <div className='flex flex-col '  >
                                     <label>
                                         Business category
                                     </label>
-                                    <span>{singleBusinessdetails.category ? singleBusinessdetails.category.name : "N/A"}</span>
+                                    <span className='text-end'>{singleBusinessdetails.category ? singleBusinessdetails.category.name : "N/A"}</span>
                                 </div>
                             </div>
-                            <div className='flex justify-between mobile-fit my-2  w-4/5     ' >
+                            <div className='flex justify-between mobile-fit my-2  w-4/5'>
                                 <span className='flex flex-col' >
                                     <label>
                                         Reward percentage
                                     </label>
-                                    <span>{singleBusinessdetails.reward_percentage ? singleBusinessdetails.reward_percentage : "N/A"} %</span>
+                                    <span  >{singleBusinessdetails.reward_percentage ? singleBusinessdetails.reward_percentage : "N/A"} %</span>
                                 </span>
                                 <span className='flex flex-col' >
                                     <label>
                                         Email (admin account)
                                     </label>
-                                    <span>{singleBusinessdetails.email ? singleBusinessdetails.email : "N/A"}</span>
+                                    <span className='text-end' >{singleBusinessdetails.email ? singleBusinessdetails.email : "N/A"}</span>
                                 </span>
 
                             </div>
@@ -1153,7 +958,7 @@ const ParkPick = () => {
                             <div className='flex justify-between business-image mobile-fit  ' >
 
                                 <div className='flex flex-col w-full' >
-                                    <label className='mx-2' >
+                                    <label className='' >
                                         Business certificate
                                     </label>
                                     {singleBusinessdetails.business_certificate && <div className=" certificate-container  p-3 border rounded-lg m-1 ">
@@ -1164,20 +969,196 @@ const ParkPick = () => {
                                         </Document>
 
                                     </div>}
-                                    {!singleBusinessdetails.business_certificate && <img src={upload} alt="Selected Image" className="image" />}
+                                    {!singleBusinessdetails.business_certificate && <div className='flex flex-col' >
+
+                                        <span>No certificate available</span>
+                                        {/* <img src={upload} alt="Selected Image" className="image-not-setted" /> */}
+
+                                    </div>}
                                 </div>
 
                             </div>
 
-                            {/* <button className='fom-btn-approve w-1/3 p-2 my-3' onClick={() => handleApproveBusiness()} >
-                                {!loading ? (<div className='mr-4 submit-btn-center' >Approve</div>) : (<div role="status">
-                                    <svg aria-hidden="true" class="inline w-4 h-4 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-white" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
-                                        <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
-                                    </svg>
-                                    <span class="sr-only">Loading...</span>
-                                </div>)}
-                            </button> */}
+
+                            <div className=' flex  items-center justify-center'>
+                                <button className='bg_red-500 text-white rounded-md  px-10  py-2 my-3' onClick={() => handleEditBusiness(singleBusinessdetails)} >
+                                    update
+                                </button>
+                            </div>
+
+                            <Modal setOpenModal={editBusiness} onChildEvent={handleEditChildEvent} Title={modalRiderTitle} button={''} >
+
+
+                                <div className='flex flex-col my-3   form-width'>
+                                    <div className='flex justify-between business-image mobile-fit  ' >
+                                        <div className='flex flex-col w-full mr-1' >
+                                            <label>
+                                                Business name
+                                            </label>
+                                            <input type="text" className='' placeholder=' Business name' value={businesName} onChange={businesNameHandleChange}  ></input>
+                                            <label className='' >
+                                                Color code
+                                            </label>
+                                            <input type="text" className='' placeholder=' Color code' value={colorCode} onChange={colorCodeHandleChange}  ></input>
+                                            <span className='flex flex-col' >
+                                                <label>
+                                                    Contact tel
+                                                </label>
+                                                <input type="text" className='' placeholder=' contact tel' value={contactTel} onChange={contactTelHandleChange}></input>
+                                            </span>
+                                        </div>
+                                        <div className='flex flex-col' >
+                                            <label className='mx-2' >
+                                                Business Icon
+                                            </label>
+                                            <div className="upload_container border rounded-lg m-1 ">
+
+                                                {renderfile ? (
+                                                    <>
+                                                        <img src={renderfile} alt="Selected Image" className="image" />
+                                                        <input
+                                                            type="file"
+                                                            accept="image/*"
+                                                            onChange={handleChange}
+                                                            className="input"
+                                                        />
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <label htmlFor="uploadInput" className="label">
+                                                            <img src={upload} alt="Image Icon" className="image" />
+                                                        </label>
+                                                        <input
+                                                            id="uploadInput"
+                                                            type="file"
+                                                            accept="image/*"
+                                                            onChange={handleChange}
+                                                            className="input-hidden"
+                                                        />
+                                                    </>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <span className='flex flex-col mobile-fit '  >
+                                        <label>
+                                            MTN MOMO tel
+                                        </label>
+                                        <span className='flex justify-between momo-number ' >
+                                            <input type="number" className='phone-number' placeholder='MTN MOMO tel' value={phoneNumber} onChange={confirmMOMOnumberHandleChange} ></input>
+                                            <div className='ml-1 flex' >
+                                                {loading && (<div role="status">
+                                                    <svg aria-hidden="true" class="inline w-4 h-4 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-white" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
+                                                        <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
+                                                    </svg>
+                                                    <span class="sr-only">Loading...</span>
+                                                </div>)}
+                                                {isRegistered && phoneNumber.length === 10 && <span role="img" aria-label="check mark button" class="react-emojis">✅</span>}
+                                                {!isRegistered && phoneNumber.length === 10 && <span role="img" aria-label="cross mark" class="react-emojis">❌</span>}
+                                            </div>
+                                        </span>
+                                    </span>
+
+                                    <div className='flex justify-between mobile-fit '>
+                                        <div className='flex flex-col w-1/2'  >
+                                            <label>
+                                                Reward type
+                                            </label>
+                                            <select required value={rewardType} onChange={setrewardTypeHandleChange} className='rounded border'  >
+                                                <option value='' >pick one</option>
+                                                <option value='cashback'>cashback</option>
+                                                <option value='points'>points</option>
+                                            </select>
+                                        </div>
+
+                                        <div className='flex flex-col w-1/2 mx-2'  >
+                                            <label>
+                                                Business category
+                                            </label>
+                                            <select required value={businessCategory} onChange={businessCategoryHandleChange} className='rounded border'  >
+                                                <option value=''  >pick one</option>
+                                                {allbusinesscategories &&
+                                                    allbusinesscategories.map((category) => (
+                                                        <option key={category.id} value={category.id}>
+                                                            {category.name}
+                                                        </option>
+                                                    ))}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className='flex justify-between mobile-fit '>
+                                        <span className='flex flex-col w-1/2'>
+                                            <label>
+                                                Reward percentage
+                                            </label>
+                                            <input type="text" className='' placeholder=' Reward percentage' value={reward_percentage} onChange={reward_percentageHandleChange}></input>
+                                            {reward_percentageError && <p class="mt-2   text-pink-600 text-sm">
+                                                {reward_percentageError}
+                                            </p>}
+                                        </span>
+                                        <span className='flex flex-col w-1/2 mx-2'>
+                                            <label>
+                                                Email (admin account)
+                                            </label>
+                                            <input type="text" className='' placeholder='Email' value={email} onChange={emailHandleChange}></input>
+                                        </span>
+                                    </div>
+                                    <div className='flex justify-between business-image mobile-fit  ' >
+
+                                        <div className='flex flex-col' >
+                                            <label className='mx-2' >
+                                                Business certificate
+                                            </label>
+                                            <div className="certificate-container p-3 border rounded-lg m-1 ">
+
+                                                {certificate || certificateImgae ? (
+                                                    <>
+                                                        {certificateImgae && <img src={certificateImgae} alt="Selected Image" className="image-certificate" />}
+                                                        {certificate && <Document file={certificate} onLoadSuccess={({ numPages }) => setNumPages(numPages)} style={{ width: '100%', height: '100px' }}>
+                                                            <Page pageNumber={pageNumber} />
+                                                        </Document>}
+                                                        <input
+                                                            id="certificateUploadInput"
+                                                            type="file"
+                                                            accept="application/pdf,image/*"
+                                                            onChange={handleCertificateChange}
+                                                            className="input"
+                                                        />
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <label htmlFor="certificateUploadInput" className="label">
+                                                            <img src={upload} alt="Image Icon" className="image" />
+                                                        </label>
+                                                        <input
+                                                            id="certificateUploadInput"
+                                                            type="file"
+                                                            accept="application/pdf,image/*"
+                                                            onChange={handleCertificateChange}
+                                                            className="input-hidden"
+                                                        />
+                                                    </>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <span className='flex justify-between items-center approve-container '>
+                                        <button className='fom-btn w-1/3 p-2 my-3' >
+                                            {!isloading ? (<div className='mr-4 submit-btn-center' onClick={handleBusinessRegister}  >Save</div>) : (<div role="status">
+                                                <svg aria-hidden="true" class="inline w-4 h-4 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-white" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
+                                                    <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
+                                                </svg>
+                                                <span class="sr-only">Loading...</span>
+                                            </div>)} </button>
+
+                                    </span>
+                                </div>
+                            </Modal>
 
                         </div>}
 
@@ -1191,7 +1172,7 @@ const ParkPick = () => {
                     >
                         <div className='bg-white rounded-md py-2' >
                             <div className='bg-white rounded-md py-2' >
-                                <button className='bg-red-500 text-white font-bold rounded-lg py-2 px-3 mx-4' >
+                                <button className='bg_red-500 text-white font-bold rounded-lg py-2 px-3 mx-4' >
                                     Business transactions
                                 </button>
                                 <div className='flex justify-between items-center p-4' >
@@ -1412,7 +1393,7 @@ const ParkPick = () => {
                     </div>
 
                 </div>
-                <div className='px-20 py-2 bg-red-500' >
+                <div className='px-20 py-2 bg_red-500' >
                     <span className='text-white text-sm' >All rights reserved</span>
                 </div>
             </footer>

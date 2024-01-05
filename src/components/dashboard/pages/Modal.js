@@ -78,7 +78,7 @@ export default function PopModal({ setOpenModal, onChildEvent, Title, button, ch
                                     </Transition.Child>
                                     <div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
                                         <div className="px-4 sm:px-6 border-b-8">
-                                            <Dialog.Title className="text-base font-semibold leading-6 text-gray-900 p-4  flex justify-between ">
+                                            <Dialog.Title className="text-base font-semibold leading-6 text-gray-900 p-4  flex justify-between items-center ">
                                                 <span>{Title}</span>
                                                 <span>
                                                     <button className='create_btn px-3 py-2 rounded-lg ' onClick={handlePropClick} >{button} </button>

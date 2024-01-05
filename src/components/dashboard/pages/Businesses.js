@@ -148,6 +148,7 @@ function Businesses() {
     const confirmPasswordHandleChange = (event) => {
         setConfirmPassword(event.target.value);
     };
+
     // Define states for profile image and permit image
     const [file, setFile] = useState('');
     const [certificate, setcertificate] = useState('');
@@ -155,6 +156,7 @@ function Businesses() {
     const [certificateFile, setcertificateFile] = useState('');
     const [renderfile, setrenderFile] = useState('');
     // Profile image upload
+
     function handleChange(e) {
         setrenderFile(URL.createObjectURL(e.target.files[0]));
         setFile(e.target.files[0]);
@@ -400,7 +402,6 @@ function Businesses() {
     useEffect(() => {
         dispatch(fetchAsynBusinessRegistered({selectedRange, currentPage}))
         dispatch(fetchAsynBusinessCatgeory())
-        console.log("currentPageuse",currentPage)
     }, [dispatch, selectedRange, currentPage]);
 
     return (
@@ -523,6 +524,7 @@ function Businesses() {
                                                             <td className="px-6 py-4 flex justify-around   items-center">
                                                                 <FaBookReader className='cursor-pointer ' onClick={() => handleViewRider(transaction)} />
                                                                 <FaRegEdit className='cursor-pointer ' onClick={() => handleEditBusiness(transaction)} />
+
                                                                 <Modal setOpenModal={editBusiness} onChildEvent={handleEditChildEvent} Title={modalRiderTitle} button={viewRiderInfo.name} >
                                                                     <div className='flex flex-col my-3   form-width'>
                                                                         <div className='flex justify-between business-image mobile-fit  ' >
@@ -694,6 +696,7 @@ function Businesses() {
                                                                         </span>
                                                                     </div>
                                                                 </Modal>
+
                                                                 <Modal setOpenModal={viewRider} onChildEvent={handleViewChildEvent} Title={modalRiderTitle} button={viewRiderInfo.name} >
                                                                     <div className='flex flex-col my-3   form-width'>
                                                                         <div className='flex justify-between business-image mobile-fit  ' >

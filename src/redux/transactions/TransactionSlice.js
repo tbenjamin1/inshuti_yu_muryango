@@ -50,9 +50,7 @@ export const fetchAsynBoughtItems = createAsyncThunk('tranx/fetchAsynBoughtItems
 })
 
 export const fetchAsynBusinessRegistered = createAsyncThunk('tranx/fetchAsynBusinessRegistered', async ({ selectedRange,currentPage }) => {
-    
     const response = await axios.get(`https://apidev2.koipay.co/api/business/?page=${currentPage}`)
-
     return response.data;
 
 })
@@ -61,27 +59,24 @@ export const fetchAsynBusinessRegistered = createAsyncThunk('tranx/fetchAsynBusi
 export const fetchAsynBusinessCatgeory = createAsyncThunk('tranx/fetchAsynBusinessCatgeory', async () => {
     const response = await axios.get(`https://apidev2.koipay.co/api/categories/`)
     return response.data;
-
 })
 
-export const fetchAsynSingleBusiness = createAsyncThunk('tranx/fetchAsynSingleBusiness', async () => {
-    const response = await axios.get(`https://apidev2.koipay.co/api/business/4b349430-657d-49ee-8429-331431903759/`)
+export const fetchAsynSingleBusiness = createAsyncThunk('tranx/fetchAsynSingleBusiness', async ({user}) => {
+    const response = await axios.get(`https://apidev2.koipay.co/api/business/${user.id}/`)
     return response.data;
-
 })
-export const fetchAsynBusinessTransactionList = createAsyncThunk('tranx/fetchAsynBusinessTransactionList', async () => {
-    const response = await axios.get(`https://apidev2.koipay.co/api/business/transactions/4b349430-657d-49ee-8429-331431903759`)
+export const fetchAsynBusinessTransactionList = createAsyncThunk('tranx/fetchAsynBusinessTransactionList', async ({user}) => {
+    const response = await axios.get(`https://apidev2.koipay.co/api/business/transactions/${user.id}`)
     return response.data;
-
 })
-
-export const fetchAsynBusinessReport = createAsyncThunk('tranx/fetchAsynBusinessReport', async () => {
-    const response = await axios.get(`https://apidev2.koipay.co/api/business/statistics/4b349430-657d-49ee-8429-331431903759`)
+export const fetchAsynBusinessReport = createAsyncThunk('tranx/fetchAsynBusinessReport', async ({user}) => {
+    const response = await axios.get(`https://apidev2.koipay.co/api/business/statistics/${user.id}`)
     return response.data;
-
 })
+
 const savedUser = localStorage.getItem('user');
-console.log("savedUser",savedUser)
+// console.log("savedUser",savedUser)
+
 const initialState = {
     isLoading: false,
     acceptTerms: false,

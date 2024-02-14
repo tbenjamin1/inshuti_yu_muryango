@@ -285,21 +285,27 @@ function Businesses() {
         }
     };
     const handleDeleteBusiness = async (businesid) => {
-        try {
-            const response = await axios.delete(`https://apidev2.koipay.co/api/business/${businesid.id}/`);
+        const confirmation = window.confirm("Do you really want to delete this business?");
 
-            addToast('Deleted ', {
-                appearance: 'success',
-            });
-            dispatch(fetchAsynBusinessRegistered({selectedRange, currentPage}));
-        } catch (error) {
-            addToast("Something went wrong! please try again", {
-                appearance: 'error', autoDismiss: true, // Enable auto dismissal
-                autoDismissTimeout: 5000,
-                transitionDuration: 300,
-            });
-            setisLoading(false);
+        if(confirmation){
+            try {
+                const response = await axios.delete(`https://apidev2.koipay.co/api/business/${businesid.id}/`);
+    
+                addToast('Deleted ', {
+                    appearance: 'success',
+                });
+                dispatch(fetchAsynBusinessRegistered({selectedRange, currentPage}));
+            } catch (error) {
+                addToast("Something went wrong! please try again", {
+                    appearance: 'error', autoDismiss: true, // Enable auto dismissal
+                    autoDismissTimeout: 5000,
+                    transitionDuration: 300,
+                });
+                setisLoading(false);
+            }
         }
+        
+        
     }
 
     const handleBusinessRegister = async (event) => {
@@ -399,8 +405,6 @@ function Businesses() {
             setLoading(false);
         }
     };
-
-
     const fillBussinesForm = (busines) => {
         setbusinesNameValue(busines.name);
         setcolorCodeValue(busines.color_code);
@@ -410,7 +414,7 @@ function Businesses() {
         setrewardType(busines.reward_type);
         setreward_percentage(busines.reward_percentage);
 
-        setEmail('');
+        setEmail(busines.user?busines.user.email:'');
         setcertificate(busines.business_certificate ? `https://apidev2.koipay.co${busines.business_certificate}` : '');
         setrenderFile(busines.icon ? `https://apidev2.koipay.co/${busines.icon}` : '');
         setbusinessCategory(busines.category.id);
@@ -782,7 +786,7 @@ function Businesses() {
                                                                                 <label>
                                                                                     Email (admin account)
                                                                                 </label>
-                                                                                <span>{viewRiderInfo.email ? viewRiderInfo.email : "N/A"}</span>
+                                                                                <span>{viewRiderInfo.user ? viewRiderInfo.user.email : "N/A"}</span>
                                                                             </span>
 
                                                                         </div>

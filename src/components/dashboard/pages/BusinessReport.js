@@ -662,13 +662,14 @@ const ParkPick = () => {
     };
 
     const fillBussinesForm = (busines) => {
+        console.log("busines",busines)
         setbusinesNameValue(busines.name);
         setcolorCodeValue(busines.color_code);
         setcontactTelValue(busines.contact_tel);
         setphoneNumber(busines.momo_tel);
         setrewardType(busines.reward_type);
         setreward_percentage(busines.reward_percentage);
-        setEmail('');
+        setEmail(busines.user?busines.user.email:'');
         setcertificate(busines.business_certificate ? busines.business_certificate : '');
         setrenderFile(busines.icon ? busines.icon : '');
         setbusinessCategory(busines.category.id);
@@ -966,7 +967,7 @@ const ParkPick = () => {
                                     <label>
                                         Email (admin account)
                                     </label>
-                                    <span className='text-end' >{singleBusinessdetails.email ? singleBusinessdetails.email : "N/A"}</span>
+                                    <span className='text-end' >{singleBusinessdetails.user ? singleBusinessdetails.user.email : "N/A"}</span>
                                 </span>
 
                             </div>

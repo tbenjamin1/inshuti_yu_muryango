@@ -49,7 +49,7 @@ export const fetchAsynBoughtItems = createAsyncThunk('tranx/fetchAsynBoughtItems
     return response.data;
 })
 
-export const fetchAsynBusinessRegistered = createAsyncThunk('tranx/fetchAsynBusinessRegistered', async ({ selectedRange,currentPage }) => {
+export const fetchAsynBusinessRegistered = createAsyncThunk('tranx/fetchAsynBusinessRegistered', async ({ selectedRange, currentPage }) => {
     const response = await axios.get(`https://apidev2.koipay.co/api/business/?page=${currentPage}`)
     return response.data;
 
@@ -61,18 +61,26 @@ export const fetchAsynBusinessCatgeory = createAsyncThunk('tranx/fetchAsynBusine
     return response.data;
 })
 
-export const fetchAsynSingleBusiness = createAsyncThunk('tranx/fetchAsynSingleBusiness', async ({user}) => {
+export const fetchAsynSingleBusiness = createAsyncThunk('tranx/fetchAsynSingleBusiness', async ({ user }) => {
     const response = await axios.get(`https://apidev2.koipay.co/api/business/${user.id}/`)
     return response.data;
 })
-export const fetchAsynBusinessTransactionList = createAsyncThunk('tranx/fetchAsynBusinessTransactionList', async ({user}) => {
+export const fetchAsynBusinessTransactionList = createAsyncThunk('tranx/fetchAsynBusinessTransactionList', async ({ user }) => {
     const response = await axios.get(`https://apidev2.koipay.co/api/business/transactions/${user.id}`)
     return response.data;
 })
-export const fetchAsynBusinessReport = createAsyncThunk('tranx/fetchAsynBusinessReport', async ({user}) => {
+export const fetchAsynBusinessReport = createAsyncThunk('tranx/fetchAsynBusinessReport', async ({ user }) => {
     const response = await axios.get(`https://apidev2.koipay.co/api/business/statistics/${user.id}`)
     return response.data;
 })
+
+export const fetchAsynBusinessTopClientsReport = createAsyncThunk('tranx/fetchAsynBusinessTopClientsReport', async ({ user }) => {
+    console.log("response",user)
+    const response = await axios.get(`https://apidev2.koipay.co/api/business/top-clients/${user.id}`)
+    
+    return response.data;
+})
+
 
 const savedUser = localStorage.getItem('user');
 // console.log("savedUser",savedUser)
@@ -101,10 +109,10 @@ const initialState = {
     paginatedBusinessList: [],
     businessCatgeoryList: [],
 
-    singleBusiness:{},
-    businessTransactionList:[],
-    businessReport:{},
-
+    singleBusiness: {},
+    businessTransactionList: [],
+    businessReport: {},
+    businessTopClientsReport: null,
     isLoggedIn: savedUser ? true : false,
     user: savedUser ? JSON.parse(savedUser) : null,
 };
@@ -125,25 +133,27 @@ const transactionsSlice = createSlice({
     },
     extraReducers: {
         [fetchAsynBusinessTransactionList.pending]: (state) => {
-            
+
             state.isLoading = true;
         },
         [fetchAsynBusinessReport.pending]: (state) => {
-            
+
             state.isLoading = true;
         },
 
-        
+        [fetchAsynBusinessTopClientsReport.pending]: (state) => {
+
+            state.isLoading = true;
+        },
+
 
         [fetchAsynSingleBusiness.pending]: (state) => {
             state.isLoading = true;
         },
-        
-
         [fetchAsynBusinessCatgeory.pending]: (state) => {
             state.isLoading = true;
         },
-        
+
         [fetchAsynBusinessRegistered.pending]: (state) => {
             state.isLoading = true;
         },
@@ -183,15 +193,22 @@ const transactionsSlice = createSlice({
             state.isLoading = true;
         },
 
+
+
+        [fetchAsynBusinessTopClientsReport.fulfilled]: (state, { payload }) => {
+            return {
+                ...state, isLoading: false, businessTopClientsReport: payload
+            };
+        },
         [fetchAsynBusinessReport.fulfilled]: (state, { payload }) => {
             return {
-                ...state ,isLoading:false, businessReport:payload
+                ...state, isLoading: false, businessReport: payload
             };
         },
 
         [fetchAsynBusinessTransactionList.fulfilled]: (state, { payload }) => {
             return {
-                ...state ,isLoading:false, businessTransactionList:payload.results
+                ...state, isLoading: false, businessTransactionList: payload.results
             };
         },
 
@@ -209,7 +226,7 @@ const transactionsSlice = createSlice({
 
         [fetchAsynBusinessRegistered.fulfilled]: (state, { payload }) => {
             return {
-                ...state, isLoading: false, BusinessList: payload.results,paginatedBusinessList:payload
+                ...state, isLoading: false, BusinessList: payload.results, paginatedBusinessList: payload
 
             };
         },
@@ -255,7 +272,10 @@ const transactionsSlice = createSlice({
             return { ...state, isLoading: false, startimesTransationList: payload };
         },
 
-        
+        [fetchAsynBusinessTopClientsReport.rejected]: (state) => {
+            state.isLoading = false;
+        },
+
         [fetchAsynBusinessReport.rejected]: (state) => {
             state.isLoading = false;
         },
@@ -334,11 +354,12 @@ export const getAllparkPickPaginatedBoughtItemsList = (state) => state.transacti
 export const getAllNonPaginatedItems = (state) => state.transactions.nonPaginatedItemsList;
 export const getAllBussinessesRegistered = (state) => state.transactions.BusinessList;
 export const getAllBussinessesCategories = (state) => state.transactions.businessCatgeoryList;
-export const getAllPaginatedBussinesses= (state) => state.transactions.paginatedBusinessList;
+export const getAllPaginatedBussinesses = (state) => state.transactions.paginatedBusinessList;
 
-export const getsingleBussiness= (state) => state.transactions.singleBusiness;
+export const getsingleBussiness = (state) => state.transactions.singleBusiness;
 export const getAllfetchAsynBusinessTransactionList = (state) => state.transactions.businessTransactionList;
 export const getAllBusinessReport = (state) => state.transactions.businessReport;
+export const getAllTopBusinessReport = (state) => state.transactions.businessTopClientsReport;
 
 export const getAllparkPickPaginatedItems = (state) => state.transactions.parkPicktpaginatedItems;
 

@@ -4,16 +4,19 @@ import ApexCharts from 'apexcharts';
 import ReactApexChart from 'react-apexcharts';
 import moment from 'moment';
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAsynBusinessReport, getAllBusinessReport } from '../../../redux/transactions/TransactionSlice';
+import { fetchAsynBusinessReport,getAllBusinessReport } from '../../../../redux/transactions/TransactionSlice';
 
-
-const Chart = () => {
+const Monthly = () => {
 
   const dispatch = useDispatch();
   const businessReport = useSelector(getAllBusinessReport);
 console.log("businessReport",businessReport)
 
- 
+  const [filterType, setfilterType] = useState('Weekly');
+
+  const setfilterHandleChange = (event) => {
+    setfilterType(event.target.value);
+};
 
   useEffect(() => {
     dispatch(fetchAsynBusinessReport())
@@ -44,24 +47,23 @@ console.log("businessReport",businessReport)
       curve: 'smooth'
     },
     series: [
-     
-       {
+      {
         name: 'points',
-        data:weeklyData,
-      }
+        data: chartDatamonth,
+      },
+      
     ],
     xaxis: {
-      categories: businessReport && businessReport.weekly_points
-      ? businessReport.weekly_points.map(item =>  moment(item.created_date).format('ddd'))
-      : [],
+      categories: businessReport && businessReport.monthly_points
+        ? businessReport.monthly_points.map(item => moment(item.created_date).format('ddd'))
+        : [],
+
+      
     },
   };
   return (
     <div className='' >
-      {/* <div className='font-bold border-b-2    py-2 mb-1' >Report <select required value={filterType} onChange={setfilterHandleChange} className='rounded border' >
-        <option className='' value='Weekly' >Weekly</option>
-        <option value='Monthly' >Monthly</option>
-      </select> </div> */}
+      
       <div className=' border'>
         <ReactApexChart
           options={options}
@@ -74,4 +76,4 @@ console.log("businessReport",businessReport)
   )
 }
 
-export default Chart
+export default Monthly

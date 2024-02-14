@@ -18,6 +18,8 @@ import { fetchAsynBoughtItems, fetchAsynBusinessCatgeory, fetchAsynBusinessRepor
 import ExcelExport from '../parkpick/pages/ExcelExport';
 import Chart from './Chart';
 import TopCustomer from './charts/TopCustomer';
+import Monthly from './charts/Monthly';
+
 import Filter from '../../filter';
 import upload from "../../images/upload.svg";
 import { Document, Page, pdfjs } from 'react-pdf';
@@ -93,7 +95,7 @@ const ParkPick = () => {
     const filterOption = (input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
 
 
-    const [activeTab, setActiveTab] = useState('profile');
+    const [activeTab, setActiveTab] = useState('summary');
     const [open, setOpen] = useState(false);
     const [pageboughtItems, setPageboughtItems] = useState(1);
     const [category, setcategoryOpen] = useState(false);
@@ -115,6 +117,8 @@ const ParkPick = () => {
 
     const singleBusinesstrnsactions = useSelector(getAllfetchAsynBusinessTransactionList);
     const businessReport = useSelector(getAllBusinessReport);
+
+
 
     const total = boughtItemsList ? boughtItemsList.reduce((accumulator, item) => {
         // Assuming that item.number is a number you want to sum
@@ -703,7 +707,7 @@ const ParkPick = () => {
         setisLoading(true)
 
         try {
-            const response = await axios.patch(`https://apidev2.koipay.co/api/business/${viewBusinessInfo.id}/   
+            const response = await axios.patch(`https://apidev2.koipay.co/api/business/${user.id}/   
             `, businessInform, {
                 // headers: {
                 //     'Access-Control-Allow-Origin': '*',
@@ -751,6 +755,11 @@ const ParkPick = () => {
         dispatch(fetchAsynBusinessCatgeory())
     }, [dispatch, currentPage]);
 
+    const [filterType, setfilterType] = useState('Weekly');
+
+    const setfilterHandleChange = (event) => {
+        setfilterType(event.target.value);
+    };
 
     return (
         <div className='bg-gray-100'>
@@ -799,17 +808,15 @@ const ParkPick = () => {
 
             <div className="mb-4 border-b myTabContent border-gray-200">
                 <ul className="nav-tab-items flex flex-wrap text-sm font-medium text-center px-16 bg-white " role="tablist">
-
-
-                    <li role="presentation">
+                    <li className="mx-2" role="presentation">
                         <button
-                            className={`inline-block p-4 border-b-4 rounded-t-lg ${activeTab === 'profile' ? 'border_green-500' : 'border-transparent hover:border-slate-400'}`}
-                            onClick={() => handleTabClick('profile')}
+                            className={`inline-block p-4 border-b-4 rounded-t-lg  ${activeTab === 'summary' ? 'border_green-500' : 'border-transparent hover:border-slate-400'}`}
+                            onClick={() => handleTabClick('summary')}
                             role="tab"
-                            aria-controls="profile"
-                            aria-selected={activeTab === 'profile'}
+                            aria-controls="summary"
+                            aria-selected={activeTab === 'summary'}
                         >
-                            PROFILE
+                            BUSINESS REPORT
                         </button>
                     </li>
                     <li role="presentation">
@@ -823,17 +830,19 @@ const ParkPick = () => {
                             PAYMENTS
                         </button>
                     </li>
-                    <li className="mx-2" role="presentation">
+                    <li role="presentation">
                         <button
-                            className={`inline-block p-4 border-b-4 rounded-t-lg  ${activeTab === 'summary' ? 'border_green-500' : 'border-transparent hover:border-slate-400'}`}
-                            onClick={() => handleTabClick('summary')}
+                            className={`inline-block p-4 border-b-4 rounded-t-lg ${activeTab === 'profile' ? 'border_green-500' : 'border-transparent hover:border-slate-400'}`}
+                            onClick={() => handleTabClick('profile')}
                             role="tab"
-                            aria-controls="summary"
-                            aria-selected={activeTab === 'summary'}
+                            aria-controls="profile"
+                            aria-selected={activeTab === 'profile'}
                         >
-                            SUMMARY
+                            PROFILE
                         </button>
                     </li>
+
+
                 </ul>
 
                 <div id="myTabContent" className=' bg-gray-100'  >
@@ -848,21 +857,28 @@ const ParkPick = () => {
                         {businessReport && <div className='flex w-full' >
                             <div className='flex flex-col bg-white p-3 rounded-lg reward-card ' >
                                 <div className='font-bold py-2 ' >Rewards</div>
-                                <div className='reward-title' >Total offered cash back</div>
-                                <span className='py-2' >200M+</span>
+                                {/* <div className='reward-title' >Total offered cash back</div>
+                                <span className='py-2' >200M+</span> */}
                                 <div className='reward-title' >Total offered points</div>
-                                <span className='py-2' > {businessReport.total_points_offered ? businessReport.total_points_offered.total_points : 'N/A'} </span>
+                                <span className='py-2' > {businessReport.total_points_offered ? businessReport.total_points_offered.total_points : '0'} </span>
                                 <div className='reward-title' >Total points redeemed</div>
-                                <span className='py-2' > {businessReport.total_points_redeemed ? businessReport.total_points_redeemed.total_points : 'N/A'} </span>
+                                {businessReport.total_points_redeemed && <span className='py-2' > {businessReport.total_points_redeemed.total_points_redeemed ? businessReport.total_points_redeemed.total_points : '0'} </span>}
+                                <div className='reward-title' >Total points unredeemed</div>
+                                {businessReport.total_points_unredeemed && <span className='py-2' > {businessReport.total_points_unredeemed ? businessReport.total_points_unredeemed : '0'} </span>}
                                 <div className='reward-title' >Total Customers</div>
                                 <span className='py-2' > {businessReport.total_clients ? businessReport.total_clients : 'N/A'} </span>
                             </div>
                             <div className='chart-card-sales flex flex-col items-center justify-center  bg-white mx-2 rounded-lg relative '>
-                                <div className='font-bold py-2 Customers-title ' >Top Customers</div>
+                                <div className='font-bold py-2 Customers-title ' >Top Customers  </div>
                                 <TopCustomer />
                             </div>
                             <div className='bg-white chart-card flex flex-col p-3 rounded-lg relative'>
-                                <Chart />
+                                <div className='font-bold border-b-2    py-2 mb-1' >Report <select required value={filterType} onChange={setfilterHandleChange} className='rounded border' >
+                                    <option className='' value='Weekly' >Weekly</option>
+                                    <option value='Monthly' >Monthly</option>
+                                </select> </div>
+                                {filterType === 'Weekly' && <Chart />}
+                                {filterType === 'Monthly' && <Monthly />}
                             </div>
                         </div>}
                     </div>

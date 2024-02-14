@@ -7,7 +7,8 @@ import Modal from "./Modal";
 import { DatePicker } from 'antd';
 import { Pagination } from 'antd';
 import { useDispatch, useSelector } from "react-redux";
-import { FaRegEdit, FaBookReader } from 'react-icons/fa';
+import { FaRegEdit, FaBookReader, FaTrash } from 'react-icons/fa';
+import { IoCloseOutline } from 'react-icons/io';
 import { CiBitcoin, viewBox } from 'react-icons/ci';
 import { MdEditRoad } from "react-icons/md";
 import { Link } from 'react-router-dom';
@@ -16,12 +17,12 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import { useToasts } from 'react-toast-notifications';
 import axios from 'axios';
 
-import { fetchAsynBusinessCatgeory, fetchAsynBusinessRegistered, fetchAsyncTransaction, getAllBussinessesCategories, getAllBussinessesRegistered, getAllPaginatedBussinesses, getAllTransaction } from '../../../redux/transactions/TransactionSlice';
+import { fetchAsynBusinessCatgeory, fetchAsynBusinessRegistered, fetchAsyncTransaction, getAllBussinessesCategories, getAllBussinessesRegistered, getAllPaginatedBussinesses, getAllTransaction, getUser } from '../../../redux/transactions/TransactionSlice';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 function Businesses() {
     const { addToast } = useToasts();
-
+    const user = useSelector(getUser);
     const defaultStartDate = moment().startOf('month').format('YYYY-MM-DD'); // Example: Set default date to the start of the current month
     const defaultEndDate = moment().format('YYYY-MM-DD'); // Set default end date to current date
     const [searchQuery, setSearchQuery] = useState('');
@@ -50,7 +51,7 @@ function Businesses() {
                 setcertificateImg(!certificateImg)
                 setViewRiderInfo(busines)
                 setViewRider(!viewRider);
-            } else if (busines.business_certificate.includes('.pdf')){
+            } else if (busines.business_certificate.includes('.pdf')) {
                 setcertificatepdf(!certificatepdf)
                 setViewRiderInfo(busines)
                 setViewRider(!viewRider);
@@ -60,10 +61,10 @@ function Businesses() {
                 setViewRider(!viewRider);
 
             }
-        }else{
+        } else {
             setcertificateNoNeImagepdf(!certificateNoNeImagepdf)
             setViewRiderInfo(busines)
-                setViewRider(!viewRider);
+            setViewRider(!viewRider);
         }
 
 
@@ -204,6 +205,9 @@ function Businesses() {
         }
         return true;
     };
+
+
+
     const handleSubmit = async () => {
         const isValidPhoneNumber = validateMtnPhoneNumber(phoneNumber);
         if (!isValidPhoneNumber) {
@@ -280,7 +284,23 @@ function Businesses() {
             setFilteredTransactionList(filteredList);
         }
     };
+    const handleDeleteBusiness = async (businesid) => {
+        try {
+            const response = await axios.delete(`https://apidev2.koipay.co/api/business/${businesid.id}/`);
 
+            addToast('Deleted ', {
+                appearance: 'success',
+            });
+            dispatch(fetchAsynBusinessRegistered({selectedRange, currentPage}));
+        } catch (error) {
+            addToast("Something went wrong! please try again", {
+                appearance: 'error', autoDismiss: true, // Enable auto dismissal
+                autoDismissTimeout: 5000,
+                transitionDuration: 300,
+            });
+            setisLoading(false);
+        }
+    }
 
     const handleBusinessRegister = async (event) => {
 
@@ -313,7 +333,7 @@ function Businesses() {
         setisLoading(true)
 
         try {
-            const response = await axios.patch(`https://apidev2.koipay.co/api/business/${viewRiderInfo.id}/   
+            const response = await axios.patch(`https://apidev2.koipay.co/api/business/${viewRiderInfo.user.id}/   
             `, businessInform, {
                 // headers: {
                 //     'Access-Control-Allow-Origin': '*',
@@ -324,7 +344,7 @@ function Businesses() {
                 appearance: 'success',
             });
             seteditBusiness(!editBusiness);
-            dispatch(fetchAsynBusinessRegistered(selectedRange, currentPage));
+            dispatch(fetchAsynBusinessRegistered({selectedRange, currentPage}));
             setisLoading(false);
             setbusinesNameValue("");
             setcolorCodeValue("");
@@ -353,7 +373,6 @@ function Businesses() {
     const [pageNumber, setPageNumber] = useState(1);
 
     const handlePageChange = (page) => {
-        console.log("page",page)
         setCurrentPage(page);
     };
     const handleApproveBusiness = async () => {
@@ -369,7 +388,7 @@ function Businesses() {
                 appearance: 'success',
             });
             setViewRider(!viewRider);
-            dispatch(fetchAsynBusinessRegistered(selectedRange, currentPage));
+            dispatch(fetchAsynBusinessRegistered({selectedRange, currentPage}));
             setLoading(false);
         } catch (error) {
             addToast("Something went wrong! please try again", {
@@ -383,24 +402,22 @@ function Businesses() {
 
 
     const fillBussinesForm = (busines) => {
-
-        console.log("busines.business_certificate ", busines.business_certificate)
         setbusinesNameValue(busines.name);
         setcolorCodeValue(busines.color_code);
         setcontactTelValue(busines.contact_tel);
         setphoneNumber(busines.momo_tel);
+
         setrewardType(busines.reward_type);
         setreward_percentage(busines.reward_percentage);
+
         setEmail('');
         setcertificate(busines.business_certificate ? `https://apidev2.koipay.co${busines.business_certificate}` : '');
         setrenderFile(busines.icon ? `https://apidev2.koipay.co/${busines.icon}` : '');
         setbusinessCategory(busines.category.id);
-
-
     };
 
     useEffect(() => {
-        dispatch(fetchAsynBusinessRegistered({selectedRange, currentPage}))
+        dispatch(fetchAsynBusinessRegistered({ selectedRange, currentPage }))
         dispatch(fetchAsynBusinessCatgeory())
     }, [dispatch, selectedRange, currentPage]);
 
@@ -524,6 +541,7 @@ function Businesses() {
                                                             <td className="px-6 py-4 flex justify-around   items-center">
                                                                 <FaBookReader className='cursor-pointer ' onClick={() => handleViewRider(transaction)} />
                                                                 <FaRegEdit className='cursor-pointer ' onClick={() => handleEditBusiness(transaction)} />
+                                                                <FaTrash className='cursor-pointer ' onClick={() => handleDeleteBusiness(transaction)} />
 
                                                                 <Modal setOpenModal={editBusiness} onChildEvent={handleEditChildEvent} Title={modalRiderTitle} button={viewRiderInfo.name} >
                                                                     <div className='flex flex-col my-3   form-width'>
@@ -775,13 +793,13 @@ function Businesses() {
                                                                                 <label className='mx-2' >
                                                                                     Business certificate
                                                                                 </label>
-                                                                              {viewRiderInfo.business_certificate && <div className=" certificate-container  p-3 border rounded-lg m-1 ">
+                                                                                {viewRiderInfo.business_certificate && <div className=" certificate-container  p-3 border rounded-lg m-1 ">
                                                                                     {certificateImg && <img src={`https://apidev2.koipay.co/${viewRiderInfo.business_certificate}`} alt="Selected Image" className="image" />}
 
                                                                                     {certificatepdf && <Document file={`https://apidev2.koipay.co${viewRiderInfo.business_certificate}`} onLoadSuccess={({ numPages }) => setNumPages(numPages)} style={{ width: '100%', height: '500px' }}>
                                                                                         <Page pageNumber={pageNumber} />
                                                                                     </Document>}
-                                                                                     
+
                                                                                 </div>}
                                                                                 {!viewRiderInfo.business_certificate && <img src={upload} alt="Selected Image" className="image" />}
                                                                             </div>

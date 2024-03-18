@@ -18,7 +18,7 @@ function Statistics() {
   const dispatch = useDispatch();
   const clientList = useSelector(getAllClientsList);
   const refereeList=useSelector(getAllRefree)
-  console.log("refereeList",refereeList)
+
 
   useEffect(() => {
     dispatch(fetchAsynRefree())

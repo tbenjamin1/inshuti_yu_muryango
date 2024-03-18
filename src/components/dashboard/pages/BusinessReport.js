@@ -14,7 +14,7 @@ import dayjs from 'dayjs';
 import { DatePicker, Select } from 'antd';
 import { Pagination } from 'antd';
 import { useToasts } from 'react-toast-notifications';
-import { fetchAsynBoughtItems, fetchAsynBusinessCatgeory, fetchAsynBusinessReport, fetchAsynBusinessTransactionList, fetchAsynItems, fetchAsynNonPaginatedItems, fetchAsynParkCatgories, fetchAsynParkUnit, fetchAsynSingleBusiness, getAllBusinessReport, getAllBussinessesCategories, getAllfetchAsynBusinessTransactionList, getAllNonPaginatedItems, getAllparkCategories, getAllparkPickBoughtItemsList, getAllparkPickItemsList, getAllparkPickPaginatedBoughtItemsList, getAllparkPickPaginatedItems, getAllparkUnitList, getsingleBussiness, getUser } from '../../../redux/transactions/TransactionSlice';
+import { fetchAsynBoughtItems, fetchAsynBusinessCatgeory, fetchAsynBusinessReport, fetchAsynBusinessTransactionList, fetchAsynItems, fetchAsynNonPaginatedItems, fetchAsynParkCatgories, fetchAsynParkUnit, fetchAsynSingleBusiness, getAllBusinessReport, getAllBussinessesCategories, getAllfetchAsynBusinessTransactionList, getAllfetchAsynpaginatedBusinessTransaction, getAllNonPaginatedItems, getAllparkCategories, getAllparkPickBoughtItemsList, getAllparkPickItemsList, getAllparkPickPaginatedBoughtItemsList, getAllparkPickPaginatedItems, getAllparkUnitList, getsingleBussiness, getUser } from '../../../redux/transactions/TransactionSlice';
 import ExcelExport from '../parkpick/pages/ExcelExport';
 import Chart from './Chart';
 import TopCustomer from './charts/TopCustomer';
@@ -97,7 +97,7 @@ const ParkPick = () => {
 
     const [activeTab, setActiveTab] = useState('summary');
     const [open, setOpen] = useState(false);
-    const [pageboughtItems, setPageboughtItems] = useState(1);
+    const [pagetransactions, setPagetransaction] = useState(1);
     const [category, setcategoryOpen] = useState(false);
     const [unity, setUnityModalOpen] = useState(false);
 
@@ -116,8 +116,9 @@ const ParkPick = () => {
 
 
     const singleBusinesstrnsactions = useSelector(getAllfetchAsynBusinessTransactionList);
+    const paginatedBusinessTransactions =useSelector(getAllfetchAsynpaginatedBusinessTransaction)
     const businessReport = useSelector(getAllBusinessReport);
-
+console.log("businessReport",businessReport)
 
 
     const total = boughtItemsList ? boughtItemsList.reduce((accumulator, item) => {
@@ -136,6 +137,7 @@ const ParkPick = () => {
 
     const paginatedBoughtItemsList = useSelector(getAllparkPickPaginatedBoughtItemsList)
 
+
     const unitList = useSelector(getAllparkUnitList)
     const itemsList = useSelector(getAllparkPickItemsList)
     const [currentPage, setCurrentPage] = useState(1);
@@ -146,8 +148,8 @@ const ParkPick = () => {
         setCurrentPage(page);
         setstartingIndex((page - 1) * 10);
     };
-    const handlePageboughtItemsChange = (page) => {
-        setPageboughtItems(page);
+    const handlePagebusinesstransactionChange = (page) => {
+        setPagetransaction(page);
         setstartingboughtIndex((page - 1) * 10);
     };
     const paginatedItemsList = useSelector(getAllparkPickPaginatedItems)
@@ -662,7 +664,7 @@ const ParkPick = () => {
     };
 
     const fillBussinesForm = (busines) => {
-        console.log("busines",busines)
+      
         setbusinesNameValue(busines.name);
         setcolorCodeValue(busines.color_code);
         setcontactTelValue(busines.contact_tel);
@@ -742,10 +744,8 @@ const ParkPick = () => {
     };
 
     useEffect(() => {
-        if (selectedRange.length) {
-            dispatch(fetchAsynBoughtItems({ pageboughtItems, filterStatus, filterItem, selectedRange }))
-        }
-    }, [dispatch, pageboughtItems, filterStatus, filterItem, selectedRange]);
+        dispatch(fetchAsynBusinessTransactionList({ user,pagetransactions}));
+    }, [dispatch, pagetransactions]);
 
     useEffect(() => {
         dispatch(fetchAsynParkCatgories())
@@ -868,6 +868,15 @@ const ParkPick = () => {
                                 {businessReport.total_points_unredeemed && <span className='py-2' > {businessReport.total_points_unredeemed ? businessReport.total_points_unredeemed : '0'} </span>}
                                 <div className='reward-title' >Total Customers</div>
                                 <span className='py-2' > {businessReport.total_clients ? businessReport.total_clients : 'N/A'} </span>
+
+                                <div className='reward-title' >Total Cashback Offered</div>
+                                <span className='py-2' > {businessReport.total_cashback_offered ? businessReport.total_cashback_offered : 'N/A'} </span>
+
+                                <div className='reward-title' >Monthly Cashback</div>
+                                <span className='py-2' > {businessReport.monthly_cashback ? businessReport.monthly_cashback : 'N/A'} </span>
+
+                                <div className='reward-title' >Weekly Cashback</div>
+                                <span className='py-2' > {businessReport.weekly_cashback ? businessReport.weekly_cashback : 'N/A'} </span>
                             </div>
                             <div className='chart-card-sales flex flex-col items-center justify-center  bg-white mx-2 rounded-lg relative '>
                                 <div className='font-bold py-2 Customers-title ' >Top Customers  </div>
@@ -1386,8 +1395,8 @@ const ParkPick = () => {
                                 </table>
                             </div>
                         </div>
-                        {boughtItemsList.length > 0 && <div className='flex justify-end my-1' >
-                            <Pagination defaultCurrent={1} total={paginatedBoughtItemsList.totalCount} onChange={handlePageboughtItemsChange} className="border p-3 rounded-lg bg-white" />
+                        {singleBusinesstrnsactions.length > 0 && <div className='flex justify-end my-1' >
+                            <Pagination defaultCurrent={1} total={paginatedBusinessTransactions.totalCount} onChange={handlePagebusinesstransactionChange} className="border p-3 rounded-lg bg-white" />
                         </div>}
                     </div>
                 </div>

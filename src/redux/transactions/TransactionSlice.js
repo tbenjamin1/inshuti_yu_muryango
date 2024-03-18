@@ -65,8 +65,8 @@ export const fetchAsynSingleBusiness = createAsyncThunk('tranx/fetchAsynSingleBu
     const response = await axios.get(`https://apidev2.koipay.co/api/business/${user.id}/`)
     return response.data;
 })
-export const fetchAsynBusinessTransactionList = createAsyncThunk('tranx/fetchAsynBusinessTransactionList', async ({ user }) => {
-    const response = await axios.get(`https://apidev2.koipay.co/api/business/transactions/${user.id}`)
+export const fetchAsynBusinessTransactionList = createAsyncThunk('tranx/fetchAsynBusinessTransactionList', async ({ user,pagetransactions }) => {
+    const response = await axios.get(`https://apidev2.koipay.co/api/business/transactions/${user.id}?page=${pagetransactions}`)
     return response.data;
 })
 export const fetchAsynBusinessReport = createAsyncThunk('tranx/fetchAsynBusinessReport', async ({ user }) => {
@@ -75,7 +75,7 @@ export const fetchAsynBusinessReport = createAsyncThunk('tranx/fetchAsynBusiness
 })
 
 export const fetchAsynBusinessTopClientsReport = createAsyncThunk('tranx/fetchAsynBusinessTopClientsReport', async ({ user }) => {
-    console.log("response",user)
+ 
     const response = await axios.get(`https://apidev2.koipay.co/api/business/top-clients/${user.id}`)
     
     return response.data;
@@ -83,7 +83,7 @@ export const fetchAsynBusinessTopClientsReport = createAsyncThunk('tranx/fetchAs
 
 
 const savedUser = localStorage.getItem('user');
-// console.log("savedUser",savedUser)
+
 
 const initialState = {
     isLoading: false,
@@ -111,6 +111,7 @@ const initialState = {
 
     singleBusiness: {},
     businessTransactionList: [],
+    paginatedBusinessTransaction:{},
     businessReport: {},
     businessTopClientsReport: null,
     isLoggedIn: savedUser ? true : false,
@@ -208,13 +209,13 @@ const transactionsSlice = createSlice({
 
         [fetchAsynBusinessTransactionList.fulfilled]: (state, { payload }) => {
             return {
-                ...state, isLoading: false, businessTransactionList: payload.results
+                ...state, isLoading: false, businessTransactionList: payload.results,paginatedBusinessTransaction:payload
             };
         },
 
         [fetchAsynSingleBusiness.fulfilled]: (state, { payload }) => {
             return {
-                ...state, isLoading: false, singleBusiness: payload
+                ...state, isLoading: false, singleBusiness: payload,
             };
         },
 
@@ -358,6 +359,8 @@ export const getAllPaginatedBussinesses = (state) => state.transactions.paginate
 
 export const getsingleBussiness = (state) => state.transactions.singleBusiness;
 export const getAllfetchAsynBusinessTransactionList = (state) => state.transactions.businessTransactionList;
+export const getAllfetchAsynpaginatedBusinessTransaction = (state) => state.transactions.paginatedBusinessTransaction;
+
 export const getAllBusinessReport = (state) => state.transactions.businessReport;
 export const getAllTopBusinessReport = (state) => state.transactions.businessTopClientsReport;
 

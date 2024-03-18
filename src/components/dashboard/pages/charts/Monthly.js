@@ -10,7 +10,7 @@ const Monthly = () => {
 
   const dispatch = useDispatch();
   const businessReport = useSelector(getAllBusinessReport);
-console.log("businessReport",businessReport)
+
 
   const [filterType, setfilterType] = useState('Weekly');
 

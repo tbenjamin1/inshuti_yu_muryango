@@ -22,7 +22,7 @@ function FuelEssance() {
   };
   
   const transactionListing = useSelector(getAllTransaction);
-  console.log("transactionListing", transactionListing);
+ 
   // Fetch data based on the selected date range
 
   const fetchFuelData = async (selectedRange) => {

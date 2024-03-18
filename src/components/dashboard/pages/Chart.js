@@ -11,7 +11,7 @@ const Chart = () => {
 
   const dispatch = useDispatch();
   const businessReport = useSelector(getAllBusinessReport);
-console.log("businessReport",businessReport)
+
 
  
 

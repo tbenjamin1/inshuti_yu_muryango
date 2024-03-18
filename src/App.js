@@ -26,7 +26,7 @@ import TermsConditions from './components/dashboard/pages/TermsConditions';
 function App() {
   
   const loginStatus = useSelector(loggedInStatus);
-  console.log("loginStatus",loginStatus)
+
   
   return (
     <ToastProvider>

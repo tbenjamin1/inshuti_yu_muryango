@@ -38,6 +38,8 @@ function Businesses() {
     const [viewRiderInfo, setViewRiderInfo] = useState(false);
     const [editBusiness, seteditBusiness] = useState(false);
     const [reward_percentage, setreward_percentage] = useState('');
+    const [groupeya_percentage, setgroupeya_percentage] = useState('');
+    
 
     const [certificatepdf, setcertificatepdf] = useState(false);
     const [certificateImg, setcertificateImg] = useState(false);
@@ -111,6 +113,8 @@ function Businesses() {
     const [momo_tel, setmomo_tel] = useState('');
     const [emailError, setemailError] = useState('');
     const [reward_percentageError, setreward_percentageError] = useState('');
+    const [groupeya_percentageError, setgroupeya_percentageError] = useState('');
+    
 
     const [passwordError, setpassword_error] = useState('');
 
@@ -146,6 +150,10 @@ function Businesses() {
     const reward_percentageHandleChange = (event) => {
         setreward_percentage(event.target.value);
     };
+    const groupeya_percentageHandleChange = (event) => {
+        setgroupeya_percentage(event.target.value);
+    };
+
     const confirmPasswordHandleChange = (event) => {
         setConfirmPassword(event.target.value);
     };
@@ -318,6 +326,7 @@ function Businesses() {
         businessInform.append('reward_type', rewardType);
         businessInform.append('category', businessCategory);
         businessInform.append('reward_percentage', reward_percentage);
+        businessInform.append('groupeya_percentage', groupeya_percentage);
         businessInform.append('email', email);
         businessInform.append('password', password);
         businessInform.append('icon', file);
@@ -361,6 +370,7 @@ function Businesses() {
             setEmail("");
             setpassword("");
             setreward_percentage("");
+            setgroupeya_percentage("");
             setIsregistered(false);
         } catch (error) {
             addToast("Something went wrong! please try again", {
@@ -413,7 +423,7 @@ function Businesses() {
 
         setrewardType(busines.reward_type);
         setreward_percentage(busines.reward_percentage);
-
+        setgroupeya_percentage(busines.groupeya_percentage);
         setEmail(busines.user ? busines.user.email : '');
         setcertificate(busines.business_certificate ? `https://apidev2.koipay.co${busines.business_certificate}` : '');
         setrenderFile(busines.icon ? `https://apidev2.koipay.co/${busines.icon}` : '');
@@ -665,6 +675,20 @@ function Businesses() {
                                                                                 <input type="text" className='' placeholder='Email' value={email} onChange={emailHandleChange}></input>
                                                                             </span>
                                                                         </div>
+
+                                                                        <div className='flex justify-between mobile-fit '>
+                                                                            <span className='flex flex-col w-1/2'>
+                                                                                <label>
+                                                                                    Groupeya percentage
+                                                                                </label>
+                                                                                <input type="text" className='' placeholder=' groupeya percentage' value={ groupeya_percentage } onChange={groupeya_percentageHandleChange}></input>
+                                                                                { groupeya_percentageError && <p class="mt-2   text-pink-600 text-sm">
+                                                                                    { groupeya_percentageError}
+                                                                                </p>}
+                                                                            </span>
+                                                                           
+                                                                        </div>
+
                                                                         <div className='flex justify-between business-image mobile-fit  ' >
 
                                                                             <div className='flex flex-col' >

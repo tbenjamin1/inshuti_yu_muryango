@@ -65,26 +65,32 @@ function RefereePage() {
     const businesNameHandleChange = (event) => {
         setbusinesNameValue(event.target.value);
     };
+
     const colorCodeHandleChange = (event) => {
         setcolorCodeValue(event.target.value);
     };
+
     const contactTelHandleChange = (event) => {
         setcontactTelValue(event.target.value);
     };
+
     const confirmMOMOnumberHandleChange = (event) => {
         setphoneNumber(event.target.value);
         validateMtnPhoneNumber(event.target.value);
-
     };
+
     const setrewardTypeHandleChange = (event) => {
         setrewardType(event.target.value);
     };
+
     const businessCategoryHandleChange = (event) => {
         setbusinessCategory(event.target.value);
     };
+
     const emailHandleChange = (event) => {
         setEmail(event.target.value);
     };
+
     const passwordHandleChange = (event) => {
         setpassword(event.target.value);
     };
@@ -93,9 +99,12 @@ function RefereePage() {
         setreward_percentage(event.target.value);
     };
 
+    
     const handleSelectPlate = (option) => {
         setSelectedplate(option);
     };
+
+    
     // Define states for profile image and permit image
     const [file, setFile] = useState('');
     const [certificate, setcertificate] = useState('');
@@ -107,9 +116,7 @@ function RefereePage() {
         setFile(e.target.files[0]);
     };
     const handleCertificateChange = (e) => {
-
         const selectedFile = e.target.files[0];
-
         if (selectedFile) {
             if (selectedFile.type.startsWith('image/')) {
                 // It's an image
@@ -145,7 +152,9 @@ function RefereePage() {
 
 
     const handleSubmit = async () => {
+        
         const isValidPhoneNumber = validateMtnPhoneNumber(phoneNumber);
+        
         if (!isValidPhoneNumber) {
             // Handle invalid phone number case
             return;
@@ -153,10 +162,8 @@ function RefereePage() {
 
         setLoading(true);
         try {
-
-
             const response = await axios.get(
-                `https://pay.koipay.co/api/v1/accountholder/information?msisdn=25${phoneNumber}`,
+                `https://payment.jalikoi.rw/api/v1/accountholder/information?msisdn=25${phoneNumber}`,
                 {
                     headers: {
                         'Content-Type': 'application/json',
@@ -164,7 +171,6 @@ function RefereePage() {
                     },
                 }
             );
-
 
             addToast(`${response.data.data.firstname} you are registered in momo`, {
                 appearance: 'success',
@@ -175,6 +181,7 @@ function RefereePage() {
 
             setIsregistered(true);
             setLoading(false);
+
             //  redirecting the user to the desired page
         } catch (error) {
             addToast("Invalid,use your phone number registered in momo", {
@@ -186,9 +193,9 @@ function RefereePage() {
             setLoading(false);
         }
     };
-    // useEffect(() => {
-    //     handleSubmit();
-    // }, [phoneNumber]);
+    useEffect(() => {
+        // handleSubmit();
+    }, [phoneNumber]);
 
     useEffect(() => {
         dispatch(fetchAsynBusinessCatgeory())
@@ -197,6 +204,7 @@ function RefereePage() {
 
     const handleBusinessRegister = async (event) => {
         event.preventDefault();
+
         seterror_name('');
         setcolor_code('');
         setcontact_tel('');
@@ -206,6 +214,7 @@ function RefereePage() {
         setbusiness_certificate('');
         setpassword_error('');
         setmomo_tel('');
+
         const businessInform = new FormData();
         businessInform.append('name', businesName);
         businessInform.append('color_code', colorCode);
@@ -218,17 +227,19 @@ function RefereePage() {
         businessInform.append('password', password);
         businessInform.append('icon', file);
         businessInform.append('business_certificate', certificateFile);
-
         const isValidPhoneNumber = validateMtnPhoneNumber(phoneNumber);
-        if (!isValidPhoneNumber) {
-            addToast("Something went wrong! please check your momo number", {
-                appearance: 'error', autoDismiss: true, // Enable auto dismissal
-                autoDismissTimeout: 5000,
-                transitionDuration: 300,
-            });
 
-            return;
-        }
+        // if (!isValidPhoneNumber) {
+        //     addToast("Something went wrong! please check your momo number", {
+        //         appearance: 'error', autoDismiss: true, 
+        //         autoDismissTimeout: 5000,
+        //         transitionDuration: 300,
+        //     });
+
+        //     return;
+        // }
+
+
         // if (password.toLowerCase != confirmPassword.toLowerCase) {
         //     addToast("Something went wrong! password must be matching !", {
         //         appearance: 'error', autoDismiss: true, // Enable auto dismissal
@@ -238,6 +249,9 @@ function RefereePage() {
 
         //     return;
         // }
+
+
+
         if (!acceptTermsState) {
             settermsError(!termsError)
             addToast("please confirm you have  read terms and conditions!", {
@@ -251,11 +265,13 @@ function RefereePage() {
         setisLoading(true)
 
         try {
-            const response = await axios.post('https://apidev2.koipay.co/api/business/', businessInform, {
+
+            const response = await axios.post('https://apidev2.koipay.co/api/business/create/', businessInform, {
                 // headers: {
                 //     'Access-Control-Allow-Origin': '*',
                 // }
             });
+
             setregistered(!registered)
             addToast(`Successfully registered`, {
                 appearance: 'success',
@@ -284,6 +300,7 @@ function RefereePage() {
             setisLoading(false);
         }
     };
+
     const ErrorHandler = (fields) => {
         fields.map((field) => {
             if (field === "name") {

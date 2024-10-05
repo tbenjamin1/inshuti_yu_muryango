@@ -21,7 +21,7 @@ function Login() {
             <div className='flex justify-center items-center bg-white login-page '>
                 <div className='logo_height'>
                     <span>
-                        <img src={logo} className="App-logo" alt="logo" />
+                        {/* <img src={logo} className="App-logo" alt="logo" /> */}
                     </span>
                 </div>
                 <div className='flex flex-col justify-center items-center login_form'>

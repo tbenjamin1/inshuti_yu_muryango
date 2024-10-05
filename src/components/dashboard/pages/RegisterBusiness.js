@@ -277,6 +277,7 @@ function RefereePage() {
                 appearance: 'success',
             });
 
+            
             setisLoading(false);
             setbusinesNameValue("");
             setcolorCodeValue("");
@@ -287,6 +288,7 @@ function RefereePage() {
             setEmail("");
             setpassword("");
             setIsregistered(false);
+
         } catch (error) {
 
             let riderErros = Object.keys(error.response.data);

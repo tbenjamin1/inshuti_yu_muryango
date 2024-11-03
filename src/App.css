@@ -612,7 +612,7 @@ tbody tr th {
 
   .login_form {
     display: flex !important;
-    justify-content: start !important;
+    justify-content:flex-start !important;
     align-items: unset !important;
     margin-left: 5px;
 

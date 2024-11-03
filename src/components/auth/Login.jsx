@@ -82,7 +82,7 @@ function Login() {
                     </div>
                     <div className='flex flex-col p-5' >
                         <span className='login-title'>
-                            Login to your Koipay account
+                            Login to your Koipay account 
                         </span>
                         <span className='login-sub-title my-3'>-------- or Sign in with Email ---------- </span>
                         <div className='flex flex-col  '>

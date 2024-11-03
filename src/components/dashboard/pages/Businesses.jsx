@@ -8,10 +8,7 @@ import { DatePicker } from 'antd';
 import { Pagination } from 'antd';
 import { useDispatch, useSelector } from "react-redux";
 import { FaRegEdit, FaBookReader, FaTrash } from 'react-icons/fa';
-import { IoCloseOutline } from 'react-icons/io';
-import { CiBitcoin, viewBox } from 'react-icons/ci';
-import { MdEditRoad } from "react-icons/md";
-import { Link } from 'react-router-dom';
+
 import upload from "../../images/upload.svg";
 import { Document, Page, pdfjs } from 'react-pdf';
 import { useToasts } from 'react-toast-notifications';
@@ -39,7 +36,7 @@ function Businesses() {
     const [editBusiness, seteditBusiness] = useState(false);
     const [reward_percentage, setreward_percentage] = useState('');
     const [groupeya_percentage, setgroupeya_percentage] = useState('');
-    
+
 
     const [certificatepdf, setcertificatepdf] = useState(false);
     const [certificateImg, setcertificateImg] = useState(false);
@@ -114,7 +111,7 @@ function Businesses() {
     const [emailError, setemailError] = useState('');
     const [reward_percentageError, setreward_percentageError] = useState('');
     const [groupeya_percentageError, setgroupeya_percentageError] = useState('');
-    
+
 
     const [passwordError, setpassword_error] = useState('');
 
@@ -230,7 +227,7 @@ function Businesses() {
                 {
                     headers: {
                         'Content-Type': 'application/json',
-                        Authorization: `Bearer ${process.env.REACT_APP_TOKEN_REFEREE}`,
+                        Authorization: `Bearer ${import.meta.env.VITE_TOKEN_REFEREE}`,
                     },
                 }
             );
@@ -681,12 +678,12 @@ function Businesses() {
                                                                                 <label>
                                                                                     Groupeya percentage
                                                                                 </label>
-                                                                                <input type="text" className='' placeholder=' groupeya percentage' value={ groupeya_percentage } onChange={groupeya_percentageHandleChange}></input>
-                                                                                { groupeya_percentageError && <p class="mt-2   text-pink-600 text-sm">
-                                                                                    { groupeya_percentageError}
+                                                                                <input type="text" className='' placeholder=' groupeya percentage' value={groupeya_percentage} onChange={groupeya_percentageHandleChange}></input>
+                                                                                {groupeya_percentageError && <p class="mt-2   text-pink-600 text-sm">
+                                                                                    {groupeya_percentageError}
                                                                                 </p>}
                                                                             </span>
-                                                                           
+
                                                                         </div>
 
                                                                         <div className='flex justify-between business-image mobile-fit  ' >

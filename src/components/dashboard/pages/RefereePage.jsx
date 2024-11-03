@@ -3,22 +3,32 @@
 import React, { useState, useEffect } from 'react'
 import employee from "../../images/employee-referrals.png"
 import { Link } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBackward } from '@fortawesome/free-solid-svg-icons';
 import { useToasts } from 'react-toast-notifications';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrash, faBackward } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 
-function RegisterEntity() {
+function RefereePage() {
     const { addToast } = useToasts();
+    const [email, setEmailValue] = useState('');
+    const [password, setPasswordValue] = useState('');
     const [phoneNumber, setphoneNumber] = useState('');
+    const [error, setError] = useState('');
     const [isRegistered, setIsregistered] = useState(false);
-    const [entityName, setEntityName] = useState('');
+    const [firstName, setfirstName] = useState('');
+    const [lastName, setlastName] = useState('');
+    const [displayName, setdisplayName] = useState('');
     const [loading, setLoading] = useState(false);
     const [isloading, setisLoading] = useState(false);
-    const entityNameHandleChange = (event) => {
-        setEntityName(event.target.value);
+    const firstNameHandleChange = (event) => {
+        setfirstName(event.target.value);
     };
-
+    const lastNameHandleChange = (event) => {
+        setlastName(event.target.value);
+    };
+    const displayNameHandleChange = (event) => {
+        setdisplayName(event.target.value);
+    };
     const confirmMOMOnumberHandleChange = (event) => {
         setphoneNumber(event.target.value);
         validateMtnPhoneNumber(event.target.value);
@@ -54,7 +64,7 @@ function RegisterEntity() {
                 {
                     headers: {
                         'Content-Type': 'application/json',
-                        Authorization: `Bearer ${process.env.REACT_APP_TOKEN_REFEREE}`,
+                        Authorization: `Bearer ${import.meta.env.VITE_TOKEN_REFEREE}`,
                     },
                 }
             );
@@ -99,22 +109,20 @@ function RegisterEntity() {
             return;
         }
         setisLoading(true)
-        const entity = {
-            'name': entityName,
-            'phone_number': phoneNumber,
-        }
 
         try {
-            const response = await axios.post('https://api.koipay.co/api/v1/entities', entity, {
+            const response = await axios.post('https://api.koipay.co/api/v1/referees', { firstName, lastName, phoneNumber, displayName }, {
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                 }
             });
-            addToast(`An Entity was successfully created, your entity is : ${response.data.entities.name}`, {
+            addToast(`Successfully registered, your code is : ${response.data.data.referee.code}`, {
                 appearance: 'success',
             });
             setisLoading(false);
-            setEntityName("");
+            setfirstName("");
+            setlastName("");
+            setdisplayName("");
             setphoneNumber("");
             setIsregistered(false);
         } catch (error) {
@@ -133,30 +141,29 @@ function RegisterEntity() {
                 <span className='flex flex-col  ' >
                     <img src={employee} className="App-logo" alt="logo" />
                     <span className=' referee-emoji' role="img" aria-label="partying-face">🥳</span>
-                    <span className='my-3 ml-4 font_serif referal-content flex flex-col justify-center items-center' >
-                        <strong>How It Works: Simple and Impactful</strong>
-                        <span>Shop with Koipay:</span>
-                        <span className='flex  justify-center items-center   text-center ' > Supporters use Koipay to shop and earn cashback on purchases.
-                            Donate Cashback: Supporters choose to donate their cashback earnings to your social entity.
-                            Track Donations: Receive detailed reports on total donations from your community</span>
-                    </span>
+                    <span className='my-3 ml-4 font_serif referal-content' >Refer, Earn, and Give Back with Koipay! Invite your friends to join Koipay and earn cash back every time they use our platform. Support charities close to your heart by donating your cash back rewards</span>
                 </span>
             </div>
             <div className='flex flex-col w-1/2 justify-center items-center bg-white py-4 referee-form '>
                 <span className='Referral-title flex flex-col    font_serif   '>
-                    <span className='pl-2'>Transform Donations with Every Purchase!</span>
+                    <span className='pl-2' >Join Koipay's Referral Program and Multiply Your Rewards!</span>
 
                 </span>
                 <span className='login-sub-title p-2' ></span>
-                <span className='login-sub-title my-3'>------ Welcome Social Entities!--------</span>
-                <div className='flex flex-col  my-3  w-3/5 form-width'>
+                <span className='login-sub-title my-3'>------ Join Koipay's Referral --------</span>
+                <div className='flex flex-col my-3  w-3/5 form-width'>
                     <span className='flex flex-col my-4' >
                         <label>
-                            Entity  Name
+                            First Name
                         </label>
-                        <input type="text" className='' placeholder='  Name' value={entityName} onChange={entityNameHandleChange}  ></input>
+                        <input type="text" className='' placeholder=' First Name' value={firstName} onChange={firstNameHandleChange}  ></input>
                     </span>
-
+                    <span className='flex flex-col' >
+                        <label>
+                            Last Name
+                        </label>
+                        <input type="text" className='' placeholder=' Last Name' value={lastName} onChange={lastNameHandleChange}></input>
+                    </span>
                     <span className='flex flex-col' >
                         <label>
                             MTN MOMO Number
@@ -176,7 +183,12 @@ function RegisterEntity() {
                             </div>
                         </span>
                     </span>
-
+                    <span className='flex flex-col' >
+                        <label>
+                            Display Name
+                        </label>
+                        <input type="text" className='' placeholder='Display Name' value={displayName} onChange={displayNameHandleChange} ></input>
+                    </span>
                     <span className=' w_full flex justify-between items-center py-3 '>
                         <span className='remeber_forgot flex justify-between items-center'>All filled are required !</span>
                         <Link to="/"> <span className='remeber_forgot underline cursor-pointer '>Back</span> </Link>
@@ -199,4 +211,4 @@ function RegisterEntity() {
     )
 }
 
-export default RegisterEntity
+export default RefereePage

@@ -3,7 +3,6 @@ import './App.css';
 import Signup from "./components/auth/Signup"
 import Login from "./components/auth/Login"
 import BusinessReport from "./components/dashboard/pages/BusinessReport";
-
 import Reset from "./components/auth/Reset";
 import DashboardLayout from "./components/dashboard/DashboardLayout"
 import Statistics from "./components/dashboard/pages/Statistics"
@@ -39,11 +38,12 @@ function App() {
           <Route  path="/reset" element={<Reset/>}/>
           <Route  path="/sign-up" element={<Signup/>}/>
 
-          <Route exact path="/register-business" element={<RegisterBusiness />}/>
-          <Route  path="/register-entity" element={<RegisterEntity/>}/>
-          <Route  path="/referee-page" element={<RefereePage/>}/>
-          <Route  path="/terms-conditions" element={<TermsConditions/>}/>
-          <Route
+           <Route exact path="/register-business" element={<RegisterBusiness />}/>
+               <Route  path="/register-entity" element={<RegisterEntity/>}/>
+             <Route  path="/referee-page" element={<RefereePage/>}/>
+              <Route  path="/terms-conditions" element={<TermsConditions/>}/>
+
+              <Route
                 path="/dashboard-home/*"
                 element={loginStatus ? <DashboardLayout /> : <Navigate to="/" />}
               />
@@ -71,7 +71,7 @@ function App() {
                 path="/startimes"
                 element={loginStatus ? <Startimes /> : <Navigate to="/" />}
               />
-              
+
               <Route
                 path="/park-pick"
                 element={loginStatus ? <ParkPick /> : <Navigate to="/" />}
@@ -80,6 +80,8 @@ function App() {
                 path="/businesses"
                 element={loginStatus ? <Businesses/> : <Navigate to="/" />}
               />
+
+
                <Route
                 path="/business-report"
                 element={loginStatus ? <BusinessReport/> : <Navigate to="/" />}
@@ -99,3 +101,9 @@ function App() {
 }
 
 export default App;
+
+// const App = () => {
+//   return <h1>Hello, World!</h1>
+// };
+
+// export default App;

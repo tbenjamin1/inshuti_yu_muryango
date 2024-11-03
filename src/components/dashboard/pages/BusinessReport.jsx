@@ -15,7 +15,7 @@ import { DatePicker, Select } from 'antd';
 import { Pagination } from 'antd';
 import { useToasts } from 'react-toast-notifications';
 import { fetchAsynBoughtItems, fetchAsynBusinessCatgeory, fetchAsynBusinessReport, fetchAsynBusinessTransactionList, fetchAsynItems, fetchAsynNonPaginatedItems, fetchAsynParkCatgories, fetchAsynParkUnit, fetchAsynSingleBusiness, getAllBusinessReport, getAllBussinessesCategories, getAllfetchAsynBusinessTransactionList, getAllfetchAsynpaginatedBusinessTransaction, getAllNonPaginatedItems, getAllparkCategories, getAllparkPickBoughtItemsList, getAllparkPickItemsList, getAllparkPickPaginatedBoughtItemsList, getAllparkPickPaginatedItems, getAllparkUnitList, getsingleBussiness, getUser } from '../../../redux/transactions/TransactionSlice';
-import ExcelExport from '../parkpick/pages/ExcelExport';
+// import ExcelExport from '../parkpick/pages/ExcelExport';
 import Chart from './Chart';
 import TopCustomer from './charts/TopCustomer';
 import Monthly from './charts/Monthly';
@@ -116,9 +116,9 @@ const ParkPick = () => {
 
 
     const singleBusinesstrnsactions = useSelector(getAllfetchAsynBusinessTransactionList);
-    const paginatedBusinessTransactions =useSelector(getAllfetchAsynpaginatedBusinessTransaction)
+    const paginatedBusinessTransactions = useSelector(getAllfetchAsynpaginatedBusinessTransaction)
     const businessReport = useSelector(getAllBusinessReport);
-console.log("businessReport",businessReport)
+    console.log("businessReport", businessReport)
 
 
     const total = boughtItemsList ? boughtItemsList.reduce((accumulator, item) => {
@@ -612,7 +612,7 @@ console.log("businessReport",businessReport)
                 {
                     headers: {
                         'Content-Type': 'application/json',
-                        Authorization: `Bearer ${process.env.REACT_APP_TOKEN_REFEREE}`,
+                        Authorization: `Bearer ${import.meta.env.VITE_TOKEN_REFEREE}`,
                     },
                 }
             );
@@ -664,14 +664,14 @@ console.log("businessReport",businessReport)
     };
 
     const fillBussinesForm = (busines) => {
-      
+
         setbusinesNameValue(busines.name);
         setcolorCodeValue(busines.color_code);
         setcontactTelValue(busines.contact_tel);
         setphoneNumber(busines.momo_tel);
         setrewardType(busines.reward_type);
         setreward_percentage(busines.reward_percentage);
-        setEmail(busines.user?busines.user.email:'');
+        setEmail(busines.user ? busines.user.email : '');
         setcertificate(busines.business_certificate ? busines.business_certificate : '');
         setrenderFile(busines.icon ? busines.icon : '');
         setbusinessCategory(busines.category.id);
@@ -744,7 +744,7 @@ console.log("businessReport",businessReport)
     };
 
     useEffect(() => {
-        dispatch(fetchAsynBusinessTransactionList({ user,pagetransactions}));
+        dispatch(fetchAsynBusinessTransactionList({ user, pagetransactions }));
     }, [dispatch, pagetransactions]);
 
     useEffect(() => {

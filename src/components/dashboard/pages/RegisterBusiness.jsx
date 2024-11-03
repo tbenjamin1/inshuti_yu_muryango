@@ -99,12 +99,12 @@ function RefereePage() {
         setreward_percentage(event.target.value);
     };
 
-    
+
     const handleSelectPlate = (option) => {
         setSelectedplate(option);
     };
 
-    
+
     // Define states for profile image and permit image
     const [file, setFile] = useState('');
     const [certificate, setcertificate] = useState('');
@@ -152,9 +152,9 @@ function RefereePage() {
 
 
     const handleSubmit = async () => {
-        
+
         const isValidPhoneNumber = validateMtnPhoneNumber(phoneNumber);
-        
+
         if (!isValidPhoneNumber) {
             // Handle invalid phone number case
             return;
@@ -167,7 +167,7 @@ function RefereePage() {
                 {
                     headers: {
                         'Content-Type': 'application/json',
-                        Authorization: `Bearer ${process.env.REACT_APP_TOKEN_REFEREE}`,
+                        Authorization: `Bearer ${import.meta.env.VITE_TOKEN_REFEREE}`,
                     },
                 }
             );
@@ -277,7 +277,7 @@ function RefereePage() {
                 appearance: 'success',
             });
 
-            
+
             setisLoading(false);
             setbusinesNameValue("");
             setcolorCodeValue("");

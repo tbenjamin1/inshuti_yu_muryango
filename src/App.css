@@ -4,6 +4,12 @@ body {
   font-family: 'Poppins';
 }
 
+.container-main {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 /*  styling scrollbars  */
 ::-webkit-scrollbar {
   width: 5px;
@@ -16,7 +22,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3ea175;
+  background: #23419B;
   border-radius: 10px;
 }
 
@@ -40,10 +46,63 @@ body {
   font-weight: 700;
 }
 
+.primary-background-color {
+  background-color: #23419B;
+  
+}
+.primary-btn-color {
+  color: #23419B;
+  font-size: 12px;
+
+}
+.home-btn:hover {
+background-color: #66bcfd;
+color: white;
+}
 .font-bold {
   font-weight: 700;
 }
+:where(.css-dev-only-do-not-override-apn68).ant-carousel .slick-prev{
+  background-color: #ffff;
+    padding: 8px;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    left: -22px;
+}
 
+:where(.css-dev-only-do-not-override-apn68).ant-carousel .slick-next{
+background-color: #ffff;
+  padding: 8px;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  right: -22px;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+:where(.css-dev-only-do-not-override-apn68).ant-carousel .slick-prev::after {
+  top: 20px !important;
+  inset-inline-start:unset !important;
+  color: #23419B !important;
+}
+
+:where(.css-dev-only-do-not-override-apn68).ant-carousel .slick-next::after{
+  top: 20px !important;
+  inset-inline-start: unset !important;
+  color: #23419B !important;
+}
+
+:where(.css-dev-only-do-not-override-apn68).ant-carousel .slick-dots li.slick-active button{
+    background-color: #23419B !important;
+    height: 7px !important;
+}
+
+:where(.css-dev-only-do-not-override-apn68).ant-carousel .slick-dots li.slick-active button
 .text-title {
   color: #2e4a66;
 }
@@ -74,13 +133,138 @@ body {
   color: #3b9668;
 }
 
+.home-container {
+  margin-top: -54px;
+}
+
+.home_banner {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 30rem;
+}
+
+.register_banner {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 15rem;
+}
+
+.register-container {
+  margin-top: 76px;
+}
+
+.banner-content {
+  background: linear-gradient(to right, #23419B 28%, rgba(35, 65, 155, 0) 100%);
+}
+
+.middle-container {
+  /* height: 100vh; */
+}
+
+.middle-container-left {
+  height: 100%;
+}
+
+:where(.css-dev-only-do-not-override-apn68).ant-tabs .ant-tabs-tab {
+  color: #23419B !important;
+  font-size: 20px !important;
+  font-weight: bold;
+}
+
+:where(.css-dev-only-do-not-override-apn68).ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #23419B !important;
+  font-size: 20px !important;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+:where(.css-dev-only-do-not-override-apn68).ant-tabs .ant-tabs-ink-bar {
+  background-color: #23419B !important;
+  height: 3px !important;
+}
+
+.my-card-title {
+  color: rgba(0, 0, 0, 0.88);
+  font-weight: 600;
+  font-size: 16px;
+  text-transform: uppercase;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.my-card-sub-title {
+  color: rgba(0, 0, 0, 0.88);
+  font-weight: 600;
+  font-size: 12px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.description {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 12px;
+}
+
+.why-content {
+  font-size: 13px;
+}
+
+.slider-container {
+  width: 90%;
+
+}
+
+.slider-title {
+  font-size: 20px;
+}
+
+.separator {
+  height: 60px;
+}
+
+.anticon .anticon-edit {
+  color: #ffff !important;
+  background-color: #23419B !important;
+}
+
+.address-form-icon {
+  background-color:#23419B;
+  padding:8px;
+  border-radius:50%;
+  width:50px;
+  height:50px;
+  display:inline-flex;
+}
+
+.service-title {
+  border-bottom: 2px solid red;
+}
+.address-input{
+  width: 40%;
+
+}
+.why-content-tile {
+  font-size: 30px;
+  border-bottom: 1px solid;
+  text-transform: uppercase;
+}
+
 .filter-container {
   width: 90%;
   border-radius: 6px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #1BA97F;
+  background-color: #23419B;
 }
 
 .style-select {
@@ -90,9 +274,7 @@ body {
   transform: translate3d(522.5px, 3847.5px, 0px);
 }
 
-/* .social-media{
-font-size: 10px;
-} */
+
 
 .container {
   width: 93%;
@@ -124,12 +306,12 @@ font-size: 10px;
 
 .my_TabContent::-webkit-scrollbar-thumb {
   width: 1px;
-  background-color: #1BA97F;
+  background-color: #23419B;
   /* Change this to red */
 }
 
 .my_TabContent::-webkit-scrollbar-thumb:hover {
-  background-color: #1BA97F;
+  background-color: #23419B;
   /* Change this to a darker red when hovering over the thumb */
 }
 
@@ -182,7 +364,7 @@ textarea {
 }
 
 .terms-accept {
-  background-color: #1BA97F;
+  background-color: #23419B;
   color: white;
   font-size: 15px;
 }
@@ -195,30 +377,34 @@ textarea {
 
 /* Add this in your CSS or style tag */
 .checkbox:checked {
-  background-color: #1BA97F;
+  background-color: #23419B;
   /* Replace with your desired color */
 }
 
 input[type='checkbox'] {
-  accent-color: #1BA97F;
+  accent-color: #23419B;
 
 }
-.text_red-500{
-  color: #1BA97F;
+
+.text_red-500 {
+  color: #23419B;
 }
-.bg_red-500{
-  background-color: #1BA97F;
+
+.bg_red-500 {
+  background-color: #23419B;
 }
-.border_green-500{
-  border-bottom: 2px solid #1BA97F;
+
+.border_green-500 {
+  border-bottom: 2px solid #23419B;
 }
+
 .checkbox {
   height: 40px;
 }
 
 .terms-Cancel {
-  border: 2px solid #1BA97F;
-  color: #1BA97F;
+  border: 2px solid #23419B;
+  color: #23419B;
   font-size: 15px;
 }
 
@@ -234,25 +420,25 @@ input[type='checkbox'] {
   width: 90%;
 }
 
-.card-title {
+.My-card-title {
   font-size: 13px;
   color: #5F6980;
 }
 
-.card-title-sub {
+.My-card-title-sub {
   font-size: 15px;
   font-weight: bold;
   color: #282828;
 }
 
-.card-title-footer {
-  color: #1BA97F;
+.My-card-title-footer {
+  color: #23419B;
   font-size: 13px;
 
 }
 
 .border_green {
-  border-bottom: 4px solid #1BA97F;
+  border-bottom: 4px solid #23419B;
 }
 
 thead tr th {
@@ -403,7 +589,7 @@ tbody tr th {
 }
 
 .active_filter {
-  background-color: #1BA97F;
+  background-color: #23419B;
   color: white;
 }
 
@@ -460,14 +646,17 @@ tbody tr th {
   text-overflow: ellipsis;
   text-transform: capitalize;
 }
-.image-not-setted{
+
+.image-not-setted {
   height: 100px;
   height: 100px;
 }
-.inset-y-0{
+
+.inset-y-0 {
   top: 74px;
-    bottom: 0px;
+  bottom: 0px;
 }
+
 @media screen and (max-width: 768) {
   .fom-btn {
     font-size: 9px;
@@ -612,7 +801,7 @@ tbody tr th {
 
   .login_form {
     display: flex !important;
-    justify-content:flex-start !important;
+    justify-content: flex-start !important;
     align-items: unset !important;
     margin-left: 5px;
 
@@ -746,7 +935,7 @@ select:required:invalid {
 }
 
 .fom-btn {
-  background: #1BA97F;
+  background: #23419B;
   border-radius: 6px;
   color: white;
 }
@@ -893,4 +1082,49 @@ input {
   position: absolute;
   top: 10px;
   left: 10px;
+}
+
+/* footer */
+
+.footer-container {
+  background-color: #23419B;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.quick-links a {
+  color: white;
+  margin: 0 10px;
+  transition: color 0.3s;
+  font-size: 13px;
+  text-align: start;
+}
+
+.quick-links a:hover {
+  color: #4E92F3;
+  /* Slightly lighter shade for hover effect */
+}
+
+.store-links {
+  display: flex;
+  gap: 20px;
+}
+
+.store-logo {
+  width: 130px;
+  height: auto;
+}
+
+.footer-bottom {
+  margin-top: 15px;
+  font-size: 0.9rem;
+  opacity: 0.8;
 }

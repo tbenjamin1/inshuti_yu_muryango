@@ -118,7 +118,7 @@ const ParkPick = () => {
     const singleBusinesstrnsactions = useSelector(getAllfetchAsynBusinessTransactionList);
     const paginatedBusinessTransactions = useSelector(getAllfetchAsynpaginatedBusinessTransaction)
     const businessReport = useSelector(getAllBusinessReport);
-    console.log("businessReport", businessReport)
+    
 
 
     const total = boughtItemsList ? boughtItemsList.reduce((accumulator, item) => {

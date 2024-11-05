@@ -2,6 +2,7 @@
 import './App.css';
 import Signup from "./components/auth/Signup"
 import Login from "./components/auth/Login"
+import Home from "./components/auth/Home"
 import BusinessReport from "./components/dashboard/pages/BusinessReport";
 import Reset from "./components/auth/Reset";
 import DashboardLayout from "./components/dashboard/DashboardLayout"
@@ -34,7 +35,8 @@ function App() {
       <div className="justify-center">
 
         <Routes>
-          <Route exact path="/" element={<Login/>}/>
+          <Route exact path="/" element={<Home/>}/>
+              <Route exact path="/login" element={<Login />} />
           <Route  path="/reset" element={<Reset/>}/>
           <Route  path="/sign-up" element={<Signup/>}/>
 

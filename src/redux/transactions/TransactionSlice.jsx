@@ -27,25 +27,25 @@ export const fetchAsynRefree = createAsyncThunk('tranx/fetchAsynRefree', async (
     return response.data;
 })
 export const fetchAsynParkCatgories = createAsyncThunk('tranx/fetchAsyncategories', async () => {
-    const response = await axios.get(`https://api.koipay.co/api/v1/park-pick/categories`)
+    // const response = await axios.get(`https://api.koipay.co/api/v1/park-pick/categories`)
     return response.data.categories;
 })
 export const fetchAsynParkUnit = createAsyncThunk('tranx/fetchAsynUnit', async () => {
-    const response = await axios.get(`https://api.koipay.co/api/v1/park-pick/units/get-all`)
+    // const response = await axios.get(`https://api.koipay.co/api/v1/park-pick/units/get-all`)
     return response.data.units;
 })
 export const fetchAsynItems = createAsyncThunk('tranx/fetchAsynItems', async (currentPage) => {
-    const response = await axios.get(`https://api.koipay.co/api/v1/park-pick/items/get-all?page=${currentPage}`)
+    // const response = await axios.get(`https://api.koipay.co/api/v1/park-pick/items/get-all?page=${currentPage}`)
     return response.data;
 })
 
 export const fetchAsynNonPaginatedItems = createAsyncThunk('tranx/NonPaginatedItems', async () => {
-    const response = await axios.get(`https://api.koipay.co/api/v1/park-pick/items/get-items`)
+    // const response = await axios.get(`https://api.koipay.co/api/v1/park-pick/items/get-items`)
     return response.data;
 })
 
 export const fetchAsynBoughtItems = createAsyncThunk('tranx/fetchAsynBoughtItems', async ({ pageboughtItems, selectedRange, filterStatus, filterItem }) => {
-    const response = await axios.get(`https://api.koipay.co/api/v1/park-pick/bought-items/get-all?page=${pageboughtItems}&itemId=${filterItem ? filterItem : ''}&startDate=${selectedRange[0]}&endDate=${selectedRange[1]}&status=${filterStatus}`)
+    // const response = await axios.get(`https://api.koipay.co/api/v1/park-pick/bought-items/get-all?page=${pageboughtItems}&itemId=${filterItem ? filterItem : ''}&startDate=${selectedRange[0]}&endDate=${selectedRange[1]}&status=${filterStatus}`)
     return response.data;
 })
 

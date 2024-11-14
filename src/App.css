@@ -201,6 +201,7 @@ body {
 
 :where(.css-dev-only-do-not-override-apn68).ant-card {
   border-radius: 16px 16px 8px 8px;
+  height: 480px;
 }
 
 .img {

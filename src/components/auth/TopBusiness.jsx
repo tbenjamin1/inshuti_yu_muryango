@@ -16,8 +16,8 @@ const TopBusiness = ({ allBussinessesRegisteredList }) => {
         <Tabs defaultActiveKey="1">
             <TabPane tab="Top Business" key="1">
                 <Row gutter={[16, 16]}>
-                    {allBussinessesRegisteredList.slice(0, 4).map((business) => (
-                        <Col xs={24} sm={12} md={12} lg={6} key={business.id}>
+                    {allBussinessesRegisteredList.slice(0, 3).map((business) => (
+                        <Col xs={24} sm={12} md={12} lg={8} key={business.id}>
                             <Card
                                 cover={<img className='img' alt={business.name} src={business.icon ? business.icon : Coins_amico} />}
                                 actions={[

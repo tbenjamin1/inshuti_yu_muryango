@@ -48,34 +48,38 @@ body {
 
 .primary-background-color {
   background-color: #23419B;
-  
+
 }
+
 .primary-btn-color {
   color: #23419B;
   font-size: 12px;
 
 }
+
 .home-btn:hover {
-background-color: #66bcfd;
-color: white;
+  background-color: #66bcfd;
+  color: white;
 }
+
 .font-bold {
   font-weight: 700;
 }
-:where(.css-dev-only-do-not-override-apn68).ant-carousel .slick-prev{
+
+:where(.css-dev-only-do-not-override-apn68).ant-carousel .slick-prev {
   background-color: #ffff;
-    padding: 8px;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    left: -22px;
+  padding: 8px;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  left: -22px;
 }
 
-:where(.css-dev-only-do-not-override-apn68).ant-carousel .slick-next{
-background-color: #ffff;
+:where(.css-dev-only-do-not-override-apn68).ant-carousel .slick-next {
+  background-color: #ffff;
   padding: 8px;
   border-radius: 50%;
   width: 50px;
@@ -85,25 +89,25 @@ background-color: #ffff;
   align-items: center !important;
   justify-content: center !important;
 }
-:where(.css-dev-only-do-not-override-apn68).ant-carousel .slick-prev::after {
-  top: 20px !important;
-  inset-inline-start:unset !important;
-  color: #23419B !important;
-}
 
-:where(.css-dev-only-do-not-override-apn68).ant-carousel .slick-next::after{
+:where(.css-dev-only-do-not-override-apn68).ant-carousel .slick-prev::after {
   top: 20px !important;
   inset-inline-start: unset !important;
   color: #23419B !important;
 }
 
-:where(.css-dev-only-do-not-override-apn68).ant-carousel .slick-dots li.slick-active button{
-    background-color: #23419B !important;
-    height: 7px !important;
+:where(.css-dev-only-do-not-override-apn68).ant-carousel .slick-next::after {
+  top: 20px !important;
+  inset-inline-start: unset !important;
+  color: #23419B !important;
 }
 
-:where(.css-dev-only-do-not-override-apn68).ant-carousel .slick-dots li.slick-active button
-.text-title {
+:where(.css-dev-only-do-not-override-apn68).ant-carousel .slick-dots li.slick-active button {
+  background-color: #23419B !important;
+  height: 7px !important;
+}
+
+:where(.css-dev-only-do-not-override-apn68).ant-carousel .slick-dots li.slick-active button .text-title {
   color: #2e4a66;
 }
 
@@ -130,8 +134,10 @@ background-color: #ffff;
 }
 
 .text-green {
-  color: #3b9668;
+  color: #23419B;
 }
+
+/* 23419B */
 
 .home-container {
   margin-top: -54px;
@@ -183,6 +189,24 @@ background-color: #ffff;
 :where(.css-dev-only-do-not-override-apn68).ant-tabs .ant-tabs-ink-bar {
   background-color: #23419B !important;
   height: 3px !important;
+}
+
+.ant-card-bordered .ant-card-cover {
+  margin-top: -1px;
+  margin-inline-start: -1px;
+  margin-inline-end: -1px;
+  height: 250px;
+  width: 100%;
+}
+
+:where(.css-dev-only-do-not-override-apn68).ant-card {
+  border-radius: 16px 16px 8px 8px;
+}
+
+.img {
+  height: 100% !important;
+  width: 100% !important;
+  object-fit: contain !important;
 }
 
 .my-card-title {
@@ -237,21 +261,23 @@ background-color: #ffff;
 }
 
 .address-form-icon {
-  background-color:#23419B;
-  padding:8px;
-  border-radius:50%;
-  width:50px;
-  height:50px;
-  display:inline-flex;
+  background-color: #23419B;
+  padding: 8px;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: inline-flex;
 }
 
 .service-title {
   border-bottom: 2px solid red;
 }
-.address-input{
+
+.address-input {
   width: 40%;
 
 }
+
 .why-content-tile {
   font-size: 30px;
   border-bottom: 1px solid;
@@ -661,13 +687,29 @@ tbody tr th {
   .fom-btn {
     font-size: 9px;
   }
+    .quick_inks {
+      display: flex;
+      flex-direction: column;
+    }
+    .store_link{
+        display: flex;
+          flex-direction: column;
+    }
 }
 
 @media screen and (max-width: 480px) {
   .my_TabContent {
     overflow: auto;
   }
-
+        .quick_inks {
+          display: flex;
+          flex-direction: column;
+        }
+    
+        /* .store_link {
+          display: flex;
+          flex-direction: column;
+        } */
   .login-container-image {
     height: 200px;
     width: 117px;
@@ -877,7 +919,7 @@ tbody tr th {
 }
 
 .SUCCESS {
-  color: #3b9668;
+  color: #23419B;
   font-weight: bold;
   font-size: 10px;
 }
@@ -902,7 +944,7 @@ label {
 
 .activeTab {
   border-radius: 5px;
-  border: 1px solid #3b9668;
+  border: 1px solid #23419B;
 }
 
 input {

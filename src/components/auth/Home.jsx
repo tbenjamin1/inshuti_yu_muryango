@@ -7,10 +7,18 @@ import Service from './Service';
 import Footer from './Footer';
 import NewNavBar from './NewNavBar';
 import { Link } from 'react-router-dom'
-import TopBusiness from './TopBusiness';
-
+import TopBusiness from './TopBusiness'; import { useDispatch, useSelector } from "react-redux";
+import { fetchAsynBusinessCatgeory, fetchAsynBusinessRegistered, fetchAsyncTransaction, getAllBussinessesCategories, getAllBussinessesRegistered, getAllPaginatedBussinesses, getAllTransaction, getUser } from '../../redux/transactions/TransactionSlice';
 const Home = () => {
-    
+    const [currentPage, setCurrentPage] = useState(1);
+    const [selectedRange, setSelectedRange] = useState();
+    const dispatch = useDispatch()
+    const allBussinessesRegisteredList = useSelector(getAllBussinessesRegistered);
+    console.log('allBussinessesRegisteredList', allBussinessesRegisteredList)
+
+    useEffect(() => {
+        dispatch(fetchAsynBusinessRegistered({ selectedRange, currentPage }))
+    }, [dispatch, selectedRange, currentPage]);
 
     return (
         <div className="flex flex-col  items-center justify-center mt-32 ">
@@ -32,10 +40,10 @@ const Home = () => {
                             </div>
                             <div className='font-bold why-content-tile w-1/2' >Register</div>
                             <div className='w-1/2 flex  justify-between'>
-                                <Link to="/login" className='capitalize ' > <a className="flex py-2 home-btn rounded-md bg-white  primary-btn-color capitalize   font-semibold px-6 ">
+                                <Link to="/register-business" className='capitalize ' > <a className="flex py-2 home-btn rounded-md bg-white  primary-btn-color capitalize   font-semibold px-6 ">
                                      BUSINESS
                                 </a> </Link>
-                                <Link to="/login" className='ml-3 ' > <a className="flex home-btn py-2 capitalize rounded-md bg-white  primary-btn-color   font-semibold  px-6">
+                                <Link to="/register-entity" className='ml-3 ' > <a className="flex home-btn py-2 capitalize rounded-md bg-white  primary-btn-color   font-semibold  px-6">
                                      ENTITY
                                 </a> </Link>
                             </div>
@@ -58,7 +66,7 @@ const Home = () => {
                 <div className='flex flex-col justify-center items-center w-full'  >
 
                     <div className='p-4 w-full'>
-                        <TopBusiness />
+                        <TopBusiness allBussinessesRegisteredList={allBussinessesRegisteredList}   />
                     </div>
                 </div>
                

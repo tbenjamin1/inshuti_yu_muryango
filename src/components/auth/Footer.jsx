@@ -7,7 +7,7 @@ import playStoreLogo from '../images/playstore.png';
 
 const Footer = () => (
     <footer className="footer-container">
-        <div className="  flex justify-around">
+        <div className="  flex justify-around quick_inks  ">
             <div className=' flex w-full' >
                 {/* quick Links */}
                 <div className="quick-links flex flex-col ">
@@ -40,7 +40,7 @@ const Footer = () => (
             </div>
             <div className=' flex flex-col justify-between' >
                 {/* Social Media Links */}
-                <div className="flex justify-between">
+                <div className="flex justify-between store_link">
                     <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
                         <FontAwesomeIcon icon={faFacebook} size="2x" />
                     </a>
@@ -56,7 +56,7 @@ const Footer = () => (
                 </div>
 
                 {/* App Store and Play Store Links */}
-                <div className="store-links">
+                <div className="store-links store_link">
                     <a href="https://apps.apple.com" target="_blank" rel="noopener noreferrer">
                         <img src={appStoreLogo} alt="App Store" className="store-logo" />
                     </a>

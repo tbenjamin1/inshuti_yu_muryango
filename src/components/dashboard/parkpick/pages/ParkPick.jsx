@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
-import main_logo from "../../../images/park.jpeg";
+import jal_koi from "../../../images/park.jpeg";
 import groupeya from "../../../images/Groupeya_logo .png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -653,7 +653,7 @@ const ParkPick = () => {
         <div className='bg-gray-100'>
             <nav class="bg-white border-solid border-b-4 nav-bar border-red-500">
                 <div class=" flex flex-wrap items-center justify-between  px-4 py-2">
-                    <img class=" w-16   h-16 rounded-full object-cover" src={main_logo} alt="user photo" />
+                    <img class=" w-16   h-16 rounded-full object-cover" src={jal_koi} alt="user photo" />
                     <div class="flex items-center  bg-white  ">
                         <div className='flex flex-col mx-2' >
                             <span>{user.name} </span>

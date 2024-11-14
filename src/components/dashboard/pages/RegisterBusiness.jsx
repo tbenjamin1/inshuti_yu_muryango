@@ -18,8 +18,8 @@ import NewNavBar from '../../auth/NewNavBar';
 import Footer from '../../auth/Footer';
 import { Avatar, Card } from 'antd';
 import { EditOutlined, PhoneOutlined, EllipsisOutlined, SendOutlined, SettingOutlined } from '@ant-design/icons';
-import {  faTwitter, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
-import { faEnvelope,faHouseChimney ,faLocationDot} from '@fortawesome/free-solid-svg-icons'
+import { faTwitter, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
+import { faEnvelope, faHouseChimney, faLocationDot } from '@fortawesome/free-solid-svg-icons'
 import home_banner from "../../images/home-banner.png"
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -354,148 +354,148 @@ function RefereePage() {
 
     return (
         <>
-        <div className='flex flex-col' >
-            <NewNavBar />
-            <div className="flex flex-wrap  w-full register-container container-main" >
-                <div
-                    className="w-full register_banner relative h-64"
-                    style={{
-                        backgroundImage: `url(${home_banner})`
-                    }}
-                >
-                    <div className='banner-content flex justify-items-end  h-full text-white ' >
-                        <div className='flex flex-col  justify-center space-y-4 p-4'>
-                            <div className='font-bold why-content-tile ' >Welcome to JaliKoi Business Registration</div>
-                            <div className='why-content ' >
-                                Unlock the power of cashback rewards today  to boost your business’s sales and create lasting customer loyalty. <br />
-                                Join JaliKoi today and transform the way you connect with customers! Our platform lets you seamlessly, <br />
-                                Manage cashback rewards, offering a smart way to keep customers coming back while increasing their purchasing.
-                            </div>
+            <div className='flex flex-col' >
+                <NewNavBar />
+                <div className="flex flex-wrap  w-full register-container container-main" >
+                    <div
+                        className="w-full register_banner relative h-64"
+                        style={{
+                            backgroundImage: `url(${home_banner})`
+                        }}
+                    >
+                        <div className='banner-content flex justify-items-end  h-full text-white ' >
+                            <div className='flex flex-col  justify-center space-y-4 p-4'>
+                                <div className='font-bold why-content-tile ' >Welcome to JaliKoi Business Registration</div>
+                                <div className='why-content ' >
+                                    Unlock the power of cashback rewards today  to boost your business’s sales and create lasting customer loyalty. <br />
+                                    Join JaliKoi today and transform the way you connect with customers! Our platform lets you seamlessly, <br />
+                                    Manage cashback rewards, offering a smart way to keep customers coming back while increasing their purchasing.
+                                </div>
 
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div className='flex justify-between items-start w-full border bg-slate-100 p-3 middle-container'  >
+                    <div className='flex justify-between items-start w-full border bg-slate-100 p-3 middle-container'  >
 
-                    <div className='flex flex-col justify-around items-start middle-container-left '>
-                        <Card
-                            style={{
-                                width: 450,
+                        <div className='flex flex-col justify-around items-start middle-container-left '>
+                            <Card
+                                style={{
+                                    width: 450,
 
-                            }}
+                                }}
                                 className='my-3'
-                            title="WHY JOIN JALIKOI?" bordered={false}
+                                title="WHY JOIN JALIKOI?" bordered={false}
 
 
-                        >
+                            >
 
-                            <div className='flex flex-col ' >
-                                <h3 className='my-card-sub-title py-3' >Drive Sales Growth</h3>
-                                <p className='description' >
-                                    Reward your customers for every purchase they make, encouraging higher spending and return visits.
-                                </p>
-                                <h3 className='my-card-sub-title py-3' >Build Stronger Loyalty</h3>
-                                <p className='description' >
-                                    Give your customers a reason to choose you every time with cashback that adds real value to their experience.
-                                </p>
-                                <h3 className='my-card-sub-title py-3' >Effortless Reward Management</h3>
-                                <p className='description' >
-                                    Our user-friendly dashboard makes it easy to track and manage your cash back offerings and customer engagement.
-                                </p>
-                            </div>
+                                <div className='flex flex-col ' >
+                                    <h3 className='my-card-sub-title py-3' >Drive Sales Growth</h3>
+                                    <p className='description' >
+                                        Reward your customers for every purchase they make, encouraging higher spending and return visits.
+                                    </p>
+                                    <h3 className='my-card-sub-title py-3' >Build Stronger Loyalty</h3>
+                                    <p className='description' >
+                                        Give your customers a reason to choose you every time with cashback that adds real value to their experience.
+                                    </p>
+                                    <h3 className='my-card-sub-title py-3' >Effortless Reward Management</h3>
+                                    <p className='description' >
+                                        Our user-friendly dashboard makes it easy to track and manage your cash back offerings and customer engagement.
+                                    </p>
+                                </div>
 
-                        </Card>
-                        <Card
-                            style={{
-                                width: 450,
-                                
-
-                            }}
-                            
-                            title="HOW IT WORKS" 
-                            bordered={false}
+                            </Card>
+                            <Card
+                                style={{
+                                    width: 450,
 
 
-                        >
+                                }}
 
-                            <div className='flex flex-col ' >
-                                <h3 className='my-card-sub-title py-3' >Register Your Business</h3>
-                                <p className='description' >
-                                    Create a profile and instantly access our cashback management tools and be visible to our big community of jalikoi App users.
-                                </p>
-                                <h3 className='my-card-sub-title py-3' >Set Custom Cashback Offers</h3>
-                                <p className='description' >
-                                    Tailor your rewards to maximize customer satisfaction and encourage repeat business.
-                                </p>
-                                <h3 className='my-card-sub-title py-3' >Watch Sales and Loyalty Grow</h3>
-                                <p className='description' >
-                                    With our analytics and reporting, you’ll see the impact of cashback rewards on your bottom line.
-                                </p>
-                            </div>
+                                title="HOW IT WORKS"
+                                bordered={false}
 
-                        </Card>
-                    </div>
-                    <div className='flex flex-col   justify-start items-center middle-container-left w-full m-3 rounded-md'>
-                        <div className='bg-white flex justify-between items-center w-full rounded-md p-2' >
-                            <div className='flex address-input lex address-input justify-center items-center   '  >
-                                <div className='flex  justify-center items-center ' >
-                                    <div className='flex address-form-icon justify-center items-center  ' >
-                                        <PhoneOutlined style={{ color: 'white' }} />
+
+                            >
+
+                                <div className='flex flex-col ' >
+                                    <h3 className='my-card-sub-title py-3' >Register Your Business</h3>
+                                    <p className='description' >
+                                        Create a profile and instantly access our cashback management tools and be visible to our big community of jalikoi App users.
+                                    </p>
+                                    <h3 className='my-card-sub-title py-3' >Set Custom Cashback Offers</h3>
+                                    <p className='description' >
+                                        Tailor your rewards to maximize customer satisfaction and encourage repeat business.
+                                    </p>
+                                    <h3 className='my-card-sub-title py-3' >Watch Sales and Loyalty Grow</h3>
+                                    <p className='description' >
+                                        With our analytics and reporting, you’ll see the impact of cashback rewards on your bottom line.
+                                    </p>
+                                </div>
+
+                            </Card>
+                        </div>
+                        <div className='flex flex-col   justify-start items-center middle-container-left w-full m-3 rounded-md'>
+                            <div className='bg-white flex justify-between items-center w-full rounded-md p-2' >
+                                <div className='flex address-input lex address-input justify-center items-center   '  >
+                                    <div className='flex  justify-center items-center ' >
+                                        <div className='flex address-form-icon justify-center items-center  ' >
+                                            <PhoneOutlined style={{ color: 'white' }} />
+                                        </div>
                                     </div>
-                                </div>
-                                
-                                <div className='flex flex-col justify-between items-start mx-2  w-full' >
-                                    <label>Phone</label>
-                                    <input type="text" className='w-full' placeholder=' contact tel' value={contactTel} onChange={contactTelHandleChange}></input>
-                                    {phoneNumberError && <p class="mt-2   text-pink-600 text-sm">
-                                        {phoneNumberError}
-                                    </p>}
-                                </div>
-                                <div className=' border separator mx-2'></div>
-                                
-                            </div>
-                            <div className='flex address-input justify-center items-center   ' >
-                                <div className='flex  justify-center items-center ' >
-                                    <div className='flex address-form-icon justify-center items-center  ' >
-                                        <FontAwesomeIcon icon={faEnvelope} style={{ color: 'white' }} />
+
+                                    <div className='flex flex-col justify-between items-start mx-2  w-full' >
+                                        <label>Phone</label>
+                                        <input type="text" className='w-full' placeholder=' contact tel' value={contactTel} onChange={contactTelHandleChange}></input>
+                                        {phoneNumberError && <p class="mt-2   text-pink-600 text-sm">
+                                            {phoneNumberError}
+                                        </p>}
                                     </div>
+                                    <div className=' border separator mx-2'></div>
+
                                 </div>
-                              
-                                <div className='flex flex-col justify-between items-start mx-2 w-full' >
-                                    <label>Email</label>
+                                <div className='flex address-input justify-center items-center   ' >
+                                    <div className='flex  justify-center items-center ' >
+                                        <div className='flex address-form-icon justify-center items-center  ' >
+                                            <FontAwesomeIcon icon={faEnvelope} style={{ color: 'white' }} />
+                                        </div>
+                                    </div>
+
+                                    <div className='flex flex-col justify-between items-start mx-2 w-full' >
+                                        <label>Email</label>
                                         <input type="text" className='w-full' placeholder='Email' value={email} onChange={emailHandleChange}></input>
                                         {emailError && <p class="mt-2   text-pink-600 text-sm">
                                             {emailError}
                                         </p>}
-                                </div>
-
-                                <div className='h-full border separator mx-2'></div>
-                            </div>
-                            <div className='flex address-input lex address-input justify-center items-center  ' >
-                                <div className='flex  justify-center items-center ' >
-                                    <div className='flex address-form-icon justify-center items-center  ' >
-                                            <FontAwesomeIcon icon={faHouseChimney} style={{ color: 'white' }} />
                                     </div>
+
+                                    <div className='h-full border separator mx-2'></div>
                                 </div>
-                                
-                                <div className='flex flex-col justify-between items-start mx-2 w-full' >
+                                <div className='flex address-input lex address-input justify-center items-center  ' >
+                                    <div className='flex  justify-center items-center ' >
+                                        <div className='flex address-form-icon justify-center items-center  ' >
+                                            <FontAwesomeIcon icon={faHouseChimney} style={{ color: 'white' }} />
+                                        </div>
+                                    </div>
+
+                                    <div className='flex flex-col justify-between items-start mx-2 w-full' >
                                         <label>Business name</label>
                                         <input type="text" className='w-full' placeholder=' Business name' value={businesName} onChange={businesNameHandleChange}  ></input>
 
                                         {businesNameError && <p class="mt-2   text-pink-600 text-sm">
                                             {businesNameError}
                                         </p>}
-                                </div>
+                                    </div>
 
-                             
+
+                                </div>
                             </div>
-                        </div>
-                        <div className='bg-white w-full mt-3 rounded-md px-8 py-2 ' >
+                            <div className='bg-white w-full mt-3 rounded-md px-8 py-2 ' >
                                 {!registered && <div className='flex flex-col my-3  w-3/5 form-width'>
                                     <div className='flex justify-between business-image mobile-fit  ' >
                                         <div className='flex flex-col w-full mr-1' >
-                                           
+
                                             <label className='' >
                                                 Color code
                                             </label>
@@ -620,7 +620,7 @@ function RefereePage() {
                                                     {reward_percentageError}
                                                 </p>}
                                             </span>
-                                            
+
                                             <span className='flex flex-col' >
                                                 <label>
                                                     Password
@@ -695,18 +695,18 @@ function RefereePage() {
                                     </div>
 
                                 </div>}
+                            </div>
                         </div>
                     </div>
+
+                    <Footer />
+
                 </div>
 
-                <Footer />
-
             </div>
+            {/* <div className='flex bg-slate-100 py-20   px-10 busines-container' >
 
-        </div>
-        {/* <div className='flex bg-slate-100 py-20   px-10 busines-container' >
-
-            <Link to="/"> <span className='remeber_forgot underline cursor-pointer top-2 mx-3 absolute '><FontAwesomeIcon icon={faBackward} color="#13b9668DA1F2" className='mx-3' />Back</span> </Link>
+            <Link to="/"> <span className='remeber_forgot underline cursor-pointer top-2 mx-3 absolute '><FontAwesomeIcon icon={faBackward} color="#123419BDA1F2" className='mx-3' />Back</span> </Link>
             <div className='bg-white rounded-lg flex justify-center items-center w-1/2  p-2 busines-container-left '>
                 <span className='flex flex-col  ' >
                     <img src={undraw_interview} className="App-logo" alt="logo" />

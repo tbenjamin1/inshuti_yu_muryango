@@ -3,7 +3,7 @@ import { Carousel } from 'antd';
 import home_banner from "../images/home-banner.png"
 const contentStyle = {
     margin: 0,
-    height: '200px',
+    height: '250px',
     color: '#fff',
     borderRadius: '10px', 
     lineHeight: '160px',
@@ -16,7 +16,7 @@ const contentStyle = {
 const App = () => (
     <>
         <Carousel arrows infinite={true} autoplay  autoplaySpeed={3000} >
-            <div>
+            <div className='border' >
                 <h3 className='slider-title' style={contentStyle}> Register with JaliKoi today and take your business to the next level. It is 100% free!</h3>
             </div>
             <div>

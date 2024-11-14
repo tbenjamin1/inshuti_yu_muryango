@@ -1,170 +1,141 @@
-// import React from 'react';
-import { EditOutlined, HeartOutlined, EllipsisOutlined, SendOutlined, SettingOutlined } from '@ant-design/icons';
-import { Avatar, Card } from 'antd';
-import home_banner from "../images/home-banner.png"
-import { Link, useNavigate } from 'react-router-dom'
-const { Meta } = Card;
-
 import React from 'react';
-import { Tabs } from 'antd';
+import { EditOutlined, HeartOutlined, EllipsisOutlined } from '@ant-design/icons';
+import { Card, Tabs, Row, Col } from 'antd';
+import cashback from "../images/cashback.png";
+import wallet from "../images/wallet.png";
+import Coins_amico from "../images/Coins_amico.png";
+import { useNavigate } from 'react-router-dom';
 
 const { TabPane } = Tabs;
+const { Meta } = Card;
 
 const ServicesTabs = () => {
     const navigate = useNavigate();
+
     return (
         <Tabs defaultActiveKey="1">
             <TabPane tab="Best Packages For You" key="1">
-                <div className='flex justify-between items-center w-full' >
-                    <Card
-                        style={{
-                            width: 450,
-                        }}
-                        cover={
-                            <img
-                                alt="example"
-                                src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                <Row gutter={[16, 16]}>
+                    <Col xs={24} sm={12} md={12} lg={8}>
+                        <Card
+                            cover={<img className='img' alt="Business Registration" src={Coins_amico} />}
+                            actions={[
+                                <span
+                                    style={{
+                                        backgroundColor: '#23419B',
+                                        padding: '8px',
+                                        borderRadius: '50%',
+                                        display: 'inline-flex',
+                                    }}
+                                >
+                                    <HeartOutlined style={{ color: 'white' }} />
+                                </span>,
+                                <EllipsisOutlined onClick={() => navigate('/register-business')} key="ellipsis" />,
+                                <span className='text-white rounded-lg px-4 py-1'
+                                    style={{
+                                        backgroundColor: '#23419B',
+                                        display: 'inline-flex',
+                                    }}
+                                    onClick={() => navigate('/register-business')}
+                                >
+                                    <span className='uppercase'>Register</span>
+                                </span>
+                            ]}
+                        >
+                            <Meta
+                                title="Business Registration"
+                                description={(
+                                    <>
+                                        <h3 className='my-card-sub-title py-3'>Welcome to JaliKoi Business Registration – Empower Your Sales, Build Loyal Customers</h3>
+                                        <p className='description'>
+                                            Unlock the power of cashback rewards today to boost your business’s sales and create lasting customer loyalty.
+                                            Join JaliKoi today and transform the way you connect with customers!
+                                        </p>
+                                    </>
+                                )}
                             />
-                        }
-
-                        actions={[
-                            <span
-                                style={{
-                                    backgroundColor: '#23419B',
-                                    padding: '8px',
-                                    borderRadius: '50%',
-                                    display: 'inline-flex',
-                                }}
-                            >
-                                <HeartOutlined style={{ color: 'white' }} />
-                            </span>,
-                            <EllipsisOutlined onClick={() => navigate('/register-business')} key="EllipsisOutlined" />,
-                            <span
-                                style={{
-                                    backgroundColor: '#23419B',
-                                    padding: '8px',
-                                    borderRadius: '50%',
-                                    display: 'inline-flex',
-                                }}
-                                onClick={() => navigate('/register-business')}
-        
-                            >
-                                <EditOutlined key="edit" style={{ color: 'white' }} />
-                            </span>,
-                        ]}
-                    >
-
-                        <div className='flex flex-col ' >
-                            <span className='my-card-title' >Business Registration</span>
-                            <h3 className='my-card-sub-title py-3' >Welcome to JaliKoi Business Registration – Empower Your Sales, Build Loyal Customers</h3>
-                            <p className='description' >
-                                Unlock the power of cashback rewards today to boost your business’s sales and create lasting customer loyalty.
-                                Join JaliKoi today and transform the way you connect with customers! Our platform lets you seamlessly manage
-                                cashback rewards, offering a smart way to keep customers coming back while increasing their purchasing.
-                            </p>
-                        </div>
-
-                    </Card>
-                    <Card
-                        style={{
-                            width: 450,
-                        }}
-                        cover={
-                            <img
-                                alt="example"
-                                src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                        </Card>
+                    </Col>
+                    <Col xs={24} sm={12} md={12} lg={8}>
+                        <Card
+                            cover={<img className='img' alt="Charitable Registration" src={cashback} />}
+                            actions={[
+                                <span
+                                    style={{
+                                        backgroundColor: '#23419B',
+                                        padding: '8px',
+                                        borderRadius: '50%',
+                                        display: 'inline-flex',
+                                    }}
+                                >
+                                    <HeartOutlined style={{ color: 'white' }} />
+                                </span>,
+                                <EllipsisOutlined onClick={() => navigate('/register-entity')} key="ellipsis" />,
+                                <span className='text-white rounded-lg px-4 py-1'
+                                    style={{
+                                        backgroundColor: '#23419B',
+                                        display: 'inline-flex',
+                                    }}
+                                    onClick={() => navigate('/register-entity')}
+                                >
+                                    <span className='uppercase'>Register</span>
+                                </span>
+                            ]}
+                        >
+                            <Meta
+                                title="FOR CHARITABLE"
+                                description={(
+                                    <>
+                                        <h3 className='my-card-sub-title py-3'>Welcome to JaliKoi Charitable Registration – Empower Giving, Drive Change</h3>
+                                        <p className='description'>
+                                            Join the JaliKoi community and unlock a new way for businesses and individuals to support your mission through cashback donations.
+                                        </p>
+                                    </>
+                                )}
                             />
-                        }
-                        actions={[
-                            <span
-                                style={{
-                                    backgroundColor: '#23419B',
-                                    padding: '8px',
-                                    borderRadius: '50%',
-                                    display: 'inline-flex',
-                                }}
-                            >
-                                <HeartOutlined style={{ color: 'white' }} />
-                            </span>,
-                            <EllipsisOutlined key="EllipsisOutlined" />,
-                            <span
-                                style={{
-                                    backgroundColor: '#23419B',
-                                    padding: '8px',
-                                    borderRadius: '50%',
-                                    display: 'inline-flex',
-                                }}
-                                onClick={() => navigate('/register-entity')}
-                            >
-                                <EditOutlined key="edit" style={{ color: 'white' }} />
-                            </span>,
-                        ]}
-                    >
-                        <div className='flex flex-col ' >
-                            <span className='my-card-title' >FOR CHARITABLE</span>
-                            <h3 className='my-card-sub-title py-3' >Welcome to JaliKoi Charitable Registration – Empower Giving, Drive Change</h3>
-                            <p className='description' >
-                                Join the JaliKoi community and unlock a new way for businesses and individuals to support your mission through cashback donations.
-                                With JaliKoi, charitable organizations can easily connect with businesses and customers who are eager to make a difference.
-                                Every transaction becomes an opportunity for impact, as users can choose to donate their cashback rewards directly to your cause
-                            </p>
-                        </div>
-                    </Card>
-                    <Card
-                        style={{
-                            width: 450,
-                        }}
-                        cover={
-                            <img
-                                alt="example"
-                                src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                        </Card>
+                    </Col>
+                    <Col xs={24} sm={12} md={12} lg={8}>
+                        <Card
+                            cover={<img className='img' alt="Referral Program" src={wallet} />}
+                            actions={[
+                                <span
+                                    style={{
+                                        backgroundColor: '#23419B',
+                                        padding: '8px',
+                                        borderRadius: '50%',
+                                        display: 'inline-flex',
+                                    }}
+                                >
+                                    <HeartOutlined style={{ color: 'white' }} />
+                                </span>,
+                                <EllipsisOutlined onClick={() => navigate('/referee-page')} key="ellipsis" />,
+                                <span className='text-white rounded-lg px-4 py-1'
+                                    style={{
+                                        backgroundColor: '#23419B',
+                                        display: 'inline-flex',
+                                    }}
+                                    onClick={() => navigate('/referee-page')}
+                                >
+                                    <span className='uppercase'>Register</span>
+                                </span>
+                            ]}
+                        >
+                            <Meta
+                                title="Referral Program"
+                                description={(
+                                    <>
+                                        <h3 className='my-card-sub-title py-3'>Join Koipay's Referral Program and Multiply Your Rewards!</h3>
+                                        <p className='description'>
+                                            Refer, Earn, and Give Back with Koipay! Invite your friends to join and earn cash back every time they use our platform.
+                                        </p>
+                                    </>
+                                )}
                             />
-                        }
-                        actions={[
-                            <span
-                                style={{
-                                    backgroundColor: '#23419B',
-                                    padding: '8px',
-                                    borderRadius: '50%',
-                                    display: 'inline-flex',
-                                }}
-                            >
-                                <HeartOutlined style={{ color: 'white' }} />
-                            </span>,
-                            <EllipsisOutlined key="EllipsisOutlined" />,
-                            <span
-                                style={{
-                                    backgroundColor: '#23419B',
-                                    padding: '8px',
-                                    borderRadius: '50%',
-                                    display: 'inline-flex',
-                                }}
-                                onClick={() => navigate('/login')}
-                            >
-                                <EditOutlined key="edit" style={{ color: 'white' }} />
-                            </span>,
-                        ]}
-                    >
-                        <div className='flex flex-col ' >
-                            <span className='my-card-title' >Business Tips & Analytics</span>
-                            <h3 className='my-card-sub-title py-3' >Welcome to JaliKoi Business Registration – Empower Your Sales, Build Loyal Customers</h3>
-                            <p className='description' >
-                                Unlock the power of cashback rewards today to boost your business’s sales and create lasting customer loyalty.
-                                Join JaliKoi today and transform the way you connect with customers! Our platform lets you seamlessly manage
-                                cashback rewards, offering a smart way to keep customers coming back while increasing their purchasing.
-                            </p>
-                        </div>
-                    </Card>
-                </div>
+                        </Card>
+                    </Col>
+                </Row>
             </TabPane>
-            {/* <TabPane tab="Service 2" key="2">
-                <h3>Service 2</h3>
-                <p>Details about Service 2 go here.</p>
-            </TabPane>
-            <TabPane tab="Service 3" key="3">
-                <h3>Service 3</h3>
-                <p>Details about Service 3 go here.</p>
-            </TabPane> */}
         </Tabs>
     );
 };

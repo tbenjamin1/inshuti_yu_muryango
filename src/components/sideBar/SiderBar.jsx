@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import "./Sidebar.css";
 import { Link } from 'react-router-dom';
-import main_logo from "../images/main_logo.png";
+import jal_koi from "../images/jal_koi.png";
 import axios from "axios";
 import { useLocation } from 'react-router-dom';
 
@@ -32,7 +32,7 @@ const Sidebar = ({ sidebarOpen, closeSidebar }) => {
     <div className={sidebarOpen ? "sidebar_responsive " : "border"} id="sidebar">
       <div className="sidebar__title flex justify-center items-center">
         <div >
-          <Link to="/statistics" ><img src={main_logo} alt="logo" /></Link>
+          <Link to="/statistics" ><img src={jal_koi} alt="logo" /></Link>
         </div>
         <i
           onClick={() => closeSidebar()}
@@ -42,7 +42,7 @@ const Sidebar = ({ sidebarOpen, closeSidebar }) => {
         ></i>
       </div>
       <div className="sidebar__menu ">
-        <div  className={activeTab === '/statistics' ? 'activeTab sidebar__link active_menu_link flex' : 'sidebar__link active_menu_link flex'}>
+        <div className={activeTab === '/statistics' ? 'activeTab sidebar__link active_menu_link flex' : 'sidebar__link active_menu_link flex'}>
           <Link to="/statistics" ><i className="fa fa-home"></i>
             Dashboard</Link>
         </div>
@@ -53,13 +53,13 @@ const Sidebar = ({ sidebarOpen, closeSidebar }) => {
         </span>
         <h2 className="">Airtime</h2>
         <span className="flex flex-col px-3 sidebar__link">
-          <span className={activeTab === '/mtnTransactions' ? ' activeTab p-2':'p-2' }> <Link to="/mtnTransactions">MTN</Link></span>
-          <span className={activeTab === '/airtelTransaction' ? ' activeTab p-2':'p-2' }> <Link to="/airtelTransaction">Airtel</Link></span>
+          <span className={activeTab === '/mtnTransactions' ? ' activeTab p-2' : 'p-2'}> <Link to="/mtnTransactions">MTN</Link></span>
+          <span className={activeTab === '/airtelTransaction' ? ' activeTab p-2' : 'p-2'}> <Link to="/airtelTransaction">Airtel</Link></span>
         </span>
-        <h2 className={activeTab === '/startimes' ? ' activeTab p-2':'p-2' }><Link to="/startimes">Startimes</Link></h2>
-        <h2 className={activeTab === '/electricity' ? ' activeTab px-2 py-4':'px-2' }><Link to="/electricity">Electricity</Link></h2>
-        <h2 className={activeTab === '/businesses' ? ' activeTab px-2 py-4':'px-2' }><Link to="/businesses">Businesses</Link></h2>
-        
+        <h2 className={activeTab === '/startimes' ? ' activeTab p-2' : 'p-2'}><Link to="/startimes">Startimes</Link></h2>
+        <h2 className={activeTab === '/electricity' ? ' activeTab px-2 py-4' : 'px-2'}><Link to="/electricity">Electricity</Link></h2>
+        <h2 className={activeTab === '/businesses' ? ' activeTab px-2 py-4' : 'px-2'}><Link to="/businesses">Businesses</Link></h2>
+
         <h2>settings</h2>
         <div className="sidebar__link">
           <span className="flextems-center  my-2"><i className="fa fa-briefcase mr-2"></i>

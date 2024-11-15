@@ -22,8 +22,8 @@ import Monthly from './charts/Monthly';
 
 import Filter from '../../filter';
 import upload from "../../images/upload.svg";
-import { Document, Page, pdfjs } from 'react-pdf';
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+// import { Document, Page, pdfjs } from 'react-pdf';
+// pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const ParkPick = () => {
 
@@ -766,7 +766,7 @@ const ParkPick = () => {
         <div className='bg-gray-100'>
             <nav class="bg-white border-solid border-b-4 nav-bar border_green-500 z-50">
                 <div class=" flex flex-wrap items-center justify-between  px-4 py-2">
-                    <img class=" " src={jal_koi} alt="user photo" />
+                    <img class="jal_koi-logo " src={jal_koi} alt="user photo" />
                     <div class="flex items-center  bg-white  ">
                         <div className='flex flex-col mx-2' >
                             <span>{user.name}</span>
@@ -990,9 +990,9 @@ const ParkPick = () => {
                                     {singleBusinessdetails.business_certificate && <div className=" certificate-container  p-3 border rounded-lg m-1 ">
                                         {/* {certificateImg && <img src={`${singleBusinessdetails.business_certificate}`} alt="Selected Image" className="image" />} */}
 
-                                        <Document file={`${singleBusinessdetails.business_certificate}`} onLoadSuccess={({ numPages }) => setNumPages(numPages)} style={{ width: '100%', height: '500px' }}>
+                                        {/* <Document file={`${singleBusinessdetails.business_certificate}`} onLoadSuccess={({ numPages }) => setNumPages(numPages)} style={{ width: '100%', height: '500px' }}>
                                             <Page pageNumber={pageNumber} />
-                                        </Document>
+                                        </Document> */}
 
                                     </div>}
                                     {!singleBusinessdetails.business_certificate && <div className='flex flex-col' >
@@ -1143,9 +1143,9 @@ const ParkPick = () => {
                                                 {certificate || certificateImgae ? (
                                                     <>
                                                         {certificateImgae && <img src={certificateImgae} alt="Selected Image" className="image-certificate" />}
-                                                        {certificate && <Document file={certificate} onLoadSuccess={({ numPages }) => setNumPages(numPages)} style={{ width: '100%', height: '100px' }}>
+                                                        {/* {certificate && <Document file={certificate} onLoadSuccess={({ numPages }) => setNumPages(numPages)} style={{ width: '100%', height: '100px' }}>
                                                             <Page pageNumber={pageNumber} />
-                                                        </Document>}
+                                                        </Document>} */}
                                                         <input
                                                             id="certificateUploadInput"
                                                             type="file"

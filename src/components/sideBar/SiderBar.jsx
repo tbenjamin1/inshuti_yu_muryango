@@ -32,7 +32,7 @@ const Sidebar = ({ sidebarOpen, closeSidebar }) => {
     <div className={sidebarOpen ? "sidebar_responsive " : "border"} id="sidebar">
       <div className="sidebar__title flex justify-center items-center">
         <div >
-          <Link to="/statistics" ><img src={jal_koi} alt="logo" /></Link>
+          <Link to="/statistics" ><img className='jal_koi-logo' src={jal_koi} alt="logo" /></Link>
         </div>
         <i
           onClick={() => closeSidebar()}

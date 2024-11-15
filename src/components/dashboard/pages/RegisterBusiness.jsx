@@ -12,7 +12,7 @@ import { FaBeer } from 'react-icons/fa';
 import upload from "../../images/upload.svg";
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
-import { Document, Page, pdfjs } from 'react-pdf';
+// import { Document, Page, pdfjs } from 'react-pdf';
 import { fetchAsynBusinessCatgeory, getAllBussinessesCategories, selectAcceptTerms, setAcceptTermsConditions } from '../../../redux/transactions/TransactionSlice';
 import NewNavBar from '../../auth/NewNavBar';
 import Footer from '../../auth/Footer';
@@ -22,7 +22,7 @@ import { faTwitter, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg
 import { faEnvelope, faHouseChimney, faLocationDot } from '@fortawesome/free-solid-svg-icons'
 import home_banner from "../../images/home-banner.png"
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+// pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 function RefereePage() {
     const { addToast } = useToasts();

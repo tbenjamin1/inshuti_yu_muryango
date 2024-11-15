@@ -10,12 +10,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { FaRegEdit, FaBookReader, FaTrash } from 'react-icons/fa';
 
 import upload from "../../images/upload.svg";
-import { Document, Page, pdfjs } from 'react-pdf';
+// import { Document, Page, pdfjs } from 'react-pdf';
 import { useToasts } from 'react-toast-notifications';
 import axios from 'axios';
 
 import { fetchAsynBusinessCatgeory, fetchAsynBusinessRegistered, fetchAsyncTransaction, getAllBussinessesCategories, getAllBussinessesRegistered, getAllPaginatedBussinesses, getAllTransaction, getUser } from '../../../redux/transactions/TransactionSlice';
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+// pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 function Businesses() {
     const { addToast } = useToasts();
@@ -697,9 +697,9 @@ function Businesses() {
                                                                                     {certificate || certificateImgae ? (
                                                                                         <>
                                                                                             {certificateImgae && <img src={certificateImgae} alt="Selected Image" className="image-certificate" />}
-                                                                                            {certificate && <Document file={certificate} onLoadSuccess={({ numPages }) => setNumPages(numPages)} style={{ width: '100%', height: '100px' }}>
+                                                                                            {/* {certificate && <Document file={certificate} onLoadSuccess={({ numPages }) => setNumPages(numPages)} style={{ width: '100%', height: '100px' }}>
                                                                                                 <Page pageNumber={pageNumber} />
-                                                                                            </Document>}
+                                                                                            </Document>} */}
                                                                                             <input
                                                                                                 id="certificateUploadInput"
                                                                                                 type="file"
@@ -821,9 +821,9 @@ function Businesses() {
                                                                                 {viewRiderInfo.business_certificate && <div className=" certificate-container  p-3 border rounded-lg m-1 ">
                                                                                     {certificateImg && <img src={`https://apidev2.koipay.co/${viewRiderInfo.business_certificate}`} alt="Selected Image" className="image" />}
 
-                                                                                    {certificatepdf && <Document file={`https://apidev2.koipay.co${viewRiderInfo.business_certificate}`} onLoadSuccess={({ numPages }) => setNumPages(numPages)} style={{ width: '100%', height: '500px' }}>
+                                                                                    {/* {certificatepdf && <Document file={`https://apidev2.koipay.co${viewRiderInfo.business_certificate}`} onLoadSuccess={({ numPages }) => setNumPages(numPages)} style={{ width: '100%', height: '500px' }}>
                                                                                         <Page pageNumber={pageNumber} />
-                                                                                    </Document>}
+                                                                                    </Document>} */}
 
                                                                                 </div>}
                                                                                 {!viewRiderInfo.business_certificate && <img src={upload} alt="Selected Image" className="image" />}

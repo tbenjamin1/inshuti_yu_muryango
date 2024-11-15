@@ -27,7 +27,7 @@ const NewNavBar = () => {
                 <div className="flex items-center">
                     <a className="cursor-pointer">
                         <img
-                            className="h-10 object-cover"
+                            className="h-10 object-cover jal_koi-logo"
                             src={koipay_logo}
                             alt=" jali koi Logo"
                         />

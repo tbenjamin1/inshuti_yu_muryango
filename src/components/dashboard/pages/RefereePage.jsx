@@ -165,36 +165,27 @@ function RefereePage() {
                     </div>
                 </div>
 
-                <div className='flex justify-center items-center w-full  bg-slate-100 p-3 '  >
+                <div className='flex justify-center items-center w-full  bg-slate-100 p-3  '  >
 
                    
-                        <Card
-                            style={{
-                                // width: 450,
-
-                            }}
-                            className='my-3'
-
-
-
-                        >
+                    <div className='flex flex-col justify-center items-center  my-5 border bg-white rounded-md w-1/2 p-3 login-mobile' >
                             <div className="flex justify-center items-center  border-b-2">
-                                <a className="cursor-pointer ">
+                            <Link to="/">
                                     <img
                                         className="h-10 object-cover"
                                         src={koipay_logo}
                                         alt=" jali koi Logo"
                                     />
-                                </a>
+                            </Link>
                             </div>
 
                            
 
-                            <div className='flex   px-10 ' >
+                        <div className='flex   px-10  w-1/2 login-mobile' >
                                
                                 <div className='flex flex-col w-full justify-center items-center bg-white py-4  '>
                                     <span className='Referral-title flex flex-col    font_serif   '>
-                                        <span className='pl-2' >Join Koipay's Referral Program and Multiply Your Rewards!</span>
+                                        {/* <span className='pl-2' >Join Koipay's Referral Program and Multiply Your Rewards!</span> */}
 
                                     </span>
                                     <span className='login-sub-title p-2' ></span>
@@ -257,8 +248,8 @@ function RefereePage() {
 
                             </div>
 
-                        </Card>
-
+                       
+                    </div>
          
 
                 </div>

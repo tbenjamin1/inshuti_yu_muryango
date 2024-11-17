@@ -201,9 +201,10 @@ body {
 .jal_koi-logo{
   height: 50px;
 }
-:where(.css-dev-only-do-not-override-apn68).ant-card {
+:where(.css-dev-only-do-not-override-1vtf12y).ant-card-bordered {
+
   border-radius: 16px 16px 8px 8px;
-  height: 480px;
+  height: 480px !important ;
 }
 
 .img {
@@ -498,7 +499,29 @@ tbody tr th {
     font-size: 10px;
     padding: 0px;
   }
+  .address-input {
+  width: 100%;
 
+}
+.separator{
+  display: none;
+}
+  .login-mobile{
+    width: 90%;
+  }
+  .entity-register-container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .why-content-tile ,.why-content {
+font-size: 11px;
+
+}
+.uppercase {
+    font-size: 10px;
+    text-transform: uppercase;
+}
   .busines-container-left {
     display: none;
   }

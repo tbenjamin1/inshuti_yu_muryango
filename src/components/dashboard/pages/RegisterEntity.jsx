@@ -55,14 +55,30 @@ function RegisterEntity() {
         }
 
         setLoading(true);
+
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${import.meta.env.IDENTIFICATION_TOKEN_CHECK}`
+        };
+
         try {
+            // const response = await axios.get(
+            //     `https://pay.koipay.co/api/v1/accountholder/information?msisdn=25${phoneNumber}`,
+            //     {
+            //         headers: {
+            //             'Content-Type': 'application/json',
+            //             Authorization: `Bearer ${import.meta.env.VITE_TOKEN_REFEREE}`,
+            //         },
+            //     }
+            // );
+
+            // console.log('import.meta.env.VITE_TOKEN_REFEREE', import.meta.env.VITE_TOKEN_REFEREE)
+
             const response = await axios.get(
-                `https://pay.koipay.co/api/v1/accountholder/information?msisdn=25${phoneNumber}`,
+                'https://payment.jalikoi.rw/api/v1/accountholder/identification',
                 {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${import.meta.env.VITE_TOKEN_REFEREE}`,
-                    },
+                    headers,
+                    params: { msisdn: `25${phoneNumber}` }
                 }
             );
 
@@ -78,7 +94,7 @@ function RegisterEntity() {
             //  redirecting the user to the desired page
         } catch (error) {
             addToast("Invalid,use your phone number registered in momo", {
-                appearance: 'error', autoDismiss: true, // Enable auto dismissal
+                appearance: 'error', autoDismiss: true, 
                 autoDismissTimeout: 5000,
                 transitionDuration: 300,
             });
@@ -87,24 +103,23 @@ function RegisterEntity() {
         }
     };
     useEffect(() => {
-        handleSubmit();
+        // handleSubmit();
     }, [phoneNumber]);
 
 
     const handleRefereeSubmit = async (event) => {
         event.preventDefault();
-        const isValidPhoneNumber = validateMtnPhoneNumber(phoneNumber);
+        // const isValidPhoneNumber = validateMtnPhoneNumber(phoneNumber);
 
-        if (!isValidPhoneNumber) {
-            // Handle invalid phone number case
-            addToast("Something went wrong! please check your momo number", {
-                appearance: 'error', autoDismiss: true, // Enable auto dismissal
-                autoDismissTimeout: 5000,
-                transitionDuration: 300,
-            });
+        // if (!isValidPhoneNumber) {
+        //     addToast("Something went wrong! please check your momo number", {
+        //         appearance: 'error', autoDismiss: true, // Enable auto dismissal
+        //         autoDismissTimeout: 5000,
+        //         transitionDuration: 300,
+        //     });
 
-            return;
-        }
+        //     return;
+        // }
         setisLoading(true)
         const entity = {
             'name': entityName,
@@ -125,7 +140,7 @@ function RegisterEntity() {
             setphoneNumber("");
             setIsregistered(false);
         } catch (error) {
-            addToast("Something went wrong! please try again", {
+            addToast(error.response.data.message, {
                 appearance: 'error', autoDismiss: true, // Enable auto dismissal
                 autoDismissTimeout: 5000,
                 transitionDuration: 300,
@@ -136,7 +151,7 @@ function RegisterEntity() {
     return (
         <div className='flex flex-col' >
             <NewNavBar />
-            <div className="flex flex-wrap  w-full register-container container-main" >
+            <div className="flex flex-wrap  w-full register-container  container-main" >
                 <div
                     className="w-full register_banner relative h-64"
                     style={{
@@ -156,12 +171,12 @@ function RegisterEntity() {
                     </div>
                 </div>
 
-                <div className='flex justify-between items-start w-full border bg-slate-100 p-3 middle-container'  >
+                <div className='flex justify-between items-start w-full  bg-slate-100 p-3 middle-container entity-register-container '  >
 
-                    <div className='flex flex-col justify-around items-start middle-container-left '>
+                    <div className='flex flex-col justify-around items-start middle-container-left  '>
                         <Card
                             style={{
-                                width: 450,
+                               
 
                             }}
                             className='my-3'
@@ -188,7 +203,7 @@ function RegisterEntity() {
                         </Card>
                         <Card
                             style={{
-                                width: 450,
+                               
 
 
                             }}
@@ -217,8 +232,8 @@ function RegisterEntity() {
 
                         </Card>
                     </div>
-                    <div className='flex flex-col   justify-start items-center middle-container-left w-full m-3 rounded-md'>
-                        <div className='bg-white flex justify-between items-center w-full rounded-md p-2' >
+                    <div className='flex   justify-center items-center w-full  middle-container-left  '>
+                        {/* <div className='bg-white flex justify-between items-center w-full rounded-md p-2' >
                             <div className='flex address-input lex address-input justify-center items-center   '  >
                                 <div className='flex  justify-center items-center ' >
                                     <div className='flex address-form-icon justify-center items-center  ' >
@@ -261,9 +276,9 @@ function RegisterEntity() {
 
 
                             </div>
-                        </div>
-                        <div className='bg-white w-full mt-3 rounded-md px-8 py-2 ' >
-                            <div className='flex flex-col w- py-20 w-5/6  px-10' >
+                        </div> */}
+                        <div className='bg-white w-1/2 flex justify-center items-center mt-3 rounded-md px-8 py-2 entity-register-container ' >
+                            <div className='flex flex-col w-full py-20   px-10' >
                                
                                     
                                         <span className='flex flex-col my-4' >
@@ -287,8 +302,8 @@ function RegisterEntity() {
                                                         </svg>
                                                         <span class="sr-only">Loading...</span>
                                                     </div>)}
-                                                    {isRegistered && phoneNumber.length === 10 && <span role="img" aria-label="check mark button" class="react-emojis">✅</span>}
-                                                    {!isRegistered && phoneNumber.length === 10 && <span role="img" aria-label="cross mark" class="react-emojis">❌</span>}
+                                                    {/* {isRegistered && phoneNumber.length === 10 && <span role="img" aria-label="check mark button" class="react-emojis">✅</span>}
+                                                    {!isRegistered && phoneNumber.length === 10 && <span role="img" aria-label="cross mark" class="react-emojis">❌</span>} */}
                                                 </div>
                                             </span>
                                         </span>

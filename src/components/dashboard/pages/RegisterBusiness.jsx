@@ -302,7 +302,7 @@ function RefereePage() {
             let riderErros = Object.keys(error.response.data);
             ErrorHandler(riderErros);
 
-            addToast("Something went wrong! please try again", {
+            addToast(error.response.data.message, {
                 appearance: 'error', autoDismiss: true, // Enable auto dismissal
                 autoDismissTimeout: 5000,
                 transitionDuration: 300,
@@ -376,12 +376,12 @@ function RefereePage() {
                         </div>
                     </div>
 
-                    <div className='flex justify-between items-start w-full border bg-slate-100 p-3 middle-container'  >
+                    <div className='flex justify-between items-start w-full border bg-slate-100 p-3 middle-container entity-register-container'  >
 
                         <div className='flex flex-col justify-around items-start middle-container-left '>
                             <Card
                                 style={{
-                                    width: 450,
+                                    
 
                                 }}
                                 className='my-3'
@@ -408,7 +408,7 @@ function RefereePage() {
                             </Card>
                             <Card
                                 style={{
-                                    width: 450,
+                                    
 
 
                                 }}
@@ -437,8 +437,8 @@ function RefereePage() {
                             </Card>
                         </div>
                         <div className='flex flex-col   justify-start items-center middle-container-left w-full m-3 rounded-md'>
-                            <div className='bg-white flex justify-between items-center w-full rounded-md p-2' >
-                                <div className='flex address-input lex address-input justify-center items-center   '  >
+                            <div className='bg-white flex justify-between items-center w-full rounded-md p-2 entity-register-container' >
+                                <div className='flex  address-input justify-center items-center    '  >
                                     <div className='flex  justify-center items-center ' >
                                         <div className='flex address-form-icon justify-center items-center  ' >
                                             <PhoneOutlined style={{ color: 'white' }} />
@@ -503,7 +503,7 @@ function RefereePage() {
                                             {colorCodeError && <p class="mt-2   text-pink-600 text-sm">
                                                 {colorCodeError}
                                             </p>}
-                                            <span className='flex flex-col' >
+                                            {/* <span className='flex flex-col' >
                                                 <label>
                                                     Contact tel
                                                 </label>
@@ -511,7 +511,24 @@ function RefereePage() {
                                                 {phoneNumberError && <p class="mt-2   text-pink-600 text-sm">
                                                     {phoneNumberError}
                                                 </p>}
-                                            </span>
+                                            </span> */}
+                                            <div className='flex flex-col  mx-2'  >
+                                                <label>
+                                                    Business category
+                                                </label>
+                                                <select required value={businessCategory} onChange={businessCategoryHandleChange} className='rounded border'  >
+                                                    <option value=''  >pick one</option>
+                                                    {allbusinesscategories &&
+                                                        allbusinesscategories.map((category) => (
+                                                            <option key={category.id} value={category.id}>
+                                                                {category.name}
+                                                            </option>
+                                                        ))}
+                                                </select>
+                                                {businessCategoryError && <p class="mt-2   text-pink-600 text-sm">
+                                                    {businessCategoryError}
+                                                </p>}
+                                            </div>
                                         </div>
                                         <div className='flex flex-col' >
                                             <label className='mx-2' >
@@ -577,7 +594,7 @@ function RefereePage() {
                                     </span>
 
                                     <div className='flex justify-between mobile-fit '>
-                                        <div className='flex flex-col w-1/2'  >
+                                        <div className='flex flex-col w-full'  >
                                             <label>
                                                 Reward type
                                             </label>
@@ -591,23 +608,7 @@ function RefereePage() {
                                             </p>}
                                         </div>
 
-                                        <div className='flex flex-col w-1/2 mx-2'  >
-                                            <label>
-                                                Business category
-                                            </label>
-                                            <select required value={businessCategory} onChange={businessCategoryHandleChange} className='rounded border'  >
-                                                <option value=''  >pick one</option>
-                                                {allbusinesscategories &&
-                                                    allbusinesscategories.map((category) => (
-                                                        <option key={category.id} value={category.id}>
-                                                            {category.name}
-                                                        </option>
-                                                    ))}
-                                            </select>
-                                            {businessCategoryError && <p class="mt-2   text-pink-600 text-sm">
-                                                {businessCategoryError}
-                                            </p>}
-                                        </div>
+                                        
                                     </div>
                                     <div className='flex justify-between business-image mobile-fit  ' >
                                         <div className='flex flex-col w-full mr-1' >

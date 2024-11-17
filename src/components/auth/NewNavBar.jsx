@@ -25,13 +25,13 @@ const NewNavBar = () => {
 
             <nav className="flex justify-around py-4 bg-white/80 backdrop-blur-md shadow-md w-full fixed top-0 left-0 right-0 z-10">
                 <div className="flex items-center">
-                    <a className="cursor-pointer">
+                    <Link to="/">
                         <img
                             className="h-10 object-cover jal_koi-logo"
                             src={koipay_logo}
                             alt=" jali koi Logo"
                         />
-                    </a>
+                    </Link>
                 </div>
 
                 <div className="items-center hidden space-x-8 lg:flex">
@@ -54,6 +54,7 @@ const NewNavBar = () => {
                             {item}
                         </a>
                     ))} */}
+                    
                 </div>
 
                 <div className="flex items-center space-x-5">

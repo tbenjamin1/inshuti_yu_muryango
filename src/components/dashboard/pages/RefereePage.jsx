@@ -18,6 +18,8 @@ import home_banner from "../../images/home-banner.png"
 import axios from 'axios';
 
 function RefereePage() {
+    const apiUrlKoiPay = import.meta.env.VITE_API_URL_KOIPAY;
+
     const { addToast } = useToasts();
     const [email, setEmailValue] = useState('');
     const [password, setPasswordValue] = useState('');
@@ -69,7 +71,7 @@ function RefereePage() {
         setLoading(true);
         try {
             const response = await axios.get(
-                `https://pay.koipay.co/api/v1/accountholder/information?msisdn=25${phoneNumber}`,
+                `${apiUrlKoiPay}/accountholder/information?msisdn=25${phoneNumber}`,
                 {
                     headers: {
                         'Content-Type': 'application/json',
@@ -120,7 +122,7 @@ function RefereePage() {
         setisLoading(true)
 
         try {
-            const response = await axios.post('https://api.koipay.co/api/v1/referees', { firstName, lastName, phoneNumber, displayName }, {
+            const response = await axios.post(`${apiUrlKoiPay}/referees`, { firstName, lastName, phoneNumber, displayName }, {
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                 }

@@ -6,6 +6,8 @@ import axios from "axios";
 import { useLocation } from 'react-router-dom';
 
 const Sidebar = ({ sidebarOpen, closeSidebar }) => {
+  const apiUrlKoiPay = import.meta.env.VITE_API_URL_KOIPAY;
+  const apiUrlApidev = import.meta.env.VITE_API_URL_APIDEV;
   const [error, setError] = useState('');
   const [activeTab, setActiveTab] = useState('');
   const location = useLocation();
@@ -13,7 +15,7 @@ const Sidebar = ({ sidebarOpen, closeSidebar }) => {
     event.preventDefault();
 
     try {
-      const response = await axios.get('https://api.koipay.co/api/v1/auth/signout');
+      const response = await axios.get(`${apiUrlKoiPay}/auth/signout`);
       // Assuming the server responds with a token upon successful authentication
       window.location.replace('/');
       localStorage.removeItem('user');

@@ -18,6 +18,8 @@ import { fetchAsynBusinessCatgeory, fetchAsynBusinessRegistered, fetchAsyncTrans
 // pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 function Businesses() {
+    const apiUrlKoiPay = import.meta.env.VITE_API_URL_KOIPAY;
+    const apiUrlApidev = import.meta.env.VITE_API_URL_APIDEV;
     const { addToast } = useToasts();
     const user = useSelector(getUser);
     const defaultStartDate = moment().startOf('month').format('YYYY-MM-DD'); // Example: Set default date to the start of the current month
@@ -223,7 +225,7 @@ function Businesses() {
         setLoading(true);
         try {
             const response = await axios.get(
-                `https://pay.koipay.co/api/v1/accountholder/information?msisdn=25${phoneNumber}`,
+                `${apiUrlKoiPay}/accountholder/information?msisdn=25${phoneNumber}`,
                 {
                     headers: {
                         'Content-Type': 'application/json',
@@ -294,7 +296,7 @@ function Businesses() {
 
         if (confirmation) {
             try {
-                const response = await axios.delete(`https://apidev2.koipay.co/api/business/${businesid.id}/`);
+                const response = await axios.delete(`${apiUrlApidev}/business/${businesid.id}/`);
 
                 addToast('Deleted ', {
                     appearance: 'success',
@@ -345,7 +347,7 @@ function Businesses() {
         setisLoading(true)
 
         try {
-            const response = await axios.patch(`https://apidev2.koipay.co/api/business/${viewRiderInfo.user.id}/   
+            const response = await axios.patch(`${apiUrlApidev}/business/${viewRiderInfo.user.id}/   
             `, businessInform, {
                 // headers: {
                 //     'Access-Control-Allow-Origin': '*',
@@ -391,7 +393,7 @@ function Businesses() {
     const handleApproveBusiness = async () => {
         setLoading(true);
         try {
-            const response = await axios.post(`https://apidev2.koipay.co/api/approve/${viewRiderInfo.id}/`, {
+            const response = await axios.post(`${apiUrlApidev}/approve/${viewRiderInfo.id}/`, {
                 // headers: {
                 //     'Access-Control-Allow-Origin': '*',
                 // }
@@ -422,8 +424,8 @@ function Businesses() {
         setreward_percentage(busines.reward_percentage);
         setgroupeya_percentage(busines.groupeya_percentage);
         setEmail(busines.user ? busines.user.email : '');
-        setcertificate(busines.business_certificate ? `https://apidev2.koipay.co${busines.business_certificate}` : '');
-        setrenderFile(busines.icon ? `https://apidev2.koipay.co/${busines.icon}` : '');
+        setcertificate(busines.business_certificate ? `${apiUrlApidev}/${busines.business_certificate}` : '');
+        setrenderFile(busines.icon ? `${apiUrlApidev}/${busines.icon}` : '');
         setbusinessCategory(busines.category.id);
     };
 
@@ -764,7 +766,7 @@ function Businesses() {
                                                                                     Business Icon
                                                                                 </label>
                                                                                 <div className="upload_container border rounded-lg m-1 ">
-                                                                                    {viewRiderInfo.icon ? <img src={`https://apidev2.koipay.co/${viewRiderInfo.icon}`} alt="Selected Image" className="image" /> : <img src={upload} alt="Selected Image" className="image" />}
+                                                                                    {viewRiderInfo.icon ? <img src={`${apiUrlApidev}/${viewRiderInfo.icon}`} alt="Selected Image" className="image" /> : <img src={upload} alt="Selected Image" className="image" />}
 
                                                                                 </div>
                                                                             </div>
@@ -819,9 +821,9 @@ function Businesses() {
                                                                                     Business certificate
                                                                                 </label>
                                                                                 {viewRiderInfo.business_certificate && <div className=" certificate-container  p-3 border rounded-lg m-1 ">
-                                                                                    {certificateImg && <img src={`https://apidev2.koipay.co/${viewRiderInfo.business_certificate}`} alt="Selected Image" className="image" />}
+                                                                                    {certificateImg && <img src={`${apiUrlApidev}/${viewRiderInfo.business_certificate}`} alt="Selected Image" className="image" />}
 
-                                                                                    {/* {certificatepdf && <Document file={`https://apidev2.koipay.co${viewRiderInfo.business_certificate}`} onLoadSuccess={({ numPages }) => setNumPages(numPages)} style={{ width: '100%', height: '500px' }}>
+                                                                                    {/* {certificatepdf && <Document file={`${apiUrlApidev}${viewRiderInfo.business_certificate}`} onLoadSuccess={({ numPages }) => setNumPages(numPages)} style={{ width: '100%', height: '500px' }}>
                                                                                         <Page pageNumber={pageNumber} />
                                                                                     </Document>} */}
 

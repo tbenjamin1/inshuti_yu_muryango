@@ -16,6 +16,8 @@ import { faTwitter, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg
 import { faEnvelope, faHouseChimney, faLocationDot } from '@fortawesome/free-solid-svg-icons'
 
 function RegisterEntity() {
+    const apiUrlKoiPay = import.meta.env.VITE_API_URL_KOIPAY;
+    const apiUrlApidev = import.meta.env.VITE_API_URL_APIDEV;
     const { addToast } = useToasts();
     const [phoneNumber, setphoneNumber] = useState('');
     const [isRegistered, setIsregistered] = useState(false);
@@ -127,7 +129,7 @@ function RegisterEntity() {
         }
 
         try {
-            const response = await axios.post('https://api.koipay.co/api/v1/entities', entity, {
+            const response = await axios.post(`${apiUrlKoiPay}/entities`, entity, {
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                 }

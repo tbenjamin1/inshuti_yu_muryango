@@ -25,6 +25,8 @@ import home_banner from "../../images/home-banner.png"
 // pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 function RefereePage() {
+    const apiUrlApidev = import.meta.env.VITE_API_URL_APIDEV;
+
     const { addToast } = useToasts();
     const dispatch = useDispatch();
 
@@ -274,7 +276,7 @@ function RefereePage() {
 
         try {
 
-            const response = await axios.post('https://apidev2.koipay.co/api/business/create/', businessInform, {
+            const response = await axios.post(`${apiUrlApidev}/business/create/`, businessInform, {
                 // headers: {
                 //     'Access-Control-Allow-Origin': '*',
                 // }

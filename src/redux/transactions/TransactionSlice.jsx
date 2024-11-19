@@ -1,6 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import DashboardApi from "../../api/DashboardApi";
+
 import axios from "axios";
+
+const apiUrlKoiPay = import.meta.env.VITE_API_URL_KOIPAY;
+const apiUrlApidev = import.meta.env.VITE_API_URL_APIDEV;
+
+const DashboardApi= import.meta.env.VITE_API_URL_REPORT;
 
 export const fetchAsyncTransaction = createAsyncThunk('tranx/fetchAsyncElectricity', async (selectedRange) => {
     const response = await DashboardApi.get(`?service=96b33985-1045-437c-9415-ff8a248978db&startDate=${selectedRange[0]}&endDate=${selectedRange[1]}`)
@@ -19,64 +24,64 @@ export const fetchAsynStartimesTransaction = createAsyncThunk('tranx/fetchAsynSt
     return response.data;
 })
 export const fetchAsynClients = createAsyncThunk('tranx/fetchAsynClients', async (selectedRange) => {
-    const response = await axios.get(`https://api.koipay.co/api/v1/mobile/client/total?startDate=${selectedRange[0]}&endDate=${selectedRange[1]}&page=1&limit=6`)
+    const response = await axios.get(`${apiUrlKoiPay}/mobile/client/total?startDate=${selectedRange[0]}&endDate=${selectedRange[1]}&page=1&limit=6`)
     return response.data;
 })
 export const fetchAsynRefree = createAsyncThunk('tranx/fetchAsynRefree', async (selectedRange) => {
-    const response = await axios.get(`https://api.koipay.co/api/v1/referees/total?startDate=2023-03-09&endDate=2023-07-06&page=1&limit=6`)
+    const response = await axios.get(`${apiUrlKoiPay}/referees/total?startDate=2023-03-09&endDate=2023-07-06&page=1&limit=6`)
     return response.data;
 })
 export const fetchAsynParkCatgories = createAsyncThunk('tranx/fetchAsyncategories', async () => {
-    // const response = await axios.get(`https://api.koipay.co/api/v1/park-pick/categories`)
+    // const response = await axios.get(`${apiUrlKoiPay}/park-pick/categories`)
     return response.data.categories;
 })
 export const fetchAsynParkUnit = createAsyncThunk('tranx/fetchAsynUnit', async () => {
-    // const response = await axios.get(`https://api.koipay.co/api/v1/park-pick/units/get-all`)
+    // const response = await axios.get(`${apiUrlKoiPay}/park-pick/units/get-all`)
     return response.data.units;
 })
 export const fetchAsynItems = createAsyncThunk('tranx/fetchAsynItems', async (currentPage) => {
-    // const response = await axios.get(`https://api.koipay.co/api/v1/park-pick/items/get-all?page=${currentPage}`)
+    // const response = await axios.get(`${apiUrlKoiPay}/park-pick/items/get-all?page=${currentPage}`)
     return response.data;
 })
 
 export const fetchAsynNonPaginatedItems = createAsyncThunk('tranx/NonPaginatedItems', async () => {
-    // const response = await axios.get(`https://api.koipay.co/api/v1/park-pick/items/get-items`)
+    // const response = await axios.get(`${apiUrlKoiPay}/park-pick/items/get-items`)
     return response.data;
 })
 
 export const fetchAsynBoughtItems = createAsyncThunk('tranx/fetchAsynBoughtItems', async ({ pageboughtItems, selectedRange, filterStatus, filterItem }) => {
-    // const response = await axios.get(`https://api.koipay.co/api/v1/park-pick/bought-items/get-all?page=${pageboughtItems}&itemId=${filterItem ? filterItem : ''}&startDate=${selectedRange[0]}&endDate=${selectedRange[1]}&status=${filterStatus}`)
+    // const response = await axios.get(`${apiUrlKoiPay}/park-pick/bought-items/get-all?page=${pageboughtItems}&itemId=${filterItem ? filterItem : ''}&startDate=${selectedRange[0]}&endDate=${selectedRange[1]}&status=${filterStatus}`)
     return response.data;
 })
 
 export const fetchAsynBusinessRegistered = createAsyncThunk('tranx/fetchAsynBusinessRegistered', async ({ selectedRange, currentPage }) => {
-    const response = await axios.get(`https://apidev2.koipay.co/api/business/?page=${currentPage}`)
+    const response = await axios.get(`${apiUrlApidev}/business/?page=${currentPage}`)
     return response.data;
 
 })
 
 
 export const fetchAsynBusinessCatgeory = createAsyncThunk('tranx/fetchAsynBusinessCatgeory', async () => {
-    const response = await axios.get(`https://apidev2.koipay.co/api/categories/`)
+    const response = await axios.get(`${apiUrlApidev}/categories/`)
     return response.data;
 })
 
 export const fetchAsynSingleBusiness = createAsyncThunk('tranx/fetchAsynSingleBusiness', async ({ user }) => {
-    const response = await axios.get(`https://apidev2.koipay.co/api/business/${user.id}/`)
+    const response = await axios.get(`${apiUrlApidev}/business/${user.id}/`)
     return response.data;
 })
 export const fetchAsynBusinessTransactionList = createAsyncThunk('tranx/fetchAsynBusinessTransactionList', async ({ user,pagetransactions }) => {
-    const response = await axios.get(`https://apidev2.koipay.co/api/business/transactions/${user.id}?page=${pagetransactions}`)
+    const response = await axios.get(`${apiUrlApidev}/business/transactions/${user.id}?page=${pagetransactions}`)
     return response.data;
 })
 export const fetchAsynBusinessReport = createAsyncThunk('tranx/fetchAsynBusinessReport', async ({ user }) => {
-    const response = await axios.get(`https://apidev2.koipay.co/api/business/statistics/${user.id}`)
+    const response = await axios.get(`${apiUrlApidev}/business/statistics/${user.id}`)
     return response.data;
 })
 
 export const fetchAsynBusinessTopClientsReport = createAsyncThunk('tranx/fetchAsynBusinessTopClientsReport', async ({ user }) => {
  
-    const response = await axios.get(`https://apidev2.koipay.co/api/business/top-clients/${user.id}`)
+    const response = await axios.get(`${apiUrlApidev}/business/top-clients/${user.id}`)
     
     return response.data;
 })

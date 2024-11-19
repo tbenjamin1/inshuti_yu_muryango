@@ -26,7 +26,8 @@ import upload from "../../images/upload.svg";
 // pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const ParkPick = () => {
-
+    const apiUrlKoiPay = import.meta.env.VITE_API_URL_KOIPAY;
+    const apiUrlApidev = import.meta.env.VITE_API_URL_APIDEV;
     const user = useSelector(getUser);
 
     const dispatch = useDispatch();
@@ -249,7 +250,7 @@ const ParkPick = () => {
             'name': unitName,
         };
         try {
-            await axios.patch(`https://api.koipay.co/api/v1/park-pick/units/update/${editUnitData.id}`, unit, {
+            await axios.patch(`${apiUrlKoiPay}/park-pick/units/update/${editUnitData.id}`, unit, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
@@ -291,7 +292,7 @@ const ParkPick = () => {
             'name': categoryName,
         };
         try {
-            await axios.patch(`https://api.koipay.co/api/v1/park-pick/categories/${editCategoryData.id}`, category, {
+            await axios.patch(`${apiUrlKoiPay}/park-pick/categories/${editCategoryData.id}`, category, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
@@ -333,7 +334,7 @@ const ParkPick = () => {
             'name': unitName,
         };
         try {
-            await axios.post(`https://api.koipay.co/api/v1/park-pick/units/create`, unit, {
+            await axios.post(`${apiUrlKoiPay}/park-pick/units/create`, unit, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
@@ -375,7 +376,7 @@ const ParkPick = () => {
             'name': categoryName,
         };
         try {
-            await axios.post(`https://api.koipay.co/api/v1/park-pick/categories/create`, category, {
+            await axios.post(`${apiUrlKoiPay}/park-pick/categories/create`, category, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
@@ -425,7 +426,7 @@ const ParkPick = () => {
 
         try {
 
-            await axios.post(`https://api.koipay.co/api/v1/park-pick/items/create`, item, {
+            await axios.post(`${apiUrlKoiPay}/park-pick/items/create`, item, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
@@ -608,7 +609,7 @@ const ParkPick = () => {
         setLoading(true);
         try {
             const response = await axios.get(
-                `https://pay.koipay.co/api/v1/accountholder/information?msisdn=25${phoneNumber}`,
+                `${apiUrlKoiPay}/accountholder/information?msisdn=25${phoneNumber}`,
                 {
                     headers: {
                         'Content-Type': 'application/json',
@@ -710,7 +711,7 @@ const ParkPick = () => {
         setisLoading(true)
 
         try {
-            const response = await axios.patch(`https://apidev2.koipay.co/api/business/${user.id}/   
+            const response = await axios.patch(`${apiUrlApidev}/business/${user.id}/   
             `, businessInform, {
                 // headers: {
                 //     'Access-Control-Allow-Origin': '*',

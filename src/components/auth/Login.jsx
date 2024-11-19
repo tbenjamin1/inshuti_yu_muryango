@@ -17,6 +17,8 @@ import { useToasts } from 'react-toast-notifications';
 
 function Login() {
 
+    const apiUrlKoiPay = import.meta.env.VITE_API_URL_KOIPAY;
+
     const { addToast } = useToasts();
     const [email, setEmailValue] = useState('');
     const [password, setPasswordValue] = useState('');
@@ -36,7 +38,7 @@ function Login() {
         setLoading(true)
 
         try {
-            const response = await axios.post('https://apidev.koipay.co/api/v1/auth/signin', { email, password }, {
+            const response = await axios.post(`${apiUrlKoiPay}/auth/signin`, { email, password }, {
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                 }

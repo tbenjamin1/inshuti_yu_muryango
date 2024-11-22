@@ -39,12 +39,12 @@ const NewNavBar = () => {
                     <Link to="/"> <a className="flex text-gray-600 cursor-pointer transition-colors duration-300">
                         Home
                     </a> </Link>
-                    <Link to="#"> <a className="flex text-gray-600 cursor-pointer transition-colors duration-300">
+                    <a href="#info-content" className="flex text-gray-600 cursor-pointer transition-colors duration-300">
                         About us
-                    </a> </Link>
-                    <Link to="#"> <a className="flex text-gray-600 cursor-pointer transition-colors duration-300">
-                        Conatct us
-                    </a> </Link>
+                    </a>
+                    <a href="#info-content" className="flex text-gray-600 cursor-pointer transition-colors duration-300">
+                        Contact us
+                    </a>
 
                     {/* {['Home', 'Abouts', 'Conatct Us'].map((item, index) => (
                         <a

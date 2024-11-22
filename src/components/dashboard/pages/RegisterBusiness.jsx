@@ -42,6 +42,11 @@ function RefereePage() {
     const [businessCategory, setbusinessCategory] = useState('');
     const [email, setEmail] = useState('');
     const [password, setpassword] = useState('');
+    const [confimrPassword, setPasswordConfirm] = useState('');
+    const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+    const [passwordSuccesMessage, setPasswordSuccesMessage] = useState('');
+
+    
     const [reward_percentage, setreward_percentage] = useState('');
     const [loading, setLoading] = useState(false);
     const [isloading, setisLoading] = useState(false);
@@ -66,6 +71,7 @@ function RefereePage() {
 
     const [passwordError, setpassword_error] = useState('');
 
+   
 
     const termsHandleChange = (event) => {
         dispatch(setAcceptTermsConditions(!acceptTermsState));
@@ -105,6 +111,29 @@ function RefereePage() {
         setpassword(event.target.value);
     };
 
+    const passwordConfirmHandleChange = (event) => {
+       
+        setPasswordConfirm(event.target.value);
+       
+    };
+    const handleCheckPassword = (password,confimrPassword) => {
+
+        if (password !=''&confimrPassword !='' && password === confimrPassword) {
+            setPasswordSuccesMessage('Passwords match');
+            setPasswordErrorMessage('')
+
+        } else if (password == '' & confimrPassword == '') {
+            setPasswordSuccesMessage('')
+            setPasswordErrorMessage('')
+            
+        }else{
+            setPasswordErrorMessage('')
+            setPasswordErrorMessage('Passwords do not match');
+        }
+    };
+    useEffect(() => {
+        handleCheckPassword(password, confimrPassword);
+    }, [confimrPassword, password]);
     const reward_percentageHandleChange = (event) => {
         setreward_percentage(event.target.value);
     };
@@ -203,9 +232,7 @@ function RefereePage() {
             setLoading(false);
         }
     };
-    useEffect(() => {
-        // handleSubmit();
-    }, [phoneNumber]);
+   
 
     useEffect(() => {
         dispatch(fetchAsynBusinessCatgeory())
@@ -276,7 +303,7 @@ function RefereePage() {
 
         try {
 
-            const response = await axios.post(`${apiUrlApidev}/business/create/`, businessInform, {
+            const response = await axios.post(`https://apidev2.koipay.co/api/business/create/`, businessInform, {
                 // headers: {
                 //     'Access-Control-Allow-Origin': '*',
                 // }
@@ -443,7 +470,7 @@ function RefereePage() {
                                 <div className='flex  address-input justify-center items-center    '  >
                                     <div className='flex  justify-center items-center ' >
                                         <div className='flex address-form-icon justify-center items-center  ' >
-                                            <PhoneOutlined style={{ color: 'white' }} />
+                                            <PhoneOutlined style={{ color: 'white', fontSize: '12px' }} />
                                         </div>
                                     </div>
 
@@ -460,7 +487,7 @@ function RefereePage() {
                                 <div className='flex address-input justify-center items-center   ' >
                                     <div className='flex  justify-center items-center ' >
                                         <div className='flex address-form-icon justify-center items-center  ' >
-                                            <FontAwesomeIcon icon={faEnvelope} style={{ color: 'white' }} />
+                                            <FontAwesomeIcon icon={faEnvelope} style={{ color: 'white',fontSize: '12px' }} />
                                         </div>
                                     </div>
 
@@ -477,7 +504,7 @@ function RefereePage() {
                                 <div className='flex address-input lex address-input justify-center items-center  ' >
                                     <div className='flex  justify-center items-center ' >
                                         <div className='flex address-form-icon justify-center items-center  ' >
-                                            <FontAwesomeIcon icon={faHouseChimney} style={{ color: 'white' }} />
+                                            <FontAwesomeIcon icon={faHouseChimney} style={{ color: 'white',fontSize: '12px' }} />
                                         </div>
                                     </div>
 
@@ -514,7 +541,7 @@ function RefereePage() {
                                                     {phoneNumberError}
                                                 </p>}
                                             </span> */}
-                                            <div className='flex flex-col  mx-2'  >
+                                            <div className='flex flex-col'  >
                                                 <label>
                                                     Business category
                                                 </label>
@@ -618,22 +645,51 @@ function RefereePage() {
                                                 <label>
                                                     Reward percentage
                                                 </label>
-                                                <input type="text" className='' placeholder='Reward percentage' value={reward_percentage} onChange={reward_percentageHandleChange}></input>
+                                                {/* <input type="text" className='' placeholder='Reward percentage' value={reward_percentage} onChange={reward_percentageHandleChange}></input> */}
+
+                                                <select
+                                                    required
+                                                    value={reward_percentage}
+                                                    onChange={reward_percentageHandleChange}
+                                                    className="rounded border"
+                                                >
+                                                    <option value="">Pick one</option>
+                                                    {Array.from({ length: 100 }, (_, i) => (
+                                                        <option key={i + 1} value={i + 1}>
+                                                            {i + 1}%
+                                                        </option>
+                                                    ))}
+                                                </select>
                                                 {reward_percentageError && <p class="mt-2   text-pink-600 text-sm">
                                                     {reward_percentageError}
                                                 </p>}
+
+                                                
                                             </span>
 
                                             <span className='flex flex-col' >
                                                 <label>
                                                     Password
                                                 </label>
-                                                <input type="password" className='' placeholder='Password' value={password} onChange={passwordHandleChange}></input>
+                                                <input type="password" className='password' placeholder='Password' value={password} onChange={passwordHandleChange}></input>
                                                 {passwordError && <p class="mt-2   text-pink-600 text-sm">
                                                     {passwordError}
                                                 </p>}
                                             </span>
 
+                                            <span className='flex flex-col' >
+                                                <label>
+                                                   Confirm Password
+                                                </label>
+                                                <input type="password" className='password' placeholder='Re-enter password' value={confimrPassword} onChange={passwordConfirmHandleChange}></input>
+                                                {passwordErrorMessage && <p class="mt-2   text-pink-600 text-sm">
+                                                    {passwordErrorMessage}
+                                                </p>}
+                                                {passwordSuccesMessage && <p class="mt-2   text-green-600 text-sm">
+                                                    {passwordSuccesMessage}
+                                                </p>}
+                                                
+                                            </span>
                                         </div>
                                         <div className='flex flex-col' >
                                             <label className='mx-2' >

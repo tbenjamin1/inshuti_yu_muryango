@@ -125,9 +125,9 @@ const ServicesTabs = () => {
                                 title="Referral Program"
                                 description={(
                                     <>
-                                        <h3 className='my-card-sub-title py-3'>Join Koipay's Referral Program and Multiply Your Rewards!</h3>
+                                        <h3 className='my-card-sub-title py-3'>Join JaliKoi's Referral Program and Multiply Your Rewards!</h3>
                                         <p className='description'>
-                                            Refer, Earn, and Give Back with Koipay! Invite your friends to join and earn cash back every time they use our platform.
+                                            Refer, Earn, and Give Back with JaliKoi! Invite your friends to join and earn cash back every time they use our platform.
                                         </p>
                                     </>
                                 )}

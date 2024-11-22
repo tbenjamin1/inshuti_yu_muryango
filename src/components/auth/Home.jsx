@@ -14,8 +14,6 @@ const Home = () => {
     const [selectedRange, setSelectedRange] = useState();
     const dispatch = useDispatch()
     const allBussinessesRegisteredList = useSelector(getAllBussinessesRegistered);
-    console.log('allBussinessesRegisteredList', allBussinessesRegisteredList)
-
     useEffect(() => {
         dispatch(fetchAsynBusinessRegistered({ selectedRange, currentPage }))
     }, [dispatch, selectedRange, currentPage]);

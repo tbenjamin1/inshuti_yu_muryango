@@ -17,7 +17,7 @@ const ServicesTabs = () => {
             <TabPane tab="Best Packages For You" key="1">
                 <Row gutter={[16, 16]}>
                     <Col xs={24} sm={12} md={12} lg={8}>
-                        <Card
+                        <Card className='service-card'
                             cover={<img className='img' alt="Business Registration" src={Coins_amico} />}
                             actions={[
                                 <span
@@ -57,7 +57,7 @@ const ServicesTabs = () => {
                         </Card>
                     </Col>
                     <Col xs={24} sm={12} md={12} lg={8}>
-                        <Card
+                        <Card className='service-card'
                             cover={<img className='img' alt="Charitable Registration" src={cashback} />}
                             actions={[
                                 <span
@@ -96,7 +96,7 @@ const ServicesTabs = () => {
                         </Card>
                     </Col>
                     <Col xs={24} sm={12} md={12} lg={8}>
-                        <Card
+                        <Card className='service-card'
                             cover={<img className='img' alt="Referral Program" src={wallet} />}
                             actions={[
                                 <span

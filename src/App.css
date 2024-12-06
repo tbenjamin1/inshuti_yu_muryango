@@ -198,11 +198,13 @@ body {
   height: 250px;
   width: 100%;
 }
+.top-bussines-card {
+  height: 400px !important;
+}
 .jal_koi-logo{
   height: 50px;
 }
-:where(.css-dev-only-do-not-override-1vtf12y).ant-card-bordered {
-
+.service-card {
   border-radius: 16px 16px 8px 8px;
   height: 480px !important ;
 }

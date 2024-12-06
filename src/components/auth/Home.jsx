@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import koipay_logo from "../images/jal_koi.png"
+import jaliKoi_logo from "../images/jal_koi.png"
 import home_banner from "../images/home-banner.png"
 import { Carousel } from 'antd';
 import MyCarousel from './MuCarousel';
@@ -20,7 +20,7 @@ const Home = () => {
 
     return (
         <div className="flex flex-col  items-center justify-center mt-32 ">
-            <NewNavBar/>
+            <NewNavBar />
             <div className="flex flex-wrap  w-full home-container container-main " >
                 <div
                     className="w-full home_banner relative h-64"
@@ -39,17 +39,17 @@ const Home = () => {
                             <div className='font-bold why-content-tile w-1/2' >Register</div>
                             <div className='w-1/2 flex  justify-between'>
                                 <Link to="/register-business" className='capitalize ' > <a className="flex py-2 home-btn rounded-md bg-white  primary-btn-color capitalize   font-semibold px-6 ">
-                                     BUSINESS
+                                    BUSINESS
                                 </a> </Link>
                                 <Link to="/register-entity" className='ml-3 ' > <a className="flex home-btn py-2 capitalize rounded-md bg-white  primary-btn-color   font-semibold  px-6">
-                                     ENTITY
+                                    ENTITY
                                 </a> </Link>
                             </div>
 
                         </div>
                     </div>
                 </div>
-                
+
                 <div className='flex flex-col justify-center items-center w-full'  >
 
                     <div className='p-4 w-full'>
@@ -63,16 +63,16 @@ const Home = () => {
                 </div>
                 {allBussinessesRegisteredList && <div className='flex flex-col justify-center items-center w-full'  >
                     <div className='p-4 w-full'>
-                        <TopBusiness allBussinessesRegisteredList={allBussinessesRegisteredList}   />
+                        <TopBusiness allBussinessesRegisteredList={allBussinessesRegisteredList} />
                     </div>
                 </div>}
-               
+
             </div>
-            
+
             <div className='w-full pt-3' id='info-content' >
                 <Footer />
-              </div>
-            
+            </div>
+
         </div>
     );
 };

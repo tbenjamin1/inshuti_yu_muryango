@@ -17,8 +17,9 @@ import { fetchAsynBusinessCatgeory, getAllBussinessesCategories, selectAcceptTer
 import NewNavBar from '../../auth/NewNavBar';
 import Footer from '../../auth/Footer';
 import { Avatar, Card } from 'antd';
-import { EditOutlined, PhoneOutlined, EllipsisOutlined, SendOutlined, SettingOutlined } from '@ant-design/icons';
+import { EditOutlined, PhoneOutlined, InfoCircleOutlined, SendOutlined, SettingOutlined } from '@ant-design/icons';
 import { faTwitter, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
+import { Input, Tooltip } from "antd";
 import { faEnvelope, faHouseChimney, faLocationDot } from '@fortawesome/free-solid-svg-icons'
 import home_banner from "../../images/home-banner.png"
 
@@ -32,7 +33,6 @@ function RefereePage() {
 
     const allbusinesscategories = useSelector(getAllBussinessesCategories);
     const [registered, setregistered] = useState(false);
-
     const [businesName, setbusinesNameValue] = useState('');
     const [colorCode, setcolorCodeValue] = useState('');
     const [phoneNumber, setphoneNumber] = useState('');
@@ -45,9 +45,10 @@ function RefereePage() {
     const [confimrPassword, setPasswordConfirm] = useState('');
     const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
     const [passwordSuccesMessage, setPasswordSuccesMessage] = useState('');
-
-    
+    const [otherCategory, setOtherCategory] = useState('');
     const [reward_percentage, setreward_percentage] = useState('');
+    const [seletedPercentageValue, setSeletedValue] = useState('');
+    
     const [loading, setLoading] = useState(false);
     const [isloading, setisLoading] = useState(false);
     const [termsCondidtions, settermsCondidtions] = useState(false);
@@ -71,7 +72,7 @@ function RefereePage() {
 
     const [passwordError, setpassword_error] = useState('');
 
-   
+
 
     const termsHandleChange = (event) => {
         dispatch(setAcceptTermsConditions(!acceptTermsState));
@@ -100,8 +101,14 @@ function RefereePage() {
     };
 
     const businessCategoryHandleChange = (event) => {
+
+        console.log('setbusinessCategory', event.target.value)
         setbusinessCategory(event.target.value);
     };
+    const otherCategoryHandleChange = (event) => {
+        setOtherCategory(event.target.value);
+    };
+ 
 
     const emailHandleChange = (event) => {
         setEmail(event.target.value);
@@ -112,21 +119,21 @@ function RefereePage() {
     };
 
     const passwordConfirmHandleChange = (event) => {
-       
-        setPasswordConfirm(event.target.value);
-       
-    };
-    const handleCheckPassword = (password,confimrPassword) => {
 
-        if (password !=''&confimrPassword !='' && password === confimrPassword) {
+        setPasswordConfirm(event.target.value);
+
+    };
+    const handleCheckPassword = (password, confimrPassword) => {
+
+        if (password != '' & confimrPassword != '' && password === confimrPassword) {
             setPasswordSuccesMessage('Passwords match');
             setPasswordErrorMessage('')
 
         } else if (password == '' & confimrPassword == '') {
             setPasswordSuccesMessage('')
             setPasswordErrorMessage('')
-            
-        }else{
+
+        } else {
             setPasswordErrorMessage('')
             setPasswordErrorMessage('Passwords do not match');
         }
@@ -134,8 +141,13 @@ function RefereePage() {
     useEffect(() => {
         handleCheckPassword(password, confimrPassword);
     }, [confimrPassword, password]);
+
     const reward_percentageHandleChange = (event) => {
-        setreward_percentage(event.target.value);
+        setSeletedValue(event.target.value);
+        // Convert the percentage number to its real value
+        const realValue = event.target.value / 100;
+        // Update the state with the real value
+        setreward_percentage(realValue);
     };
 
 
@@ -190,49 +202,24 @@ function RefereePage() {
     };
 
 
-    const handleSubmit = async () => {
-
-        const isValidPhoneNumber = validateMtnPhoneNumber(phoneNumber);
-
-        if (!isValidPhoneNumber) {
-            // Handle invalid phone number case
-            return;
+    const handleSubmitCategory = async (response) => {
+        console.log('response', response)
+        let bussinesid = response.id
+        
+        const businessInform ={
+            'name':otherCategory,
+            'business': bussinesid,
         }
-
-        setLoading(true);
+        console.log('businessInform', businessInform);
         try {
-            const response = await axios.get(
-                `https://payment.jalikoi.rw/api/v1/accountholder/information?msisdn=25${phoneNumber}`,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${import.meta.env.VITE_TOKEN_REFEREE}`,
-                    },
-                }
-            );
-
-            addToast(`${response.data.data.firstname} you are registered in momo`, {
-                appearance: 'success',
-                autoDismiss: true, // Enable auto dismissal
-                autoDismissTimeout: 5000,
-                transitionDuration: 300,
-            });
-
-            setIsregistered(true);
-            setLoading(false);
-
-            //  redirecting the user to the desired page
+            const response = await axios.post(`https://cashbackapibusiness.jalikoi.rw/api/other-business-categories/`, businessInform, 
+           
+        );
         } catch (error) {
-            addToast("Invalid,use your phone number registered in momo", {
-                appearance: 'error', autoDismiss: true, // Enable auto dismissal
-                autoDismissTimeout: 5000,
-                transitionDuration: 300,
-            });
-            setIsregistered(false);
-            setLoading(false);
+           
         }
     };
-   
+
 
     useEffect(() => {
         dispatch(fetchAsynBusinessCatgeory())
@@ -266,28 +253,6 @@ function RefereePage() {
         businessInform.append('business_certificate', certificateFile);
         const isValidPhoneNumber = validateMtnPhoneNumber(phoneNumber);
 
-        // if (!isValidPhoneNumber) {
-        //     addToast("Something went wrong! please check your momo number", {
-        //         appearance: 'error', autoDismiss: true, 
-        //         autoDismissTimeout: 5000,
-        //         transitionDuration: 300,
-        //     });
-
-        //     return;
-        // }
-
-
-        // if (password.toLowerCase != confirmPassword.toLowerCase) {
-        //     addToast("Something went wrong! password must be matching !", {
-        //         appearance: 'error', autoDismiss: true, // Enable auto dismissal
-        //         autoDismissTimeout: 5000,
-        //         transitionDuration: 300,
-        //     });
-
-        //     return;
-        // }
-
-
 
         if (!acceptTermsState) {
             settermsError(!termsError)
@@ -304,11 +269,12 @@ function RefereePage() {
         try {
 
             const response = await axios.post(`${apiUrlApidev}/business/create/`, businessInform, {
-                // headers: {
-                //     'Access-Control-Allow-Origin': '*',
-                // }
+                
             });
-
+            if (businessCategory==9){
+                handleSubmitCategory(response.data)
+            }
+        
             setregistered(!registered)
             addToast(`Successfully registered`, {
                 appearance: 'success',
@@ -410,7 +376,7 @@ function RefereePage() {
                         <div className='flex flex-col justify-around items-start middle-container-left '>
                             <Card
                                 style={{
-                                    
+
 
                                 }}
                                 className='my-3'
@@ -437,7 +403,7 @@ function RefereePage() {
                             </Card>
                             <Card
                                 style={{
-                                    
+
 
 
                                 }}
@@ -487,7 +453,7 @@ function RefereePage() {
                                 <div className='flex address-input justify-center items-center   ' >
                                     <div className='flex  justify-center items-center ' >
                                         <div className='flex address-form-icon justify-center items-center  ' >
-                                            <FontAwesomeIcon icon={faEnvelope} style={{ color: 'white',fontSize: '12px' }} />
+                                            <FontAwesomeIcon icon={faEnvelope} style={{ color: 'white', fontSize: '12px' }} />
                                         </div>
                                     </div>
 
@@ -504,7 +470,7 @@ function RefereePage() {
                                 <div className='flex address-input lex address-input justify-center items-center  ' >
                                     <div className='flex  justify-center items-center ' >
                                         <div className='flex address-form-icon justify-center items-center  ' >
-                                            <FontAwesomeIcon icon={faHouseChimney} style={{ color: 'white',fontSize: '12px' }} />
+                                            <FontAwesomeIcon icon={faHouseChimney} style={{ color: 'white', fontSize: '12px' }} />
                                         </div>
                                     </div>
 
@@ -557,6 +523,7 @@ function RefereePage() {
                                                 {businessCategoryError && <p class="mt-2   text-pink-600 text-sm">
                                                     {businessCategoryError}
                                                 </p>}
+                                                {businessCategory==9 && <input type="text" className='my-2' placeholder='Enter category name' value={otherCategory} onChange={otherCategoryHandleChange}></input>}
                                             </div>
                                         </div>
                                         <div className='flex flex-col' >
@@ -637,19 +604,24 @@ function RefereePage() {
                                             </p>}
                                         </div>
 
-                                        
+
                                     </div>
                                     <div className='flex justify-between business-image mobile-fit  ' >
                                         <div className='flex flex-col w-full mr-1' >
                                             <span className='flex flex-col' >
-                                                <label>
-                                                    Reward percentage
-                                                </label>
+                                                <div className='flex justify-start items-center' >
+                                                    <label >
+                                                        Reward percentage
+                                                    </label>
+                                                    <Tooltip title="Half of the reward will go to the client, and the other half to Jalikoi.">
+                                                        <InfoCircleOutlined style={{ marginLeft: "8px", color: "#1890ff" }} />
+                                                    </Tooltip>
+                                                </div>
                                                 {/* <input type="text" className='' placeholder='Reward percentage' value={reward_percentage} onChange={reward_percentageHandleChange}></input> */}
 
                                                 <select
                                                     required
-                                                    value={reward_percentage}
+                                                    value={seletedPercentageValue}
                                                     onChange={reward_percentageHandleChange}
                                                     className="rounded border"
                                                 >
@@ -664,7 +636,7 @@ function RefereePage() {
                                                     {reward_percentageError}
                                                 </p>}
 
-                                                
+
                                             </span>
 
                                             <span className='flex flex-col' >
@@ -679,7 +651,7 @@ function RefereePage() {
 
                                             <span className='flex flex-col' >
                                                 <label>
-                                                   Confirm Password
+                                                    Confirm Password
                                                 </label>
                                                 <input type="password" className='password' placeholder='Re-enter password' value={confimrPassword} onChange={passwordConfirmHandleChange}></input>
                                                 {passwordErrorMessage && <p class="mt-2   text-pink-600 text-sm">
@@ -688,7 +660,7 @@ function RefereePage() {
                                                 {passwordSuccesMessage && <p class="mt-2   text-green-600 text-sm">
                                                     {passwordSuccesMessage}
                                                 </p>}
-                                                
+
                                             </span>
                                         </div>
                                         <div className='flex flex-col' >
@@ -786,7 +758,7 @@ function RefereePage() {
 
                 </span>
                 <span className='login-sub-title p-2' ></span>
-                <span className='login-sub-title my-3'>------ Welcome to Koipay --------</span>
+                <span className='login-sub-title my-3'>------ Welcome to jaliKoi --------</span>
                 <img src={undraw_interview} className="App-logo mobile-screen-view" alt="logo" />
                 <span className='my-3 ml-4 font_serif referal-content mobile-screen-view' >
                     <span className=' flex flex-col justify-center items-center' >Getting Started is a Breeze <br></br> <strong>Sign Up:</strong>

@@ -220,7 +220,7 @@ const ParkPick = () => {
             'name': unitName,
         };
         try {
-            await axios.patch(`https://api.koipay.co/api/v1/park-pick/units/update/${editUnitData.id}`, unit, {
+            await axios.patch(`https://api.jaliKoi.co/api/v1/park-pick/units/update/${editUnitData.id}`, unit, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
@@ -262,7 +262,7 @@ const ParkPick = () => {
             'name': categoryName,
         };
         try {
-            await axios.patch(`https://api.koipay.co/api/v1/park-pick/categories/${editCategoryData.id}`, category, {
+            await axios.patch(`https://api.jaliKoi.co/api/v1/park-pick/categories/${editCategoryData.id}`, category, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
@@ -304,7 +304,7 @@ const ParkPick = () => {
             'name': unitName,
         };
         try {
-            await axios.post(`https://api.koipay.co/api/v1/park-pick/units/create`, unit, {
+            await axios.post(`https://api.jaliKoi.co/api/v1/park-pick/units/create`, unit, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
@@ -346,7 +346,7 @@ const ParkPick = () => {
             'name': categoryName,
         };
         try {
-            await axios.post(`https://api.koipay.co/api/v1/park-pick/categories/create`, category, {
+            await axios.post(`https://api.jaliKoi.co/api/v1/park-pick/categories/create`, category, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
@@ -396,7 +396,7 @@ const ParkPick = () => {
 
         try {
 
-            await axios.post(`https://api.koipay.co/api/v1/park-pick/items/create`, item, {
+            await axios.post(`https://api.jaliKoi.co/api/v1/park-pick/items/create`, item, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
@@ -447,7 +447,7 @@ const ParkPick = () => {
         if (confirmed) {
 
             try {
-                await axios.delete(`https://api.koipay.co/api/v1/park-pick/units/delete/${item.id}/`, {
+                await axios.delete(`https://api.jaliKoi.co/api/v1/park-pick/units/delete/${item.id}/`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'
@@ -474,7 +474,7 @@ const ParkPick = () => {
         if (confirmed) {
 
             try {
-                await axios.delete(`https://api.koipay.co/api/v1/park-pick/categories/${category.id}/`, {
+                await axios.delete(`https://api.jaliKoi.co/api/v1/park-pick/categories/${category.id}/`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'
@@ -513,7 +513,7 @@ const ParkPick = () => {
         if (confirmed) {
 
             try {
-                await axios.delete(`https://api.koipay.co/api/v1/park-pick/items/delete-item/${item.id}/`, {
+                await axios.delete(`https://api.jaliKoi.co/api/v1/park-pick/items/delete-item/${item.id}/`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'
@@ -595,7 +595,7 @@ const ParkPick = () => {
 
 
         try {
-            await axios.patch(`https://api.koipay.co/api/v1/park-pick/items/update-item/${editItem.id}`, item, {
+            await axios.patch(`https://api.jaliKoi.co/api/v1/park-pick/items/update-item/${editItem.id}`, item, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'

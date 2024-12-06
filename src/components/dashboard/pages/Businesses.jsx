@@ -18,7 +18,7 @@ import { fetchAsynBusinessCatgeory, fetchAsynBusinessRegistered, fetchAsyncTrans
 // pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 function Businesses() {
-    const apiUrlKoiPay = import.meta.env.VITE_API_URL_KOIPAY;
+    const apiUrljaliKoi = import.meta.env.VITE_API_URL_KOIPAY;
     const apiUrlApidev = import.meta.env.VITE_API_URL_APIDEV;
     const { addToast } = useToasts();
     const user = useSelector(getUser);
@@ -37,8 +37,8 @@ function Businesses() {
     const [viewRiderInfo, setViewRiderInfo] = useState(false);
     const [editBusiness, seteditBusiness] = useState(false);
     const [reward_percentage, setreward_percentage] = useState('');
-    const [groupeya_percentage, setgroupeya_percentage] = useState('');
-
+    const [jalKoi_percentage, setjalKoi_percentage] = useState('');
+    const [jalKoi_Calculated_percentage, setCalculatedjalKoi_percentage] = useState("");
 
     const [certificatepdf, setcertificatepdf] = useState(false);
     const [certificateImg, setcertificateImg] = useState(false);
@@ -112,7 +112,7 @@ function Businesses() {
     const [momo_tel, setmomo_tel] = useState('');
     const [emailError, setemailError] = useState('');
     const [reward_percentageError, setreward_percentageError] = useState('');
-    const [groupeya_percentageError, setgroupeya_percentageError] = useState('');
+    const [jalKoi_percentageError, setjalKoi_percentageError] = useState('');
 
 
     const [passwordError, setpassword_error] = useState('');
@@ -149,8 +149,25 @@ function Businesses() {
     const reward_percentageHandleChange = (event) => {
         setreward_percentage(event.target.value);
     };
-    const groupeya_percentageHandleChange = (event) => {
-        setgroupeya_percentage(event.target.value);
+
+    // const jalKoi_percentageHandleChange = (event) => {
+    //     console.log('viewRiderInfo.reward_percentage ', viewRiderInfo.reward_percentage)
+    //     setjalKoi_percentage(event.target.value);
+    // };
+
+    const jalKoi_percentageHandleChange = (event) => {
+        const selectedPercentage = parseFloat(event.target.value); // Get the selected value as a number
+        const businessRewardPercentage = parseFloat(viewRiderInfo.reward_percentage); // Ensure it's a number
+
+        // Calculate Jalikoi reward
+        const calculatedJalikoiReward = businessRewardPercentage * selectedPercentage;
+        // console.log("Selected Jalikoi percentage:", selectedPercentage);
+        // console.log("Existing business reward percentage:", businessRewardPercentage);
+        // console.log("Calculated Jalikoi reward:", calculatedJalikoiReward);
+        // Update the state with the selected percentage
+        setjalKoi_percentage(event.target.value);
+        setCalculatedjalKoi_percentage(calculatedJalikoiReward);
+        // Optionally update other states or perform actions with `calculatedJalikoiReward`
     };
 
     const confirmPasswordHandleChange = (event) => {
@@ -225,7 +242,7 @@ function Businesses() {
         setLoading(true);
         try {
             const response = await axios.get(
-                `${apiUrlKoiPay}/accountholder/information?msisdn=25${phoneNumber}`,
+                `${apiUrljaliKoi}/accountholder/information?msisdn=25${phoneNumber}`,
                 {
                     headers: {
                         'Content-Type': 'application/json',
@@ -325,7 +342,7 @@ function Businesses() {
         businessInform.append('reward_type', rewardType);
         businessInform.append('category', businessCategory);
         businessInform.append('reward_percentage', reward_percentage);
-        businessInform.append('groupeya_percentage', groupeya_percentage);
+        businessInform.append('groupeya_percentage', jalKoi_Calculated_percentage);
         businessInform.append('email', email);
         businessInform.append('password', password);
         businessInform.append('icon', file);
@@ -347,6 +364,7 @@ function Businesses() {
         setisLoading(true)
 
         try {
+            // console.log('updatef', viewRiderInfo)
             const response = await axios.patch(`${apiUrlApidev}/business/${viewRiderInfo.user.id}/   
             `, businessInform, {
                 // headers: {
@@ -369,7 +387,8 @@ function Businesses() {
             setEmail("");
             setpassword("");
             setreward_percentage("");
-            setgroupeya_percentage("");
+            setjalKoi_percentage("");
+            setCalculatedjalKoi_percentage('');
             setIsregistered(false);
         } catch (error) {
             addToast("Something went wrong! please try again", {
@@ -415,6 +434,7 @@ function Businesses() {
         }
     };
     const fillBussinesForm = (busines) => {
+        console.log('busines', busines)
         setbusinesNameValue(busines.name);
         setcolorCodeValue(busines.color_code);
         setcontactTelValue(busines.contact_tel);
@@ -422,7 +442,7 @@ function Businesses() {
 
         setrewardType(busines.reward_type);
         setreward_percentage(busines.reward_percentage);
-        setgroupeya_percentage(busines.groupeya_percentage);
+        setjalKoi_percentage(busines.groupeya_percentage);
         setEmail(busines.user ? busines.user.email : '');
         setcertificate(busines.business_certificate ? `${apiUrlApidev}/${busines.business_certificate}` : '');
         setrenderFile(busines.icon ? `${apiUrlApidev}/${busines.icon}` : '');
@@ -678,11 +698,19 @@ function Businesses() {
                                                                         <div className='flex justify-between mobile-fit '>
                                                                             <span className='flex flex-col w-1/2'>
                                                                                 <label>
-                                                                                    Groupeya percentage
+                                                                                    jali koi rewards
                                                                                 </label>
-                                                                                <input type="text" className='' placeholder=' groupeya percentage' value={groupeya_percentage} onChange={groupeya_percentageHandleChange}></input>
-                                                                                {groupeya_percentageError && <p class="mt-2   text-pink-600 text-sm">
-                                                                                    {groupeya_percentageError}
+                                                                                <span className='pb-1' >{viewRiderInfo.groupeya_percentage ? viewRiderInfo.groupeya_percentage : "N/A"}</span>
+                                                                                <select required value={jalKoi_percentage} onChange={jalKoi_percentageHandleChange} className='rounded border'  >
+                                                                                    <option value='' >Jali koi rewards</option>
+                                                                                    <option value='0.5'>1/2</option>
+                                                                                    <option value='0.33'>1/3</option>
+                                                                                    <option value='0.25'>1/4</option>
+                                                                                    <option value='0.2'>1/5</option>
+                                                                                </select>
+
+                                                                                {jalKoi_percentageError && <p class="mt-2   text-pink-600 text-sm">
+                                                                                    {jalKoi_percentageError}
                                                                                 </p>}
                                                                             </span>
 
@@ -805,6 +833,15 @@ function Businesses() {
                                                                                 </label>
                                                                                 <span>{viewRiderInfo.reward_percentage ? viewRiderInfo.reward_percentage : "N/A"} %</span>
                                                                             </span>
+
+                                                                            <span className='flex flex-col' >
+                                                                                <label>
+                                                                                    Jali Koi percentage
+                                                                                </label>
+                                                                                <span>{viewRiderInfo.groupeya_percentage ? viewRiderInfo.groupeya_percentage : "N/A"}</span>
+                                                                            </span>
+
+
                                                                             <span className='flex flex-col' >
                                                                                 <label>
                                                                                     Email (admin account)

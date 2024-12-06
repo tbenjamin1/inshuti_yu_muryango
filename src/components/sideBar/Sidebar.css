@@ -72,6 +72,7 @@
 .sidebar__logout {
   margin-top: 20px;
   padding: 10px;
+  font-size: 10px;
   color: #e65061;
 }
 
@@ -79,6 +80,7 @@
   text-decoration: none;
   color: #e65061;
   font-weight: 700;
+  
   text-transform: uppercase;
 }
 

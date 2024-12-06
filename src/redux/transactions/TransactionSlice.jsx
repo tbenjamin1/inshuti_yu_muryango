@@ -2,10 +2,10 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import axios from "axios";
 
-const apiUrlKoiPay = import.meta.env.VITE_API_URL_KOIPAY;
+const apiUrljaliKoi = import.meta.env.VITE_API_URL_KOIPAY;
 const apiUrlApidev = import.meta.env.VITE_API_URL_APIDEV;
 
-const DashboardApi= import.meta.env.VITE_API_URL_REPORT;
+const DashboardApi = import.meta.env.VITE_API_URL_REPORT;
 
 export const fetchAsyncTransaction = createAsyncThunk('tranx/fetchAsyncElectricity', async (selectedRange) => {
     const response = await DashboardApi.get(`?service=96b33985-1045-437c-9415-ff8a248978db&startDate=${selectedRange[0]}&endDate=${selectedRange[1]}`)
@@ -24,33 +24,33 @@ export const fetchAsynStartimesTransaction = createAsyncThunk('tranx/fetchAsynSt
     return response.data;
 })
 export const fetchAsynClients = createAsyncThunk('tranx/fetchAsynClients', async (selectedRange) => {
-    const response = await axios.get(`${apiUrlKoiPay}/mobile/client/total?startDate=${selectedRange[0]}&endDate=${selectedRange[1]}&page=1&limit=6`)
+    const response = await axios.get(`${apiUrljaliKoi}/mobile/client/total?startDate=${selectedRange[0]}&endDate=${selectedRange[1]}&page=1&limit=6`)
     return response.data;
 })
 export const fetchAsynRefree = createAsyncThunk('tranx/fetchAsynRefree', async (selectedRange) => {
-    const response = await axios.get(`${apiUrlKoiPay}/referees/total?startDate=2023-03-09&endDate=2023-07-06&page=1&limit=6`)
+    const response = await axios.get(`${apiUrljaliKoi}/referees/total?startDate=2023-03-09&endDate=2023-07-06&page=1&limit=6`)
     return response.data;
 })
 export const fetchAsynParkCatgories = createAsyncThunk('tranx/fetchAsyncategories', async () => {
-    // const response = await axios.get(`${apiUrlKoiPay}/park-pick/categories`)
+    // const response = await axios.get(`${apiUrljaliKoi}/park-pick/categories`)
     return response.data.categories;
 })
 export const fetchAsynParkUnit = createAsyncThunk('tranx/fetchAsynUnit', async () => {
-    // const response = await axios.get(`${apiUrlKoiPay}/park-pick/units/get-all`)
+    // const response = await axios.get(`${apiUrljaliKoi}/park-pick/units/get-all`)
     return response.data.units;
 })
 export const fetchAsynItems = createAsyncThunk('tranx/fetchAsynItems', async (currentPage) => {
-    // const response = await axios.get(`${apiUrlKoiPay}/park-pick/items/get-all?page=${currentPage}`)
+    // const response = await axios.get(`${apiUrljaliKoi}/park-pick/items/get-all?page=${currentPage}`)
     return response.data;
 })
 
 export const fetchAsynNonPaginatedItems = createAsyncThunk('tranx/NonPaginatedItems', async () => {
-    // const response = await axios.get(`${apiUrlKoiPay}/park-pick/items/get-items`)
+    // const response = await axios.get(`${apiUrljaliKoi}/park-pick/items/get-items`)
     return response.data;
 })
 
 export const fetchAsynBoughtItems = createAsyncThunk('tranx/fetchAsynBoughtItems', async ({ pageboughtItems, selectedRange, filterStatus, filterItem }) => {
-    // const response = await axios.get(`${apiUrlKoiPay}/park-pick/bought-items/get-all?page=${pageboughtItems}&itemId=${filterItem ? filterItem : ''}&startDate=${selectedRange[0]}&endDate=${selectedRange[1]}&status=${filterStatus}`)
+    // const response = await axios.get(`${apiUrljaliKoi}/park-pick/bought-items/get-all?page=${pageboughtItems}&itemId=${filterItem ? filterItem : ''}&startDate=${selectedRange[0]}&endDate=${selectedRange[1]}&status=${filterStatus}`)
     return response.data;
 })
 
@@ -62,7 +62,7 @@ export const fetchAsynBusinessRegistered = createAsyncThunk('tranx/fetchAsynBusi
 
 
 export const fetchAsynBusinessCatgeory = createAsyncThunk('tranx/fetchAsynBusinessCatgeory', async () => {
-    const response = await axios.get(`${apiUrlApidev}/categories/`)
+    const response = await axios.get(`https://cashbackapibusiness.jalikoi.rw/api/categories/?all=true`)
     return response.data;
 })
 
@@ -70,19 +70,21 @@ export const fetchAsynSingleBusiness = createAsyncThunk('tranx/fetchAsynSingleBu
     const response = await axios.get(`${apiUrlApidev}/business/${user.id}/`)
     return response.data;
 })
-export const fetchAsynBusinessTransactionList = createAsyncThunk('tranx/fetchAsynBusinessTransactionList', async ({ user,pagetransactions }) => {
+export const fetchAsynBusinessTransactionList = createAsyncThunk('tranx/fetchAsynBusinessTransactionList', async ({ user, pagetransactions }) => {
     const response = await axios.get(`${apiUrlApidev}/business/transactions/${user.id}?page=${pagetransactions}`)
     return response.data;
 })
 export const fetchAsynBusinessReport = createAsyncThunk('tranx/fetchAsynBusinessReport', async ({ user }) => {
+    console.log('response')
     const response = await axios.get(`${apiUrlApidev}/business/statistics/${user.id}`)
+   
     return response.data;
 })
 
 export const fetchAsynBusinessTopClientsReport = createAsyncThunk('tranx/fetchAsynBusinessTopClientsReport', async ({ user }) => {
- 
+
     const response = await axios.get(`${apiUrlApidev}/business/top-clients/${user.id}`)
-    
+
     return response.data;
 })
 
@@ -116,7 +118,7 @@ const initialState = {
 
     singleBusiness: {},
     businessTransactionList: [],
-    paginatedBusinessTransaction:{},
+    paginatedBusinessTransaction: {},
     businessReport: {},
     businessTopClientsReport: null,
     isLoggedIn: savedUser ? true : false,
@@ -214,7 +216,7 @@ const transactionsSlice = createSlice({
 
         [fetchAsynBusinessTransactionList.fulfilled]: (state, { payload }) => {
             return {
-                ...state, isLoading: false, businessTransactionList: payload.results,paginatedBusinessTransaction:payload
+                ...state, isLoading: false, businessTransactionList: payload.results, paginatedBusinessTransaction: payload
             };
         },
 

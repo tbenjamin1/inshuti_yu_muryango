@@ -6,7 +6,7 @@ import axios from "axios";
 import { useLocation } from 'react-router-dom';
 
 const Sidebar = ({ sidebarOpen, closeSidebar }) => {
-  const apiUrlKoiPay = import.meta.env.VITE_API_URL_KOIPAY;
+  const apiUrljaliKoi = import.meta.env.VITE_API_URL_KOIPAY;
   const apiUrlApidev = import.meta.env.VITE_API_URL_APIDEV;
   const [error, setError] = useState('');
   const [activeTab, setActiveTab] = useState('');
@@ -15,7 +15,7 @@ const Sidebar = ({ sidebarOpen, closeSidebar }) => {
     event.preventDefault();
 
     try {
-      const response = await axios.get(`${apiUrlKoiPay}/auth/signout`);
+      const response = await axios.get(`${apiUrljaliKoi}/auth/signout`);
       // Assuming the server responds with a token upon successful authentication
       window.location.replace('/');
       localStorage.removeItem('user');
@@ -72,9 +72,9 @@ const Sidebar = ({ sidebarOpen, closeSidebar }) => {
             <span className="p-2">Services</span>
           </span>
         </div>
-        <div className="sidebar__logout border  rounded-xl flex justify-around items-center" onSubmit={handleLogout}  >
-          <i className="fa fa-power-off"></i>
-          <span className='cursor-pointer hover:bg-gray-400 p-2 rounded-xl ' onClick={handleLogout} >Log out</span>
+        <div className="sidebar__logout cursor-pointer border  rounded-xl flex justify-around items-center" onSubmit={handleLogout}  >
+          <i onSubmit={handleLogout} className="fa fa-power-off cursor-pointer"></i>
+          <span className='cursor-pointer  py-2 rounded-xl ' onClick={handleLogout} >Log out</span>
         </div>
       </div>
     </div>

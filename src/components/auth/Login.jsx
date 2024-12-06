@@ -32,10 +32,8 @@ function Login() {
 
 
     const handleSubmit = async (event) => {
-
         event.preventDefault();
-
-        setLoading(true)
+        setLoading(true);
 
         try {
             const response = await axios.post(`${apiUrlKoiPay}/auth/signin`, { email, password }, {
@@ -81,7 +79,7 @@ function Login() {
                 >
                     <div className='banner-content flex justify-items-end  h-full text-white ' >
                         <div className='flex flex-col  justify-center space-y-4 p-4'>
-                            <div className='font-bold why-content-tile ' >Welcome to JaliKoi </div>
+                            <div className='font-bold why-content-tile ' >Welcome to Jali Koi </div>
                             <div className='why-content ' >
 
                             </div>

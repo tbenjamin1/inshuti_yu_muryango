@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React, { useState } from 'react'
 import logo from "../images/login_graphic.svg"
 import { Link } from 'react-router-dom'
 
@@ -26,7 +26,7 @@ function Login() {
                 </div>
                 <div className='flex flex-col justify-center items-center login_form'>
                     <span className='login-title'>
-                        create your Koipay Account
+                        create your jaliKoi Account
                     </span>
                     <span className='login-sub-title p-2' >See what is going on with your business</span>
                     <span className='login-sub-title my-3'>-------------  Sign up  ------------- </span>
@@ -41,7 +41,7 @@ function Login() {
                             <label>
                                 Password
                             </label>
-                            <input type="password" className='' placeholder='Password'  value={password} onChange={passwordHandleChange}></input>
+                            <input type="password" className='' placeholder='Password' value={password} onChange={passwordHandleChange}></input>
                         </span>
                         <span className='flex flex-col' >
                             <label>
@@ -57,7 +57,7 @@ function Login() {
                             <Link to="/"><button className='fom-btn w-full p-2'>Sign up</button></Link>
                         </span>
                     </div>
-                </div> 
+                </div>
             </div>
 
         </div>

@@ -22,11 +22,12 @@ import Monthly from './charts/Monthly';
 
 import Filter from '../../filter';
 import upload from "../../images/upload.svg";
+import Footer from '../../auth/Footer';
 // import { Document, Page, pdfjs } from 'react-pdf';
 // pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const ParkPick = () => {
-    const apiUrlKoiPay = import.meta.env.VITE_API_URL_KOIPAY;
+    const apiUrljaliKoi = import.meta.env.VITE_API_URL_KOIPAY;
     const apiUrlApidev = import.meta.env.VITE_API_URL_APIDEV;
     const user = useSelector(getUser);
 
@@ -119,7 +120,7 @@ const ParkPick = () => {
     const singleBusinesstrnsactions = useSelector(getAllfetchAsynBusinessTransactionList);
     const paginatedBusinessTransactions = useSelector(getAllfetchAsynpaginatedBusinessTransaction)
     const businessReport = useSelector(getAllBusinessReport);
-
+    console.log('businessReport', businessReport)
 
 
     const total = boughtItemsList ? boughtItemsList.reduce((accumulator, item) => {
@@ -250,7 +251,7 @@ const ParkPick = () => {
             'name': unitName,
         };
         try {
-            await axios.patch(`${apiUrlKoiPay}/park-pick/units/update/${editUnitData.id}`, unit, {
+            await axios.patch(`${apiUrljaliKoi}/park-pick/units/update/${editUnitData.id}`, unit, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
@@ -292,7 +293,7 @@ const ParkPick = () => {
             'name': categoryName,
         };
         try {
-            await axios.patch(`${apiUrlKoiPay}/park-pick/categories/${editCategoryData.id}`, category, {
+            await axios.patch(`${apiUrljaliKoi}/park-pick/categories/${editCategoryData.id}`, category, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
@@ -334,7 +335,7 @@ const ParkPick = () => {
             'name': unitName,
         };
         try {
-            await axios.post(`${apiUrlKoiPay}/park-pick/units/create`, unit, {
+            await axios.post(`${apiUrljaliKoi}/park-pick/units/create`, unit, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
@@ -376,7 +377,7 @@ const ParkPick = () => {
             'name': categoryName,
         };
         try {
-            await axios.post(`${apiUrlKoiPay}/park-pick/categories/create`, category, {
+            await axios.post(`${apiUrljaliKoi}/park-pick/categories/create`, category, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
@@ -426,7 +427,7 @@ const ParkPick = () => {
 
         try {
 
-            await axios.post(`${apiUrlKoiPay}/park-pick/items/create`, item, {
+            await axios.post(`${apiUrljaliKoi}/park-pick/items/create`, item, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
@@ -609,7 +610,7 @@ const ParkPick = () => {
         setLoading(true);
         try {
             const response = await axios.get(
-                `${apiUrlKoiPay}/accountholder/information?msisdn=25${phoneNumber}`,
+                `${apiUrljaliKoi}/accountholder/information?msisdn=25${phoneNumber}`,
                 {
                     headers: {
                         'Content-Type': 'application/json',
@@ -1403,27 +1404,7 @@ const ParkPick = () => {
                 </div>
             </div>
 
-            <footer class="bg-white  footer   ">
-                <div class=" flex flex-wrap items-center justify-between px-4 ">
-
-                    <div className='flex' >
-                        <img class=" w-16   h-16 rounded-full object-cover" src={groupeya} alt="user photo" />
-                        <strong className="font-medium text-gray-800 pt-7 text-sm ">Powered by Groupeya </strong>
-                    </div>
-
-                    <div class="flex items-center  bg-white  ">
-                        <div class="relative flex">
-                            <Link to='#' className='cursor-pointer  social-media'><FontAwesomeIcon icon={faTwitter} color="#1DA1F2" /></Link>
-                            <Link to='#' className='mx-3  cursor-pointer social-media'><FontAwesomeIcon icon={faLinkedin} color="#0077B5" /></Link>
-                            <Link to='#' className='cursor-pointer social-media'><FontAwesomeIcon icon={faYoutube} color="#E4405F" /></Link>
-                        </div>
-                    </div>
-
-                </div>
-                <div className='px-20 py-2 bg_red-500' >
-                    <span className='text-white text-sm' >All rights reserved</span>
-                </div>
-            </footer>
+            <Footer />
 
         </div>
     )

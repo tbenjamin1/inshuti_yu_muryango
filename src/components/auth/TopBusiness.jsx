@@ -18,35 +18,9 @@ const TopBusiness = ({ allBussinessesRegisteredList }) => {
                 <Row gutter={[16, 16]}>
                     {allBussinessesRegisteredList.slice(0, 3).map((business) => (
                         <Col xs={24} sm={12} md={12} lg={8} key={business.id}>
-                            <Card
+                            <Card className='top-bussines-card'  style={{ height: 300 }}
                                 cover={<img className='img' alt={business.name} src={business.icon ? business.icon : Coins_amico} />}
-                                actions={[
-                                    <span
-                                        style={{
-                                            // backgroundColor: '#23419B',
-                                            padding: '8px',
-                                            borderRadius: '50%',
-                                            display: 'inline-flex',
-                                        }}
-                                        key="heart"
-                                    >
-                                        {/* <HeartOutlined style={{ color: 'white' }} /> */}
-                                    </span>
-                                    ,
-                                    <EllipsisOutlined onClick={() => navigate('/')} key="ellipsis" />,
-                                    <span
-                                        style={{
-                                            // backgroundColor: '#23419B',
-                                            padding: '8px',
-                                            borderRadius: '50%',
-                                            display: 'inline-flex',
-                                        }}
-                                        onClick={() => navigate('/')}
-                                        key="edit"
-                                    >
-                                        {/* <EditOutlined style={{ color: 'white' }} /> */}
-                                    </span>,
-                                ]}
+                                
                             >
 
                                 <div>

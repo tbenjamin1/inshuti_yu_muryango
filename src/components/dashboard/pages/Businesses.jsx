@@ -44,39 +44,61 @@ function Businesses() {
     const [certificateImg, setcertificateImg] = useState(false);
     const [certificateNoNeImagepdf, setcertificateNoNeImagepdf] = useState(false);
 
-    const handleViewRider = (busines) => {
-
-        if (busines.business_certificate) {
-            if (busines.business_certificate.includes('image/')) {
-
-                setcertificateImg(!certificateImg)
-                setViewRiderInfo(busines)
-                setViewRider(!viewRider);
-            } else if (busines.business_certificate.includes('.pdf')) {
-                setcertificatepdf(!certificatepdf)
-                setViewRiderInfo(busines)
-                setViewRider(!viewRider);
-            } else {
-                setcertificateNoNeImagepdf(!certificateNoNeImagepdf)
-                setViewRiderInfo(busines)
-                setViewRider(!viewRider);
-
-            }
-        } else {
-            setcertificateNoNeImagepdf(!certificateNoNeImagepdf)
-            setViewRiderInfo(busines)
+    const handleViewRider = (business) => {
+        if (!business.business_certificate) {
+            console.log("No certificate found.");
+            setcertificateNoNeImagepdf(!certificateNoNeImagepdf);
+            setViewRiderInfo(business);
             setViewRider(!viewRider);
+            return; // Exit the function if there's no certificate
+        }
+
+        console.log("Certificate:", business.business_certificate);
+
+        if (business.business_certificate.includes("image/")) {
+            
+            setcertificateImg(!certificateImg);
+            setViewRiderInfo(business);
+            setViewRider(!viewRider);
+        } else if (business.business_certificate.includes(".pdf")) {
+           
+            setcertificatepdf(!certificatepdf);
+            setViewRiderInfo(business);
+            setViewRider(!viewRider);
+        } else {
+          
+            setcertificateNoNeImagepdf(!certificateNoNeImagepdf);
+            setViewRiderInfo(business);
+            setViewRider(!viewRider);
+        }
+    };
+
+
+    const handleEditBusiness = (business) => {
+        // Set the business info and toggle the edit state
+        setViewRiderInfo(business);
+        seteditBusiness(!editBusiness);
+        fillBussinesForm(business);
+
+        // Check the type of business certificate
+        if (!business.business_certificate) {
+            setcertificateNoNeImagepdf(!certificateNoNeImagepdf);
+            return; // Exit early if no certificate is found
         }
 
 
-
+        if (business.business_certificate.includes("image/")) {
+         
+            setcertificateImg(!certificateImg);
+        } else if (business.business_certificate.includes(".pdf")) {
+          
+            setcertificatepdf(!certificatepdf);
+        } else {
+           
+            setcertificateNoNeImagepdf(!certificateNoNeImagepdf);
+        }
     };
-    const handleEditBusiness = (busines) => {
-        setViewRiderInfo(busines);
-        seteditBusiness(!editBusiness);
-        fillBussinesForm(busines);
 
-    };
     const handleViewChildEvent = () => {
         setViewRider(!viewRider);
 
@@ -434,7 +456,7 @@ function Businesses() {
         }
     };
     const fillBussinesForm = (busines) => {
-        console.log('busines', busines)
+       
         setbusinesNameValue(busines.name);
         setcolorCodeValue(busines.color_code);
         setcontactTelValue(busines.contact_tel);
@@ -444,8 +466,8 @@ function Businesses() {
         setreward_percentage(busines.reward_percentage);
         setjalKoi_percentage(busines.groupeya_percentage);
         setEmail(busines.user ? busines.user.email : '');
-        setcertificate(busines.business_certificate ? `${apiUrlApidev}/${busines.business_certificate}` : '');
-        setrenderFile(busines.icon ? `${apiUrlApidev}/${busines.icon}` : '');
+        setcertificate(busines.business_certificate ?busines.business_certificate : '');
+        setrenderFile(busines.icon ?busines.icon: '');
         setbusinessCategory(busines.category.id);
     };
 
@@ -720,16 +742,22 @@ function Businesses() {
 
                                                                             <div className='flex flex-col' >
                                                                                 <label className='mx-2' >
-                                                                                    Business certificate
+                                                                                    Business certificate 
                                                                                 </label>
-                                                                                <div className="certificate-container p-3 border rounded-lg m-1 ">
+                                                                                <div className='my-3'>
+                                                                                    {certificate && <a href={certificate} className='bg-slate-300 p-2 rounded-lg' download='Certificate.pdf' target="_blank" rel="noopener noreferrer">
+                                                                                        Download Certificate
+                                                                                    </a>}
+                                                                                </div>
+                                                                                <div className="certificate-container p-3  rounded-lg m-1 border ">
 
-                                                                                    {certificate || certificateImgae ? (
+                                                                                    {certificateImgae ? (
                                                                                         <>
                                                                                             {certificateImgae && <img src={certificateImgae} alt="Selected Image" className="image-certificate" />}
                                                                                             {/* {certificate && <Document file={certificate} onLoadSuccess={({ numPages }) => setNumPages(numPages)} style={{ width: '100%', height: '100px' }}>
                                                                                                 <Page pageNumber={pageNumber} />
                                                                                             </Document>} */}
+                                                                                           
                                                                                             <input
                                                                                                 id="certificateUploadInput"
                                                                                                 type="file"
@@ -794,7 +822,7 @@ function Businesses() {
                                                                                     Business Icon
                                                                                 </label>
                                                                                 <div className="upload_container border rounded-lg m-1 ">
-                                                                                    {viewRiderInfo.icon ? <img src={`${apiUrlApidev}/${viewRiderInfo.icon}`} alt="Selected Image" className="image" /> : <img src={upload} alt="Selected Image" className="image" />}
+                                                                                    {viewRiderInfo.icon ? <img src={viewRiderInfo.icon ? viewRiderInfo.icon : upload} alt="Selected Image" className="image" /> : <img src={upload} alt="Selected Image" className="image" />}
 
                                                                                 </div>
                                                                             </div>
@@ -826,14 +854,14 @@ function Businesses() {
                                                                                 <span>{viewRiderInfo.category ? viewRiderInfo.category.name : "N/A"}</span>
                                                                             </div>
                                                                         </div>
-                                                                        <div className='flex justify-between mobile-fit my-2  ' >
+                                                                        <div className='flex flex-col justify-between mobile-fit  my-2  ' >
                                                                             <span className='flex flex-col' >
                                                                                 <label>
                                                                                     Reward percentage
                                                                                 </label>
                                                                                 <span>{viewRiderInfo.reward_percentage ? viewRiderInfo.reward_percentage : "N/A"} %</span>
                                                                             </span>
-
+<br />
                                                                             <span className='flex flex-col' >
                                                                                 <label>
                                                                                     Jali Koi percentage
@@ -841,7 +869,7 @@ function Businesses() {
                                                                                 <span>{viewRiderInfo.groupeya_percentage ? viewRiderInfo.groupeya_percentage : "N/A"}</span>
                                                                             </span>
 
-
+<br />
                                                                             <span className='flex flex-col' >
                                                                                 <label>
                                                                                     Email (admin account)
@@ -855,16 +883,19 @@ function Businesses() {
 
                                                                             <div className='flex flex-col' >
                                                                                 <label className='mx-2' >
-                                                                                    Business certificate
+                                                                                    Business certificate 
                                                                                 </label>
-                                                                                {viewRiderInfo.business_certificate && <div className=" certificate-container  p-3 border rounded-lg m-1 ">
-                                                                                    {certificateImg && <img src={`${apiUrlApidev}/${viewRiderInfo.business_certificate}`} alt="Selected Image" className="image" />}
-
-                                                                                    {/* {certificatepdf && <Document file={`${apiUrlApidev}${viewRiderInfo.business_certificate}`} onLoadSuccess={({ numPages }) => setNumPages(numPages)} style={{ width: '100%', height: '500px' }}>
-                                                                                        <Page pageNumber={pageNumber} />
-                                                                                    </Document>} */}
-
-                                                                                </div>}
+                                                                                <div className='my-3'>
+                                                                                    {certificatepdf && <a href={viewRiderInfo.business_certificate} className='bg-slate-300 p-2 rounded-lg' download='Certificate.pdf' target="_blank" rel="noopener noreferrer">
+                                                                                        Download Certificate
+                                                                                    </a>}
+                                                                                </div>
+                                                                                {certificateImgae && 
+                                                                                    <div className="certificate-container p-3  rounded-lg m-1 border ">
+                                                                                        <img src={certificateImgae ? certificateImgae : upload} alt="Selected Image" className="image-certificate" />
+                                                                                    </div>
+                                                                                }
+                                                                                
                                                                                 {!viewRiderInfo.business_certificate && <img src={upload} alt="Selected Image" className="image" />}
                                                                             </div>
 

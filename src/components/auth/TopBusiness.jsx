@@ -10,6 +10,7 @@ const { TabPane } = Tabs;
 const { Meta } = Card;
 
 const TopBusiness = ({ allBussinessesRegisteredList }) => {
+    console.log('allBussinessesRegisteredList', allBussinessesRegisteredList)
     const navigate = useNavigate();
 
     return (

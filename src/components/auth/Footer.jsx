@@ -28,7 +28,7 @@ const Footer = () => (
                 <div className="quick-links flex flex-col  mx-10">
                     <span className='text-start' >GET IN TOUCH</span>
                     <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
-                        <FontAwesomeIcon icon={faFacebook} size="" /> <span className='capitalize px-2' >jalikoi@jaligroup.rw</span>
+                        <FontAwesomeIcon icon={faFacebook} size="" /> <span className=' px-2' >jalikoi@jaligroup.rw</span>
                     </a>
                     <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
                         <FontAwesomeIcon icon={faTwitter} size="" /><span className='px-2' >(+250) 78743 8701</span>

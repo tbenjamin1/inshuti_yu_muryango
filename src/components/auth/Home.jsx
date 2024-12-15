@@ -30,15 +30,15 @@ const Home = () => {
                 >
                     <div className='banner-content flex justify-items-end  h-full text-white ' >
                         <div className='flex flex-col  justify-center space-y-4 p-4 '  >
-                            <div className='font-bold why-content-tile ' >Why Join JaliKoi</div>
-                            <div className='why-content' >
+                            <div className='font-bold why-content-tile'>Why Join JaliKoi</div>
+                            <div className='why-content'>
                                 <strong>Drive Sales Growth:</strong> Reward your customers for every purchase they make, encouraging higher spending and return visits <br />
                                 <strong> Build Stronger Loyalty:</strong> Give your customers a reason to choose you every time with cashback that adds real value to their experience. <br />
                                 <strong>Effortless Reward Management:</strong> Our user-friendly dashboard makes it easy to track and manage your cash back offerings and customer engagement.
                             </div>
                             <div className='font-bold why-content-tile w-1/2' >Register</div>
                             <div className='w-1/2 flex  justify-between'>
-                                <Link to="/register-business" className='capitalize ' > <a className="flex py-2 home-btn rounded-md bg-white  primary-btn-color capitalize   font-semibold px-6 ">
+                                <Link to="/register-business" className='capitalize'> <a className="flex py-2 home-btn rounded-md bg-white  primary-btn-color capitalize   font-semibold px-6 ">
                                     BUSINESS
                                 </a> </Link>
                                 <Link to="/register-entity" className='ml-3 ' > <a className="flex home-btn py-2 capitalize rounded-md bg-white  primary-btn-color   font-semibold  px-6">

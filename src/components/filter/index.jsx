@@ -7,9 +7,9 @@ function Filter() {
 
 
     return (
-        <div className="flex justify-between items-center  w-full" >
+        <div className="flex justify-between items-center  w-full " >
             <span className="flex flex-col">
-                <span className="text-white title" >jaliKoi Analytics</span>
+                <span className="text-white title" >Jali Koi Analytics</span>
                 <span className="text-sm text-white title-sub" >See what is going on with your business</span>
             </span>
             <span className="date-filter text-white " >

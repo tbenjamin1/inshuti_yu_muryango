@@ -45,7 +45,7 @@ export default function PopModal({ setOpenModal, onChildEvent, Title, button, ch
 
                 <div className="fixed inset-0 overflow-hidden ">
                     <div className="absolute inset-0 overflow-hidden ">
-                        <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+                        <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 modal-container">
                             <Transition.Child
                                 as={Fragment}
                                 enter="transform transition ease-in-out duration-500 sm:duration-700"
@@ -55,7 +55,7 @@ export default function PopModal({ setOpenModal, onChildEvent, Title, button, ch
                                 leaveFrom="translate-x-0"
                                 leaveTo="translate-x-full"
                             >
-                                <Dialog.Panel className="pointer-events-auto relative  ">
+                                <Dialog.Panel className="pointer-events-auto relative  modal-sub-container ">
                                     <Transition.Child
                                         as={Fragment}
                                         enter="ease-in-out duration-500"

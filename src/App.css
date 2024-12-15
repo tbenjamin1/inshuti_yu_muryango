@@ -298,7 +298,9 @@ body {
   align-items: center;
   background-color: #23419B;
 }
-
+:where(.css-dev-only-do-not-override-1vtf12y).ant-menu-dark{
+  background-color: #23419B !important;
+}
 .style-select {
   position: absolute;
   inset: auto auto 0px 0px;
@@ -306,7 +308,15 @@ body {
   transform: translate3d(522.5px, 3847.5px, 0px);
 }
 
-
+:where(.css-dev-only-do-not-override-1vtf12y).ant-layout .ant-layout-sider {
+  background-color: #23419B !important;
+      top: unset !important;
+     bottom: unset !important;
+}
+:where(.css-dev-only-do-not-override-1vtf12y).ant-menu-dark .ant-menu-item-selected{
+background-color: #e5e7eb;
+color: #23419B ;
+}
 
 .container {
   width: 93%;
@@ -1183,7 +1193,7 @@ input {
 
 .quick-links a:hover {
   color: #4E92F3;
-  /* Slightly lighter shade for hover effect */
+ 
 }
 
 .store-links {
@@ -1195,9 +1205,40 @@ input {
   width: 130px;
   height: auto;
 }
-
+.modal-container{
+  width: 40%;
+}
+.modal-sub-container{
+  width: 100%;
+}
 .footer-bottom {
   margin-top: 15px;
   font-size: 0.9rem;
   opacity: 0.8;
+}
+.filter-top{
+  margin: 100px 0px;
+  width: 86%;
+}
+.filter_top{
+   margin: 76px 0px;
+  width: 14%;
+}
+.sidebar-enter {
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-in-out;
+}
+.sidebar-enter-active {
+  transform: translateX(0);
+}
+.sidebar-exit {
+  transform: translateX(0);
+  transition: transform 0.3s ease-in-out;
+}
+.sidebar-exit-active {
+  transform: translateX(-100%);
+}
+
+.fixed-navbar {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }

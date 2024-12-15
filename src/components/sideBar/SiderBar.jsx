@@ -1,84 +1,107 @@
 import React, { useEffect, useState } from 'react';
-import "./Sidebar.css";
-import { Link } from 'react-router-dom';
-import jal_koi from "../images/jal_koi.png";
-import axios from "axios";
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import jaliKoi_logo from "../images/jal_koi.png"
+import {
+  AppstoreOutlined,
+  BarChartOutlined,
+  CloudOutlined,
+  ShopOutlined,
+  TeamOutlined,
+  UploadOutlined,
+  UserOutlined,
+  VideoCameraOutlined,
+  LogoutOutlined,
+} from '@ant-design/icons';
+import { Layout, Menu, theme } from 'antd';
+import axios from 'axios';
 
-const Sidebar = ({ sidebarOpen, closeSidebar }) => {
-  const apiUrljaliKoi = import.meta.env.VITE_API_URL_KOIPAY;
-  const apiUrlApidev = import.meta.env.VITE_API_URL_APIDEV;
-  const [error, setError] = useState('');
-  const [activeTab, setActiveTab] = useState('');
+const { Header, Content, Footer, Sider } = Layout;
+
+const siderStyle = {
+  overflow: 'auto',
+  height: '100vh',
+  position: 'fixed',
+  insetInlineStart: 0,
+  top: 0,
+  bottom: 0,
+  scrollbarWidth: 'thin',
+  scrollbarGutter: 'stable',
+};
+
+const Sidebar = () => {
   const location = useLocation();
-  const handleLogout = async (event) => {
-    event.preventDefault();
+  const [activeTab, setActiveTab] = useState('');
 
-    try {
-      const response = await axios.get(`${apiUrljaliKoi}/auth/signout`);
-      // Assuming the server responds with a token upon successful authentication
-      window.location.replace('/');
-      localStorage.removeItem('user');
-    } catch (error) {
-      setError('Invalid username or password');
-    }
-  };
+  const apiUrljaliKoi = import.meta.env.VITE_API_URL_KOIPAY;
+
   useEffect(() => {
-    // Get the current path from the location object
-    const currentPath = location.pathname;
-    // Update the active tab based on the current path
-    setActiveTab(currentPath);
+    setActiveTab(location.pathname);
   }, [location]);
 
+  const handleLogout = async () => {
+    try {
+      await axios.get(`${apiUrljaliKoi}/auth/signout`);
+      localStorage.removeItem('user');
+      window.location.replace('/');
+    } catch (error) {
+      console.error('Logout failed', error);
+    }
+  };
+  // Define your navigation items dynamically
+  const menuItems = [
+    { key: '/statistics', icon: <UserOutlined />, label: <Link to="/statistics">Dashboard</Link> },
+    { key: '/fuelEssance', icon: <VideoCameraOutlined />, label: <Link to="/fuelEssance">Essance</Link> },
+    { key: '/mtnTransactions', icon: <CloudOutlined />, label: <Link to="/mtnTransactions">MTN</Link> },
+    { key: '/startimes', icon: <ShopOutlined />, label: <Link to="/startimes">Startimes</Link> },
+    { key: '/electricity', icon: <BarChartOutlined />, label: <Link to="/electricity">Electricity</Link> },
+    { key: '/businesses', icon: <AppstoreOutlined />, label: <Link to="/businesses">Businesses</Link> },
+    {
+      key: 'logout',
+      icon: <LogoutOutlined />,
+      label: (
+        <span onClick={handleLogout} style={{ cursor: 'pointer' }}>
+          Log Out
+        </span>
+      ),
+    },
+  ];
   return (
-    <div className={sidebarOpen ? "sidebar_responsive " : "border"} id="sidebar">
-      <div className="sidebar__title flex justify-center items-center">
-        <div >
-          <Link to="/statistics" ><img className='jal_koi-logo' src={jal_koi} alt="logo" /></Link>
-        </div>
-        <i
-          onClick={() => closeSidebar()}
-          className="fa fa-times"
-          id="sidebarIcon"
-          aria-hidden="true"
-        ></i>
+    <Sider style={siderStyle}>
+      <div className='my-5 ' style={{ padding: '0px 16px', textAlign: 'center', color: 'white' }}>
+        <Link to="/statistics">
+          <div className=' rounded-md flex justify-center' >
+            {/* <img
+              className="h-10 object-cover jal_koi-logo"
+              src={jaliKoi_logo}
+              alt=" jali koi Logo"
+            /> */}
+          </div>
+        </Link>
       </div>
-      <div className="sidebar__menu ">
-        <div className={activeTab === '/statistics' ? 'activeTab sidebar__link active_menu_link flex' : 'sidebar__link active_menu_link flex'}>
-          <Link to="/statistics" ><i className="fa fa-home"></i>
-            Dashboard</Link>
-        </div>
-        <h2 className="">Fuel</h2>
-        <span className="flex flex-col px-3 sidebar__link">
-          <span className="p-2"><Link to="/fuelEssance">Essance</Link></span>
-          <span className="p-2">Diesel</span>
-        </span>
-        <h2 className="">Airtime</h2>
-        <span className="flex flex-col px-3 sidebar__link">
-          <span className={activeTab === '/mtnTransactions' ? ' activeTab p-2' : 'p-2'}> <Link to="/mtnTransactions">MTN</Link></span>
-          <span className={activeTab === '/airtelTransaction' ? ' activeTab p-2' : 'p-2'}> <Link to="/airtelTransaction">Airtel</Link></span>
-        </span>
-        <h2 className={activeTab === '/startimes' ? ' activeTab p-2' : 'p-2'}><Link to="/startimes">Startimes</Link></h2>
-        <h2 className={activeTab === '/electricity' ? ' activeTab px-2 py-4' : 'px-2'}><Link to="/electricity">Electricity</Link></h2>
-        <h2 className={activeTab === '/businesses' ? ' activeTab px-2 py-4' : 'px-2'}><Link to="/businesses">Businesses</Link></h2>
-
-        <h2>settings</h2>
-        <div className="sidebar__link">
-          <span className="flextems-center  my-2"><i className="fa fa-briefcase mr-2"></i>
-            Manager</span>
-          <span className="flex flex-col">
-            <span className="p-2">User</span>
-            <span className="p-2">Roles</span>
-            <span className="p-2">Services</span>
-          </span>
-        </div>
-        <div className="sidebar__logout cursor-pointer border  rounded-xl flex justify-around items-center" onSubmit={handleLogout}  >
-          <i onSubmit={handleLogout} className="fa fa-power-off cursor-pointer"></i>
-          <span className='cursor-pointer  py-2 rounded-xl ' onClick={handleLogout} >Log out</span>
-        </div>
-      </div>
-    </div>
+      <Menu
+        theme="dark"
+        mode="inline"
+        selectedKeys={[activeTab]}
+        items={menuItems}
+      />
+    </Sider>
   );
 };
 
-export default Sidebar;
+const App = () => {
+  const {
+    token: { colorBgContainer, borderRadiusLG },
+  } = theme.useToken();
+
+  return (
+    <Layout hasSider>
+      <Sidebar />
+      <Layout style={{ marginInlineStart: 100 }}>
+        <Header style={{ padding: 0, background: colorBgContainer }} />
+     
+      </Layout>
+    </Layout>
+  );
+};
+
+export default App;

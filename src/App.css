@@ -298,7 +298,7 @@ body {
   align-items: center;
   background-color: #23419B;
 }
-:where(.css-dev-only-do-not-override-1vtf12y).ant-menu-dark{
+.ant-menu-dark{
   background-color: #23419B !important;
 }
 .style-select {
@@ -308,16 +308,18 @@ body {
   transform: translate3d(522.5px, 3847.5px, 0px);
 }
 
-:where(.css-dev-only-do-not-override-1vtf12y).ant-layout .ant-layout-sider {
-  background-color: #23419B !important;
+.ant-layout .ant-layout-sider{
+  background: #23419B !important;
       top: unset !important;
      bottom: unset !important;
 }
-:where(.css-dev-only-do-not-override-1vtf12y).ant-menu-dark .ant-menu-item-selected{
+.ant-menu-dark .ant-menu-item-selected{
 background-color: #e5e7eb;
 color: #23419B ;
 }
-
+:where(.css-dev-only-do-not-override-1vtf12y).ant-menu-dark{
+ background: #23419B !important;
+}
 .container {
   width: 93%;
 }

@@ -198,8 +198,11 @@ body {
   height: 250px;
   width: 100%;
 }
+.top-bussines-card-spineer{
+  padding: 20px 0px;
+}
 .top-bussines-card {
-  height: 400px !important;
+  height: 350px !important;
 }
 .jal_koi-logo{
   height: 50px;
@@ -323,7 +326,16 @@ color: #23419B ;
 .container {
   width: 93%;
 }
-
+.bussiness-logo{
+width: 100%;
+height: 200px;
+}
+.bussiness-logo-img{
+width: 100%;
+height: 100%;
+border-radius: 5px;
+object-fit: cover;
+}
 .myTabContent {
   padding-top: 100px;
   /* height: vh; */

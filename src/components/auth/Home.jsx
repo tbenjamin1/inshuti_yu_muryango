@@ -61,7 +61,7 @@ const Home = () => {
                         <MyCarousel />
                     </div>
                 </div>
-                {allBussinessesRegisteredList && <div className='flex flex-col justify-center items-center w-full'  >
+                {allBussinessesRegisteredList && <div className='flex flex-col justify-center items-center w-full my-3'  >
                     <div className='p-4 w-full'>
                         <TopBusiness allBussinessesRegisteredList={allBussinessesRegisteredList} />
                     </div>

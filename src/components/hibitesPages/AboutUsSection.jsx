@@ -11,7 +11,6 @@ const AboutUsSection = () => {
                     {/* Top Row: Vision, Mission, and Promise */}
                     <div className="about-us-section">
                         
-
                         <Row gutter={[24, 24]} justify="center">
                             {/* Vision Card */}
                             <Col xs={24} sm={12} md={8}>

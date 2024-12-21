@@ -6,4 +6,7 @@ export default defineConfig({
     server: {
         open: true, // Auto-open in browser
     },
+    optimizeDeps: {
+        include: ['swiper/react',],
+    },
 });

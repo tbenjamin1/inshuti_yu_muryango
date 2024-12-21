@@ -14,7 +14,7 @@ import { useToasts } from 'react-toast-notifications';
 
 function Login() {
 
-    const apiUrlKoiPay = import.meta.env.VITE_API_URL_KOIPAY;
+  
 
     const { addToast } = useToasts();
     const [email, setEmailValue] = useState('');

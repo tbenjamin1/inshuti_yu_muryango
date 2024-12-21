@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import jaliKoi_logo from "../images/jal_koi.png"
+import high_byte_logo from "../images/high_byte_logo.png"
 import home_banner from "../images/home-banner.png"
 import { Link } from 'react-router-dom'
 
@@ -23,42 +23,61 @@ const NewNavBar = () => {
         <div>
             <div className="fixed inset-x-0 top-0 z-50 h-0.5 mt-0.5 bg-blue-500" style={{ width: `${percent}%` }}></div>
 
-            <nav className="flex justify-around py-4 bg-white/80 backdrop-blur-md shadow-md w-full fixed top-0 left-0 right-0 z-10">
-                <div className="flex items-center">
-                    <Link to="/">
-                        <img
-                            className="h-10 object-cover jal_koi-logo"
-                            src={jaliKoi_logo}
-                            alt=" jali koi Logo"
-                        />
-                    </Link>
+            <nav className="flex justify-between  bg-white/80 backdrop-blur-md shadow-md w-full fixed top-0 left-0 right-0 z-10">
+                <div className="flex items-center  w-2/3">
+                    <div className="flex items-center bg-[#7a2949] w-full text-white py-4 px-8">
+                        {/* Logo */}
+                        <Link to="/" className="flex items-center space-x-2">
+                            <img
+                                src={high_byte_logo}
+                                alt="High Bytes Logo"
+                                className="h-16 object-contain"
+                            />
+                            <span className="text-sm font-medium">
+                                High Bytes
+                                <br />
+                                <span className="text-xs">We Provide, We Care, We Deliver</span>
+                            </span>
+                        </Link>
+
+                        {/* Navigation Links */}
+                        <div className="flex  justify-between items-center space-x-6 ml-10">
+                            <Link
+                                to="/"
+                                className="font-medium text-white hover:text-gray-300 transition-colors flex   items-center"
+                            >
+                                Home
+                            </Link>
+                            <Link
+                                to="/products"
+                                className="font-medium text-white hover:text-gray-300 transition-colors"
+                            >
+                                Products
+                            </Link>
+                            <Link
+                                to="/about"
+                                className="font-medium text-white hover:text-gray-300 transition-colors"
+                            >
+                                About Us
+                            </Link>
+                            <Link
+                                to="/contact"
+                                className="font-medium text-white hover:text-gray-300 transition-colors"
+                            >
+                                Contact Us
+                            </Link>
+                        </div>
+                    </div>
+
                 </div>
 
-                <div className="items-center hidden space-x-8 lg:flex">
 
-                    <Link to="/"> <a className="flex text-gray-600 cursor-pointer transition-colors duration-300">
-                        Home
-                    </a> </Link>
-                    <a href="#info-content" className="flex text-gray-600 cursor-pointer transition-colors duration-300">
-                        About us
-                    </a>
-                    <a href="#info-content" className="flex text-gray-600 cursor-pointer transition-colors duration-300">
-                        Contact us
-                    </a>
-
-                    
-
-                </div>
-
-                <div className="flex items-center space-x-5">
-                   
-
-                    <Link to="/login"> <a className="flex p-2 rounded-md primary-background-color   text-white cursor-pointer transition-colors duration-300 font-semibold ">
-                        <svg className="fill-current h-5 w-5 mr-2 mt-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                            <path d="M10,17V14H3V10H10V7L15,12L10,17M10,2H19A2,2 0 0,1 21,4V20A2,2 0 0,1 19,22H10A2,2 0 0,1 8,20V18H10V20H19V4H10V6H8V4A2,2 0 0,1 10,2Z" />
-                        </svg>
-                        Login
-                    </a> </Link>
+                <div className="flex  space-x-5 w-1/3 ">
+                    <div className="bg-[#102c4a]  text-white py-4 px-6 text-right w-full">
+                        <p className="text-sm text-white">121 King Street, Melbourne 3000</p>
+                        <p className="text-sm text-white">+12 3 0000 0000</p>
+                        <p className="text-sm text-white">contact@brandemail.com</p>
+                    </div>
                 </div>
             </nav>
         </div>

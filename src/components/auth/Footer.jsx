@@ -28,13 +28,13 @@ const Footer = () => (
                 <div className="quick-links flex flex-col  mx-10">
                     <span className='text-start' >GET IN TOUCH</span>
                     <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
-                        <FontAwesomeIcon icon={faFacebook} size="" /> <span className=' px-2' >jalikoi@jaligroup.rw</span>
+                        <FontAwesomeIcon icon={faFacebook} size="" /> <span className=' px-2' > highBytes@highroup.rw</span>
                     </a>
                     <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
                         <FontAwesomeIcon icon={faTwitter} size="" /><span className='px-2' >(+250) 78743 8701</span>
                     </a>
                     <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
-                        <FontAwesomeIcon icon={faInstagram} size="" /> <span className='capitalize px-2' >IMA House, Sonatubes, Kigali</span>
+                        <FontAwesomeIcon icon={faInstagram} size="" /> <span className='capitalize px-2' >IMA House, kicukiro, Kigali</span>
                     </a>
 
                 </div>
@@ -43,33 +43,31 @@ const Footer = () => (
             <div className=' flex flex-col justify-between' >
                 {/* Social Media Links */}
                 <div className="flex justify-between store_link">
-                    <a href="https://www.facebook.com/profile.php?id=61568380481941&mibextid=ZbWKwL" target="_blank" rel="noopener noreferrer">
+                    <a href="#" target="_blank" rel="noopener noreferrer">
                         <FontAwesomeIcon icon={faFacebook} size="2x" />
                     </a>
-                    <a href="#" target="_blank" rel="noopener noreferrer">
+                    <a href="#" target="_blank" className='px-3' rel="noopener noreferrer">
                         <FontAwesomeIcon icon={faTwitter} size="2x" />
                     </a>
                     <a href="#" target="_blank" rel="noopener noreferrer">
                         <FontAwesomeIcon icon={faInstagram} size="2x" />
                     </a>
-                    <a href="https://www.linkedin.com/company/jalikoi-rewards/" target="_blank" rel="noopener noreferrer">
-                        <FontAwesomeIcon icon={faLinkedin} size="2x" />
-                    </a>
+                   
                 </div>
 
                 {/* App Store and Play Store Links */}
                 <div className="store-links store_link">
-                    <a href="#" target="_blank" rel="noopener noreferrer">
+                    {/* <a href="#" target="_blank" rel="noopener noreferrer">
                         <img src={appStoreLogo} alt="App Store" className="store-logo" />
                     </a>
                     <a href="https://play.google.com/store/apps/details?id=koipay.co.koipay&pli=1" className=' flex justify-end ' target="_blank" rel="noopener noreferrer">
                         <img src={playStoreLogo} alt="Google Play Store" className="store-logo" />
-                    </a>
+                    </a> */}
                 </div>
             </div>
         </div>
         <div className="footer-bottom">
-            <p>© {currentYear} JaliKoi. All rights reserved.</p>
+            <p>© {currentYear} HighBytes. All rights reserved.</p>
         </div>
     </footer>
 );

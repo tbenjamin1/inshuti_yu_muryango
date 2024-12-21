@@ -21,8 +21,8 @@ function Businesses() {
     const apiUrlApidev = import.meta.env.VITE_API_URL_APIDEV;
     const { addToast } = useToasts();
     const user = useSelector(getUser);
-    const defaultStartDate = moment().startOf('month').format('YYYY-MM-DD'); 
-    const defaultEndDate = moment().format('YYYY-MM-DD'); 
+    const defaultStartDate = moment().startOf('month').format('YYYY-MM-DD');
+    const defaultEndDate = moment().format('YYYY-MM-DD');
     const [searchQuery, setSearchQuery] = useState('');
 
     const allbusinesscategories = useSelector(getAllBussinessesCategories);
@@ -55,17 +55,17 @@ function Businesses() {
         console.log("Certificate:", business.business_certificate);
 
         if (business.business_certificate.includes("image/")) {
-            
+
             setcertificateImg(!certificateImg);
             setViewRiderInfo(business);
             setViewRider(!viewRider);
         } else if (business.business_certificate.includes(".pdf")) {
-           
+
             setcertificatepdf(!certificatepdf);
             setViewRiderInfo(business);
             setViewRider(!viewRider);
         } else {
-          
+
             setcertificateNoNeImagepdf(!certificateNoNeImagepdf);
             setViewRiderInfo(business);
             setViewRider(!viewRider);
@@ -87,13 +87,13 @@ function Businesses() {
 
 
         if (business.business_certificate.includes("image/")) {
-         
+
             setcertificateImg(!certificateImg);
         } else if (business.business_certificate.includes(".pdf")) {
-          
+
             setcertificatepdf(!certificatepdf);
         } else {
-           
+
             setcertificateNoNeImagepdf(!certificateNoNeImagepdf);
         }
     };
@@ -171,17 +171,17 @@ function Businesses() {
         setreward_percentage(event.target.value);
     };
 
-    
+
     const jalKoi_percentageHandleChange = (event) => {
         const selectedPercentage = parseFloat(event.target.value); // Get the selected value as a number
         const businessRewardPercentage = parseFloat(viewRiderInfo.reward_percentage); // Ensure it's a number
 
         // Calculate Jalikoi reward
         const calculatedJalikoiReward = businessRewardPercentage * selectedPercentage;
-        
+
         setjalKoi_percentage(event.target.value);
         setCalculatedjalKoi_percentage(calculatedJalikoiReward);
-       
+
     };
 
     const confirmPasswordHandleChange = (event) => {
@@ -201,7 +201,7 @@ function Businesses() {
         setFile(e.target.files[0]);
     }
     const handleCertificateChange = (e) => {
-       
+
 
 
         const selectedFile = e.target.files[0];
@@ -284,7 +284,7 @@ function Businesses() {
             setLoading(false);
         }
     };
-   
+
 
     const dispatch = useDispatch()
     const [selectedRange, setSelectedRange] = useState([defaultStartDate, defaultEndDate]);
@@ -362,7 +362,7 @@ function Businesses() {
         setisLoading(true)
 
         try {
-          
+
             const response = await axios.patch(`${apiUrlApidev}/business/${viewRiderInfo.user.id}/   
             `, businessInform);
 
@@ -416,7 +416,7 @@ function Businesses() {
             setLoading(false);
         } catch (error) {
             addToast("Something went wrong! please try again", {
-                appearance: 'error', autoDismiss: true, 
+                appearance: 'error', autoDismiss: true,
                 autoDismissTimeout: 5000,
                 transitionDuration: 300,
             });
@@ -424,7 +424,7 @@ function Businesses() {
         }
     };
     const fillBussinesForm = (busines) => {
-       
+
         setbusinesNameValue(busines.name);
         setcolorCodeValue(busines.color_code);
         setcontactTelValue(busines.contact_tel);
@@ -434,8 +434,8 @@ function Businesses() {
         setreward_percentage(busines.reward_percentage);
         setjalKoi_percentage(busines.groupeya_percentage);
         setEmail(busines.user ? busines.user.email : '');
-        setcertificate(busines.business_certificate ?busines.business_certificate : '');
-        setrenderFile(busines.icon ?busines.icon: '');
+        setcertificate(busines.business_certificate ? busines.business_certificate : '');
+        setrenderFile(busines.icon ? busines.icon : '');
         setbusinessCategory(busines.category.id);
     };
 
@@ -626,7 +626,7 @@ function Businesses() {
                                                                             </label>
                                                                             <span className='flex justify-between momo-number ' >
                                                                                 <input type="number" className='phone-number' placeholder='MTN MOMO tel' value={phoneNumber} onChange={confirmMOMOnumberHandleChange} ></input>
-                                                                               
+
                                                                             </span>
                                                                         </span>
 
@@ -678,11 +678,11 @@ function Businesses() {
                                                                         <div className='flex justify-between mobile-fit '>
                                                                             <span className='flex flex-col w-1/2'>
                                                                                 <label>
-                                                                                    jali koi rewards
+                                                                                    high bytes rewards
                                                                                 </label>
                                                                                 <span className='pb-1' >{viewRiderInfo.groupeya_percentage ? viewRiderInfo.groupeya_percentage : "N/A"}</span>
                                                                                 <select required value={jalKoi_percentage} onChange={jalKoi_percentageHandleChange} className='rounded border'  >
-                                                                                    <option value='' >Jali koi rewards</option>
+                                                                                    <option value='' >high bytes rewards</option>
                                                                                     <option value='0.5'>1/2</option>
                                                                                     <option value='0.33'>1/3</option>
                                                                                     <option value='0.25'>1/4</option>
@@ -700,7 +700,7 @@ function Businesses() {
 
                                                                             <div className='flex flex-col' >
                                                                                 <label className='mx-2' >
-                                                                                    Business certificate 
+                                                                                    Business certificate
                                                                                 </label>
                                                                                 <div className='my-3'>
                                                                                     {certificate && <a href={certificate} className='bg-slate-300 p-2 rounded-lg' download='Certificate.pdf' target="_blank" rel="noopener noreferrer">
@@ -712,8 +712,8 @@ function Businesses() {
                                                                                     {certificateImgae ? (
                                                                                         <>
                                                                                             {certificateImgae && <img src={certificateImgae} alt="Selected Image" className="image-certificate" />}
-                                                                                           
-                                                                                           
+
+
                                                                                             <input
                                                                                                 id="certificateUploadInput"
                                                                                                 type="file"
@@ -817,15 +817,15 @@ function Businesses() {
                                                                                 </label>
                                                                                 <span>{viewRiderInfo.reward_percentage ? viewRiderInfo.reward_percentage : "N/A"} %</span>
                                                                             </span>
-<br />
+                                                                            <br />
                                                                             <span className='flex flex-col' >
                                                                                 <label>
-                                                                                    Jali Koi percentage
+                                                                                    high bytes percentage
                                                                                 </label>
                                                                                 <span>{viewRiderInfo.groupeya_percentage ? viewRiderInfo.groupeya_percentage : "N/A"}</span>
                                                                             </span>
 
-<br />
+                                                                            <br />
                                                                             <span className='flex flex-col' >
                                                                                 <label>
                                                                                     Email (admin account)
@@ -839,19 +839,19 @@ function Businesses() {
 
                                                                             <div className='flex flex-col' >
                                                                                 <label className='mx-2' >
-                                                                                    Business certificate 
+                                                                                    Business certificate
                                                                                 </label>
                                                                                 <div className='my-3'>
                                                                                     {certificatepdf && <a href={viewRiderInfo.business_certificate} className='bg-slate-300 p-2 rounded-lg' download='Certificate.pdf' target="_blank" rel="noopener noreferrer">
                                                                                         Download Certificate
                                                                                     </a>}
                                                                                 </div>
-                                                                                {certificateImgae && 
+                                                                                {certificateImgae &&
                                                                                     <div className="certificate-container p-3  rounded-lg m-1 border ">
                                                                                         <img src={certificateImgae ? certificateImgae : upload} alt="Selected Image" className="image-certificate" />
                                                                                     </div>
                                                                                 }
-                                                                                
+
                                                                                 {!viewRiderInfo.business_certificate && <img src={upload} alt="Selected Image" className="image" />}
                                                                             </div>
 

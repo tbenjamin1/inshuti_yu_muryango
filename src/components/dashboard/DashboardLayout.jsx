@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import Filter from "../filter";
-import Navbar from "../navBar/Navbar";
-import NewNavBar from "../auth/NewNavBar";
+
+
 import Sidebar from "../sideBar/SiderBar";
 import moment from 'moment';
+import NewNavBar from "../auth/NewNavBar";
 
 function DashboardHome(props) {
   const [sidebarOpen, setsidebarOpen] = useState(false);
@@ -21,7 +22,7 @@ function DashboardHome(props) {
         <Sidebar sidebarOpen={sidebarOpen} closeSidebar={closeSidebar}/>
      </div>
       <div className="flex   flex-col items-center bg-slate-100 filter-top">
-        <Navbar sidebarOpen={sidebarOpen} openSidebar={openSidebar}/>
+        <NewNavBar sidebarOpen={sidebarOpen} openSidebar={openSidebar}/>
         <div className=" filter-container my-5 p-8 "><Filter/></div>
         <div className="page-content w-full justify-center items-center p-4 bg-slate-100 h-full ">{props.children}</div>
       </div>

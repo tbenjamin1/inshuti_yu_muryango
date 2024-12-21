@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import jaliKoi_logo from "../images/jal_koi.png"
+import high_byte_logo from "../images/high_byte_logo.png"
 import {
   AppstoreOutlined,
   BarChartOutlined,
@@ -50,11 +50,12 @@ const Sidebar = () => {
   // Define your navigation items dynamically
   const menuItems = [
     { key: '/statistics', icon: <UserOutlined />, label: <Link to="/statistics">Dashboard</Link> },
-    { key: '/fuelEssance', icon: <VideoCameraOutlined />, label: <Link to="/fuelEssance">Essance</Link> },
-    { key: '/mtnTransactions', icon: <CloudOutlined />, label: <Link to="/mtnTransactions">MTN</Link> },
-    { key: '/startimes', icon: <ShopOutlined />, label: <Link to="/startimes">Startimes</Link> },
-    { key: '/electricity', icon: <BarChartOutlined />, label: <Link to="/electricity">Electricity</Link> },
-    { key: '/businesses', icon: <AppstoreOutlined />, label: <Link to="/businesses">Businesses</Link> },
+    // { key: '/fuelEssance', icon: <VideoCameraOutlined />, label: <Link to="/fuelEssance">Essance</Link> },
+    // { key: '/mtnTransactions', icon: <CloudOutlined />, label: <Link to="/mtnTransactions">MTN</Link> },
+    // { key: '/startimes', icon: <ShopOutlined />, label: <Link to="/startimes">Startimes</Link> },
+    // { key: '/electricity', icon: <BarChartOutlined />, label: <Link to="/electricity">Electricity</Link> },
+    { key: '/high-bytes-product', icon: <BarChartOutlined />, label: <Link to="/high-bytes-product">Products</Link> },
+    // { key: '/businesses', icon: <AppstoreOutlined />, label: <Link to="/businesses">Businesses</Link> },
     {
       key: 'logout',
       icon: <LogoutOutlined />,
@@ -72,8 +73,8 @@ const Sidebar = () => {
           <div className=' rounded-md flex justify-center' >
             {/* <img
               className="h-10 object-cover jal_koi-logo"
-              src={jaliKoi_logo}
-              alt=" jali koi Logo"
+              src={high_byte_logo}
+              alt=" high bytes Logo"
             /> */}
           </div>
         </Link>
@@ -98,7 +99,7 @@ const App = () => {
       <Sidebar />
       <Layout style={{ marginInlineStart: 100 }}>
         <Header style={{ padding: 0, background: colorBgContainer }} />
-     
+
       </Layout>
     </Layout>
   );

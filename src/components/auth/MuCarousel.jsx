@@ -18,7 +18,7 @@ const contentStyle = {
 };
 
 const App = () => (
-    <div className="what-makes-us-different px-3 flex  ">
+    <div className="what-makes-us-different rounded-md px-3 flex  ">
         
         <div className="content-section  p-4 ">
             <h2>What Makes Us Different?</h2>

@@ -91,11 +91,11 @@ const FeatureSection = () => {
 
     return (
         <div className="bg-white py-6">
-            <div className="container mx-auto flex justify-between items-center space-x-6 px-4 lg:px-0 ">
+            <div className="container_feature mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-4 lg:px-0">
                 {features.map((feature, index) => (
                     <div
                         key={index}
-                        className="flex items-center   space-x-4 text-gray-700"
+                        className="flex items-center space-x-4 text-gray-700 p-4 border rounded-lg shadow-sm"
                     >
                         {/* Icon */}
                         <div className="flex items-center justify-center">

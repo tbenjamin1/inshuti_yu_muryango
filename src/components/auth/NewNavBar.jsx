@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import high_byte_logo from "../images/high_byte_logo.png"
 import home_banner from "../images/home-banner.png"
 import { Link } from 'react-router-dom'
+import ProfileDropdown from './ProfileDropdown';
 
 
 const NewNavBar = () => {
@@ -24,8 +25,8 @@ const NewNavBar = () => {
             <div className="fixed inset-x-0 top-0 z-50 h-0.5 mt-0.5 bg-blue-500" style={{ width: `${percent}%` }}></div>
 
             <nav className="flex justify-between  bg-white/80 backdrop-blur-md shadow-md w-full fixed top-0 left-0 right-0 z-10">
-                <div className="flex items-center  w-2/3">
-                    <div className="flex items-center bg-[#7a2949] w-full text-white py-4 px-8">
+                <div className="flex items-center main-nav-container  w-2/3">
+                    <div className="flex    justify-between items-center bg-[#7a2949] w-full text-white py-4 px-8 ">
                         {/* Logo */}
                         <Link to="/" className="flex items-center space-x-2">
                             <img
@@ -40,8 +41,15 @@ const NewNavBar = () => {
                             </span>
                         </Link>
 
+                        {/* Mobile Burger Menu Button */}
+                        <div className="md:hidden">
+                           
+                            <ProfileDropdown/>
+                        </div>
+
+
                         {/* Navigation Links */}
-                        <div className="flex  justify-between items-center space-x-6 ml-10">
+                        <div className="flex  justify-between menu-links items-center space-x-6 ml-10">
                             <Link
                                 to="/"
                                 className="font-medium text-white hover:text-gray-300 transition-colors flex   items-center"
@@ -72,7 +80,7 @@ const NewNavBar = () => {
                 </div>
 
 
-                <div className="flex  space-x-5 w-1/3 ">
+                <div className="flex  space-x-5 w-1/3 menu-contact">
                     <div className="bg-[#102c4a]  text-white py-4 px-6 text-right w-full">
                         <p className="text-sm text-white">121 King Street, Melbourne 3000</p>
                         <p className="text-sm text-white">+12 3 0000 0000</p>

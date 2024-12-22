@@ -15,10 +15,10 @@ const ImageGallery = () => {
             <Swiper
                 modules={[Navigation, Thumbs, Autoplay]}
                 navigation
-                autoplay={{
-                    delay: 3000, // Delay between slides in milliseconds
-                    disableOnInteraction: false, // Autoplay continues after user interaction
-                }}
+                // autoplay={{
+                //     delay: 3000,
+                //     disableOnInteraction: false,
+                // }}
                 thumbs={thumbsSwiper ? { swiper: thumbsSwiper } : undefined}
                 loop
                 className="main-slider"
@@ -53,12 +53,26 @@ const ImageGallery = () => {
             <Swiper
                 onSwiper={setThumbsSwiper}
                 modules={[Thumbs]}
-                slidesPerView={4}
+                slidesPerView={4} // Default for large screens
                 spaceBetween={10}
                 loop
+                breakpoints={{
+                    320: {
+                        slidesPerView: 2,
+                        spaceBetween: 5,
+                    },
+                    640: {
+                        slidesPerView: 3,
+                        spaceBetween: 8,
+                    },
+                    1024: {
+                        slidesPerView: 4,
+                        spaceBetween: 10,
+                    },
+                }}
                 className="thumbnail-slider"
             >
-                <SwiperSlide>
+                <SwiperSlide  >
                     <img
                         src="https://content.jdmagicbox.com/comp/sidhart-nagar/x3/9999p5544.5544.200909110512.l6x3/catalogue/retina-building-design-naugarh-sidhart-nagar-architects-9rtq79qka3.jpg"
                         alt="Thumbnail 1"

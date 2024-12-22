@@ -76,7 +76,7 @@ const AboutUsSection = () => {
                     {/* Bottom Row: Our Story */}
                     <Row gutter={[24, 24]} justify="center" className="" style={{ marginTop: "100px" }}>
                         <Col xs={24} sm={24} md={12} className="  flex flex-col justify-between items-stretch " >
-                            <div>
+                            <div className="our-story w-full mb-2" >
                                 <h2 className="Our_Story" >Our Story</h2>
                                 <h3 className="Our_Story" >Who We Are</h3>
                             </div>
@@ -90,7 +90,7 @@ const AboutUsSection = () => {
                                 </p>
                                 
                             </div>
-                            <div>
+                            <div className="mt-3" >
                                 <Button type="primary">See More</Button>
                             </div>
                         </Col>

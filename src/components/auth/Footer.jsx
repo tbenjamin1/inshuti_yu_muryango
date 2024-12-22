@@ -12,7 +12,7 @@ const Footer = () => (
         <div className="  flex justify-around quick_inks  ">
             <div className=' flex w-full' >
                 {/* quick Links */}
-                <div className="quick-links flex flex-col ">
+                <div className="quick-links flex flex-col pr-4 ">
                     <span className='text-start' >QUICK LINKS</span>
                     <a href="#info-content" target="_blank" rel="noopener noreferrer">
                         About us

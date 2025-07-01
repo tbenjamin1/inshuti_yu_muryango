@@ -1,35 +1,63 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-
-
 import axios from 'axios';
+import { Eye, EyeOff, Mail, Lock, ArrowRight, AlertCircle } from 'lucide-react';
 import koipay_logo from "../images/high_byte_logo.png"
 import NewNavBar from './NewNavBar';
 import Footer from './Footer';
-
 import home_banner from "../images/home-banner.png"
-
 import { useToasts } from 'react-toast-notifications';
 
-
 function Login() {
-
-  
-
     const { addToast } = useToasts();
     const [email, setEmailValue] = useState('');
     const [password, setPasswordValue] = useState('');
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [errors, setErrors] = useState({});
+
     const emailHandleChange = (event) => {
         setEmailValue(event.target.value);
-    };
-    const passwordHandleChange = (event) => {
-        setPasswordValue(event.target.value);
+        // Clear email error when user starts typing
+        if (errors.email) {
+            setErrors(prev => ({ ...prev, email: '' }));
+        }
     };
 
+    const passwordHandleChange = (event) => {
+        setPasswordValue(event.target.value);
+        // Clear password error when user starts typing
+        if (errors.password) {
+            setErrors(prev => ({ ...prev, password: '' }));
+        }
+    };
+
+    const validateForm = () => {
+        const newErrors = {};
+        
+        if (!email) {
+            newErrors.email = 'Email is required';
+        } else if (!/\S+@\S+\.\S+/.test(email)) {
+            newErrors.email = 'Please enter a valid email address';
+        }
+        
+        if (!password) {
+            newErrors.password = 'Password is required';
+        } else if (password.length < 6) {
+            newErrors.password = 'Password must be at least 6 characters';
+        }
+        
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        
+        if (!validateForm()) {
+            return;
+        }
+        
         setLoading(true);
 
         try {
@@ -41,103 +69,175 @@ function Login() {
 
             addToast(`Welcome ${response.data.name}`, { appearance: 'success' });
 
-            // Assuming the server responds with a token upon successful authentication
             const auth_user = response.data;
-
-            // Store the token in local storage
             localStorage.setItem('user', JSON.stringify(auth_user));
-            if (auth_user.role.title === "park_and_pick") {
             
+            if (auth_user.role.title === "park_and_pick") {
+                // Redirect for park_and_pick role
             } else if (auth_user.role.title === "business") {
-                
+                // Redirect for business role
             } else {
                 window.location.replace('/statistics');
             }
 
-            // window.location.replace('/park-pick');
             setLoading(false);
-            //  redirecting the user to the desired page
 
         } catch (error) {
-            addToast(error.response.data.message, { appearance: 'error' });
+            const errorMessage = error.response?.data?.message || 'Login failed. Please try again.';
+            addToast(errorMessage, { appearance: 'error' });
             setLoading(false);
         }
     };
 
     return (
-        <div className='flex flex-col' >
+        <div className='flex flex-col min-h-screen bg-gray-50'>
             <NewNavBar />
-            <div className="flex flex-wrap  w-full register-container container-main" >
-                <div
-                    className="w-full register_banner relative h-64"
-                    style={{
-                        backgroundImage: `url(${home_banner})`
-                    }}
-                >
-                    <div className='banner-content flex justify-items-end  h-full text-white ' >
-                        <div className='flex flex-col  justify-center space-y-4 p-4'>
-                            <div className='font-bold why-content-tile ' >Welcome to  Inshuti Y’Umuryango </div>
-                            <div className='why-content ' >
+            
+            
 
+            {/* Main Content */}
+            <div className='flex-1 flex items-center justify-center px-4 py-8 md:py-12 mt-28'>
+                <div className='w-full max-w-md'>
+                    {/* Login Card */}
+                    <div className='bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden'>
+                        {/* Header */}
+                        <div className="px-6 py-8 text-center border-b border-gray-100">
+                          
+                            <h2 className="text-2xl font-bold text-gray-900 mb-2">Sign In</h2>
+                            <p className="text-gray-600">Enter your credentials to access your account</p>
+                        </div>
+
+                        {/* Form */}
+                        <form onSubmit={handleSubmit} className="px-6 py-8 space-y-6">
+                            {/* Email Field */}
+                            <div className="space-y-2">
+                                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                                    Email Address
+                                </label>
+                                <div className="relative">
+                                    <div className="absolute inset-y-1 left-0 pl-3 flex items-center pointer-events-none">
+                                        <Mail className="h-5 w-5 text-gray-400" />
+                                    </div>
+                                    <input
+                                        id="email"
+                                        type="email"
+                                        className={`block w-full pl-10 pr-3 py-3 border rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
+                                            errors.email 
+                                                ? 'border-red-300 focus:ring-red-500' 
+                                                : 'border-gray-300 hover:border-gray-400'
+                                        }`}
+                                        placeholder="Enter your email"
+                                        value={email}
+                                        onChange={emailHandleChange}
+                                        autoComplete="email"
+                                    />
+                                </div>
+                                {errors.email && (
+                                    <div className="flex items-center space-x-1 text-red-600 text-sm">
+                                        <AlertCircle className="h-4 w-4" />
+                                        <span>{errors.email}</span>
+                                    </div>
+                                )}
                             </div>
 
-                        </div>
-                    </div>
-                </div>
+                            {/* Password Field */}
+                            <div className="space-y-2">
+                                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                                    Password
+                                </label>
+                                <div className="relative">
+                                    <div className="absolute inset-y-1 left-0 pl-3 flex items-center pointer-events-none">
+                                        <Lock className="h-5 w-5 text-gray-400" />
+                                    </div>
+                                    <input
+                                        id="password"
+                                        type={showPassword ? "text" : "password"}
+                                        className={`block w-full pl-10 pr-10 py-3 border rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
+                                            errors.password 
+                                                ? 'border-red-300 focus:ring-red-500' 
+                                                : 'border-gray-300 hover:border-gray-400'
+                                        }`}
+                                        placeholder="Enter your password"
+                                        value={password}
+                                        onChange={passwordHandleChange}
+                                        autoComplete="current-password"
+                                    />
+                                    <button
+                                        type="button"
+                                        className="absolute inset-y-1 right-0 pr-3 flex items-center"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                    >
+                                        {showPassword ? (
+                                            <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                                        ) : (
+                                            <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                                        )}
+                                    </button>
+                                </div>
+                                {errors.password && (
+                                    <div className="flex items-center space-x-1 text-red-600 text-sm">
+                                        <AlertCircle className="h-4 w-4" />
+                                        <span>{errors.password}</span>
+                                    </div>
+                                )}
+                            </div>
 
-                <div className='flex justify-center items-center w-full  bg-slate-100 p-3 middle-container'  >
-                    <div className='flex flex-col justify-center items-center  my-5 border bg-white rounded-md w-1/2 p-3 login-mobile' >
+                            {/* Forgot Password Link */}
+                            <div className="flex justify-end">
+                                <Link 
+                                    to="/reset" 
+                                    className="text-sm text-blue-600 hover:text-blue-800 font-medium transition-colors"
+                                >
+                                    Forgot your password?
+                                </Link>
+                            </div>
 
-                        <div className="flex justify-center items-center  border-b-2">
-                            <Link to="/">
-                                <img
-                                    className="h-10 object-cover"
-                                    src={koipay_logo}
-                                    alt="  Inshuti Y’Umuryango Logo"
-                                />
-                            </Link>
-                        </div>
-
-                        <div className='flex flex-col w-1/2 mobile-screen ' >
-                            <div className='flex flex-col my-3  '>
-                                <span className='flex flex-col my-4' >
-                                    <label>
-                                        Email
-                                    </label>
-                                    <input type="text" className='' placeholder='b*****n@gmail.com' value={email} onChange={emailHandleChange} ></input>
-                                </span>
-                                <span className='flex flex-col' >
-                                    <label>
-                                        Password
-                                    </label>
-                                    <input type="password" className='' placeholder='Password' value={password} onChange={passwordHandleChange} ></input>
-                                </span>
-                                <span className='flex justify-between items-center py-3  w_full_login ' >
-                                    <Link to="/reset"><span className='remeber_forgot underline cursor-pointer'>Forgot password?</span></Link>
-                                </span>
-                                <span className=' flex justify-center items-center'>
-                                    <button onClick={handleSubmit} className='flex  justify-center items-center fom-btn w-1/2 p-2'>  {!loading ? (<div className='' >Login</div>) : (<div role="status">
-                                        <svg aria-hidden="true" class="inline w-4 h-4 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-white" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
-                                            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
+                            {/* Submit Button */}
+                            <button
+                                type="submit"
+                                disabled={loading}
+                                className="w-full flex items-center justify-center px-4 py-3 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-blue-500  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                            >
+                                {loading ? (
+                                    <>
+                                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                         </svg>
-                                        <span class="sr-only">Loading...</span>
-                                    </div>)}  </button>
-                                </span>
-                            </div>
+                                        Signing In...
+                                    </>
+                                ) : (
+                                    <>
+                                        Sign In
+                                        <ArrowRight className="ml-2 h-4 w-4" />
+                                    </>
+                                )}
+                            </button>
+                        </form>
+
+                        {/* Footer */}
+                        <div className="px-6 py-4 bg-gray-50 border-t border-gray-100 text-center">
+                            <p className="text-sm text-gray-600">
+                                Don't have an account?{' '}
+                                <Link to="/register" className="font-medium text-blue-600 hover:text-blue-800 transition-colors">
+                                    Sign up here
+                                </Link>
+                            </p>
                         </div>
-
-
                     </div>
 
+                    {/* Additional Help */}
+                    <div className="mt-6 text-center">
+                        <p className="text-sm text-gray-500">
+                            Need help? Contact our{' '}
+                            <Link to="/support" className="text-blue-600 hover:text-blue-800 font-medium">
+                                support team
+                            </Link>
+                        </p>
+                    </div>
                 </div>
-
-                <Footer />
-
             </div>
-
         </div>
-
     )
 }
 

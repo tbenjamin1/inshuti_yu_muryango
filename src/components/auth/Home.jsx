@@ -29,11 +29,7 @@ const Home = () => {
                     </div>
                 </div>
 
-                {/* <div className="flex flex-col justify-center items-center w-full animate-fadeIn">
-                    <div className="p-4 w-full">
-                        <FeatureSection />
-                    </div>
-                </div> */}
+            
 
                 <div className="flex justify-center items-center w-full advert-content pt-7 animate-fadeIn">
                     <div className="slider-container">

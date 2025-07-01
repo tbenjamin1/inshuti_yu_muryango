@@ -110,7 +110,7 @@ const NewNavBar = () => {
                                             <span>Login</span>
                                         </a>
                                         <a
-                                            href="/register"
+                                            href="/sign-up"
                                             className="flex items-center space-x-1 bg-blue-500  hover:to-blue-600 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:shadow-lg hover:scale-105"
                                         >
                                             <User size={14} />

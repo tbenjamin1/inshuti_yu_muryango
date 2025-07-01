@@ -12,8 +12,7 @@ import { ToastProvider } from 'react-toast-notifications';
 
 import { useDispatch, useSelector } from "react-redux"
 import { loggedInStatus } from './redux/transactions/TransactionSlice';
-
-import UssdProviders from './components/dashboard/instantUssd/UssdProviders';
+import Dashboard from './components/dashboard/pages/Dashboard';
 
 
 
@@ -37,14 +36,15 @@ function App() {
 
               <Route
                 path="/dashboard-home/*"
-                element={loginStatus ? <DashboardLayout /> : <Navigate to="/" />}
+                element={!loginStatus ? <DashboardLayout /> : <Navigate to="/" />}
               />
-             
-
+             {/* Dashboard */}
               <Route
-                path="/high-bytes-product"
-                element={loginStatus ? <UssdProviders /> : <Navigate to="/" />}
+                path="/dashboard"
+                element={!loginStatus ? <Dashboard /> : <Navigate to="/" />}
               />
+
+           
             </Routes>
 
 
@@ -59,8 +59,4 @@ function App() {
 
 export default App;
 
-// const App = () => {
-//   return <h1>Hello, World!</h1>
-// };
 
-// export default App;

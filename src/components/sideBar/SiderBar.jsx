@@ -49,13 +49,13 @@ const Sidebar = () => {
   };
   // Define your navigation items dynamically
   const menuItems = [
-    { key: '/statistics', icon: <UserOutlined />, label: <Link to="/statistics">Dashboard</Link> },
+    { key: '/dashboard', icon: <UserOutlined />, label: <Link to="/dashboard">Services</Link> },
     // { key: '/fuelEssance', icon: <VideoCameraOutlined />, label: <Link to="/fuelEssance">Essance</Link> },
     // { key: '/mtnTransactions', icon: <CloudOutlined />, label: <Link to="/mtnTransactions">MTN</Link> },
     // { key: '/startimes', icon: <ShopOutlined />, label: <Link to="/startimes">Startimes</Link> },
     // { key: '/electricity', icon: <BarChartOutlined />, label: <Link to="/electricity">Electricity</Link> },
-    { key: '/high-bytes-product', icon: <BarChartOutlined />, label: <Link to="/high-bytes-product">Products</Link> },
-    // { key: '/businesses', icon: <AppstoreOutlined />, label: <Link to="/businesses">Businesses</Link> },
+    { key: '/manage-product', icon: <BarChartOutlined />, label: <Link to="/manage-product">Products</Link> },
+    { key: '/users-management', icon: <AppstoreOutlined />, label: <Link to="/users-management">user</Link> },
     {
       key: 'logout',
       icon: <LogoutOutlined />,

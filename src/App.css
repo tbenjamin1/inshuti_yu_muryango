@@ -341,9 +341,7 @@ body {
   background-color: #0E3151;
 }
 
-.ant-menu-dark {
-  background-color: #0E3151 !important;
-}
+
 
 .style-select {
   position: absolute;
@@ -1781,4 +1779,12 @@ p {
   .main-nav-container {
     width: 100%;
   }
+}
+
+.ant-layout .ant-layout-sider {
+  background:#3C82F6 !important;
+}
+
+.ant-menu-dark {
+  background:#3C82F6 !important;
 }

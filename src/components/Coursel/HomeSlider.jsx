@@ -187,7 +187,7 @@ const ImageGallery = () => {
                                 </svg>
                             </div>
                             <h3 className="text-xl font-semibold text-gray-800 mb-3">Support Groups</h3>
-                            <p className="text-gray-600 text-sm mb-4 leading-relaxed">
+                            <p className="text-white text-sm mb-4 leading-relaxed">
                                 Join safe spaces where women share experiences and find community healing together.
                             </p>
                             <button className="text-pink-600 font-medium hover:text-pink-700 transition-colors duration-200">

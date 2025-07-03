@@ -13,17 +13,14 @@ import {
   Search,
 } from "lucide-react";
 
+import { useDispatch, useSelector } from "react-redux";
+import { getUser } from "../../redux/transactions/TransactionSlice";
+
+
+
 const ModernNavBar = () => {
-  // Mock user data for demonstration
-  const user = {
-    token: "mock-token",
-    user: {
-      fullName: "John Doe",
-      username: "johndoe",
-      email: "john@example.com",
-      avatar: null
-    }
-  };
+  const dispatch = useDispatch();
+  const user = useSelector(getUser);
 
   const [percent, setPercent] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -57,9 +54,8 @@ const ModernNavBar = () => {
   };
 
   const handleLogout = () => {
-    // Clear local storage or any other logout logic
-    // localStorage.removeItem("user");
-    console.log("Logout clicked");
+    localStorage.removeItem("user");
+    window.location.href = "/";
     setIsUserMenuOpen(false);
   };
 
@@ -245,7 +241,7 @@ const ModernNavBar = () => {
                       <span>Sign In</span>
                     </a>
                     <a
-                      href="/register"
+                      href="/sign-up"
                       className="flex items-center space-x-2 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white px-6 py-2 rounded-lg text-sm font-medium transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
                     >
                       <User size={16} />
@@ -371,7 +367,7 @@ const ModernNavBar = () => {
                           <span>Sign In</span>
                         </a>
                         <a
-                          href="/register"
+                          href="/sign-up"
                           className="flex items-center justify-center space-x-2 bg-white text-purple-600 hover:bg-gray-100 px-6 py-3 rounded-lg font-medium transition-all duration-300"
                           onClick={closeMobileMenu}
                         >

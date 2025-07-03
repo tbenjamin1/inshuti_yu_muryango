@@ -125,7 +125,7 @@ const PrivacyPolicyPage = () => {
         </div>
 
         {/* Contact Section */}
-        <div className="bg-gradient-to-r from-pink-400 to-rose-400 rounded-xl shadow-lg p-8 mt-8 text-white">
+        <div className="bg-blue-400 rounded-xl shadow-lg p-8 mt-8 text-white">
           <div className="text-center">
             <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -138,7 +138,7 @@ const PrivacyPolicyPage = () => {
               please don't hesitate to contact us.
             </p>
             <div className="bg-white bg-opacity-20 rounded-lg p-4 inline-block">
-              <p className="text-lg font-medium">
+              <p className="text-lg font-medium text-white">
                 <a href="mailto:Inshuti@Umubyeyi.com" className="hover:underline">
                   Inshuti@Umubyeyi.com
                 </a>

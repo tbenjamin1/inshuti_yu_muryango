@@ -95,9 +95,9 @@ const SkillModal = ({ skill, onClose }) => (
 );
 
 const CTASection = () => (
-  <div className="bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 text-white py-16">
+ <div className="relative bg-gradient-to-r from-pink-100 to-purple-100 text-white py-20">
     <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-      <h2 className="text-3xl md:text-4xl font-bold mb-4">
+      <h2 className="text-3xl md:text-4xl font-bold mb-4 text-blue-600">
         Ready to Begin Your Creative Journey?
       </h2>
       <p className="text-xl mb-8 opacity-90">
@@ -147,7 +147,9 @@ export default function CraftSkillsShowcase() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50">
       <NewNavBar />
+      <div className="bg-white shadow-sm border-b border-pink-100 pt-28">
       <HeroSection    />
+      </div>
       <TabNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

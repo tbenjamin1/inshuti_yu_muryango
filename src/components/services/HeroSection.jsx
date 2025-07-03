@@ -14,7 +14,7 @@ import {
   ShoppingBag,
 } from "lucide-react";
 const HeroSection = () => (
-    <div className="relative bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 text-white pt-28 py-20">
+    <div className="relative bg-gradient-to-r from-rose-50 via-pink-50 to-purple-50 text-white pt-28 py-20">
       <div className="absolute inset-0 bg-black/10"></div>
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">

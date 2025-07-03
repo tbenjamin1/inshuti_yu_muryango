@@ -8,7 +8,7 @@ export default defineConfig({
         outDir: 'dist'
     },
     server: {
-        open: true, // Auto-open in browser
+        open: true, 
     },
     optimizeDeps: {
         include: ['swiper/react'],

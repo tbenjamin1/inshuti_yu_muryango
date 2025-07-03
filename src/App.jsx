@@ -20,9 +20,13 @@ import Dashboard from "./components/dashboard/pages/Dashboard";
 import ManageProduct from "./components/dashboard/pages/ManageProduct";
 import ServiceManagementDashboard from "./components/dashboard/pages/ServiceManagementDashboard";
 import UserManagementDashboard from "./components/dashboard/pages/UserManagementDashboard";
+import SupportGroupsPage from "./components/services/SupportGroups";
+import CraftSkillsShowcase from "./components/services/CraftSkillsShowcase";
+import CraftSkillsTraining from "./components/services/SkillTrainingServices";
 
 function App() {
   const loginStatus = useSelector(loggedInStatus);
+  console.log("Login Status:", loginStatus);
 
   return (
     <ToastProvider>
@@ -44,12 +48,8 @@ function App() {
               {/* Dashboard */}
               <Route
                 path="/dashboard"
-                element={
-                  !loginStatus ? (
-                    <ServiceManagementDashboard />
-                  ) : (
-                    <Navigate to="/" />
-                  )
+                element={<ServiceManagementDashboard />
+                
                 }
               />
               <Route
@@ -61,6 +61,40 @@ function App() {
                 path="/users-management"
                 element={!loginStatus ? <UserManagementDashboard  /> : <Navigate to="/" />}
               />
+              {/* SupportGroupsPage */}
+              <Route
+                path="/support-groups"
+                element={
+                  !loginStatus ? (
+                    <SupportGroupsPage />
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+              {/* CraftSkillsShowcase */}
+              <Route
+                path="/craft-skills-showcase"
+                element={
+                  !loginStatus ? (
+                    <CraftSkillsShowcase/>
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+              {/* CraftSkillsShowcase */}
+              <Route
+                path="/craft-skills-training/*"
+                element={
+                  !loginStatus ? (
+                    <CraftSkillsTraining />
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+
             </Routes>
           </div>
         </Router>

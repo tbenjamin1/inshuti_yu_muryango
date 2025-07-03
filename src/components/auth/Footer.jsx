@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const currentYear = new Date().getFullYear();
 
 const Footer = () => (
-  <footer className="bg-gradient-to-r from-purple-400 via-purple-400 to-blue-400 text-white">
+  <footer className="bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 text-white">
     <div className="max-w-6xl mx-auto px-6 py-12">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         

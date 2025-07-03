@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import MyCarousel from "./MuCarousel";
 import Footer from "./Footer";
 import NewNavBar from "./NewNavBar";
-import TopBusiness from "./TopBusiness";
+import TopBusiness from "./WorkshopsPrograms";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchAsynBusinessRegistered,
@@ -11,6 +11,7 @@ import {
 import FurnitureSection from "../Coursel/HomeSlider";
 import FeatureSection from "../inshutiYumuryangoPages/AdvertSection";
 import AboutUsSection from "../inshutiYumuryangoPages/AboutUsSection";
+import ProductListing from "../services/ProductListing";
 
 const Home = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -40,9 +41,7 @@ const Home = () => {
 
         <div className="flex flex-col justify-center items-center w-full animate-fadeIn">
           <div className="p-4 mx-4 w-full flex flex-col justify-center items-center">
-            <TopBusiness
-              allBussinessesRegisteredList={allBussinessesRegisteredList}
-            />
+            <ProductListing />
           </div>
         </div>
 

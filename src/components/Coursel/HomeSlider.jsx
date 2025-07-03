@@ -210,9 +210,9 @@ const ImageGallery = () => {
               </p>
               <Link
                 to="/support-groups"
-              className="text-pink-600 font-medium hover:text-pink-700 transition-colors duration-200"
+                className="text-pink-600 font-medium hover:text-pink-700 transition-colors duration-200"
               >
-               Learn More 
+                Learn More
               </Link>
             </div>
 
@@ -227,7 +227,7 @@ const ImageGallery = () => {
                 </svg>
               </div>
               <h3 className="text-xl font-semibold text-gray-800 mb-3">
-                Workshops & Events
+                Workshops & Skill Development
               </h3>
               <p className="text-gray-600 text-sm mb-4 leading-relaxed">
                 Attend empowering workshops on mindfulness, self-care, and
@@ -236,42 +236,15 @@ const ImageGallery = () => {
 
               {/* Workshops */}
 
-
               <Link
                 to="/craft-skills-showcase"
-              className="text-pink-600 font-medium hover:text-pink-700 transition-colors duration-200"
+                className="text-pink-600 font-medium hover:text-pink-700 transition-colors duration-200"
               >
-               Learn More →
+                Learn More →
               </Link>
             </div>
 
-            <div className="text-center p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-pink-100 hover:border-pink-300">
-              <div className="w-16 h-16 bg-gradient-to-r from-purple-400 to-rose-400 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg
-                  className="w-8 h-8 text-white"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M9.5 3A6.5 6.5 0 0 1 16 9.5C16 11.11 15.41 12.59 14.44 13.73L14.71 14H15.5L20.5 19L19 20.5L14 15.5V14.71L13.73 14.44C12.59 15.41 11.11 16 9.5 16A6.5 6.5 0 0 1 3 9.5A6.5 6.5 0 0 1 9.5 3M9.5 5C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-3">
-                Skill Development
-              </h3>
-              <p className="text-gray-600 text-sm mb-4 leading-relaxed">
-                Learn coping strategies, emotional regulation, and
-                resilience-building techniques.
-              </p>
-
-              {/* CraftSkillsShowcase */}
-              <Link
-                to="/craft-skills-training"
-              className="text-pink-600 font-medium hover:text-pink-700 transition-colors duration-200"
-              >
-               Learn More →
-              </Link>
-
-            </div>
+            
 
             <div className="text-center p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-pink-100 hover:border-pink-300">
               <div className="w-16 h-16 bg-gradient-to-r from-rose-400 to-pink-400 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -290,9 +263,12 @@ const ImageGallery = () => {
                 Your confidentiality is protected with our secure, judgment-free
                 environment.
               </p>
-              <button className="text-pink-600 font-medium hover:text-pink-700 transition-colors duration-200">
+              <Link
+                to="/privacy-policy"
+                className="text-pink-600 font-medium hover:text-pink-700 transition-colors duration-200"
+              >
                 Learn More →
-              </button>
+              </Link>
             </div>
 
             <div className="text-center p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-pink-100 hover:border-pink-300 md:col-span-2 lg:col-span-1">
@@ -312,14 +288,17 @@ const ImageGallery = () => {
                 Access our comprehensive library of mental health resources,
                 articles, and wellness guides.
               </p>
-              <button className="text-pink-600 font-medium hover:text-pink-700 transition-colors duration-200">
+              <Link
+                to="/resources-blog"
+                className="text-pink-600 font-medium hover:text-pink-700 transition-colors duration-200"
+              >
                 Learn More →
-              </button>
+              </Link>
             </div>
           </div>
 
           {/* Call to Action */}
-          <div className="text-center mt-12">
+          {/* <div className="text-center mt-12">
             <div className="bg-gradient-to-r from-rose-400 via-pink-400 to-purple-400 p-8 rounded-2xl shadow-xl text-white">
               <h3 className="text-2xl font-bold mb-4">
                 Ready to Begin Your Wellness Journey?
@@ -332,12 +311,13 @@ const ImageGallery = () => {
                 <button className="bg-white text-pink-600 px-8 py-3 rounded-full font-semibold hover:bg-pink-50 transition-colors duration-300 shadow-lg">
                   Find Support Now
                 </button>
+                
                 <button className="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-pink-600 transition-all duration-300">
                   Learn More
                 </button>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </section>

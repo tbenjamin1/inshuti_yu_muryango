@@ -110,7 +110,7 @@ const AboutUsSection = () => {
                             </div>
                             
                             <div className="flex flex-col sm:flex-row gap-4">
-                                <button className="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-8 py-3 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl">
+                                <button className="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 hover:bg-purple-700 text-white font-semibold px-8 py-3 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl">
                                     See More
                                 </button>
                                 <button className="border-2 border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white font-semibold px-8 py-3 rounded-lg transition-all duration-300">

@@ -74,7 +74,7 @@ const NewNavBar = () => {
       >
         <div className="hidden lg:flex">
           <div className="flex items-center flex-1">
-            <div className="flex justify-between items-center bg-gradient-to-r from-pink-400 to-pink-400 w-full text-white py-4 px-8 shadow-md">
+            <div className="flex justify-between items-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 w-full text-white py-4 px-8 shadow-md">
               <a
                 href="/"
                 className="flex items-center space-x-3 hover:opacity-90 transition-all duration-300 group"

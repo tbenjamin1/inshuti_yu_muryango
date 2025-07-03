@@ -138,7 +138,7 @@ const SupportGroupsPage = () => {
       {/* Hero Section */}
       <section
         id="home"
-        className="relative  flex items-center justify-center px-6 pt-28"
+        className="relative  flex items-center justify-center px-6 pt-2"
       >
         <div className="text-center max-w-5xl mx-auto relative z-10">
           <div

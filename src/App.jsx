@@ -23,6 +23,8 @@ import UserManagementDashboard from "./components/dashboard/pages/UserManagement
 import SupportGroupsPage from "./components/services/SupportGroups";
 import CraftSkillsShowcase from "./components/services/CraftSkillsShowcase";
 import CraftSkillsTraining from "./components/services/SkillTrainingServices";
+import PrivacyPolicyPage from "./components/services/PrivacyPolicyPage";
+import ResourcesBlogScreen from "./components/services/ResourcesBlogPage";
 
 function App() {
   const loginStatus = useSelector(loggedInStatus);
@@ -48,9 +50,7 @@ function App() {
               {/* Dashboard */}
               <Route
                 path="/dashboard"
-                element={<ServiceManagementDashboard />
-                
-                }
+                element={<ServiceManagementDashboard />}
               />
               <Route
                 path="/manage-product"
@@ -59,42 +59,49 @@ function App() {
               {/*  UserManagementDashboard */}
               <Route
                 path="/users-management"
-                element={!loginStatus ? <UserManagementDashboard  /> : <Navigate to="/" />}
+                element={
+                  !loginStatus ? (
+                    <UserManagementDashboard />
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
               />
               {/* SupportGroupsPage */}
               <Route
                 path="/support-groups"
                 element={
-                  !loginStatus ? (
-                    <SupportGroupsPage />
-                  ) : (
-                    <Navigate to="/" />
-                  )
+                  !loginStatus ? <SupportGroupsPage /> : <Navigate to="/" />
                 }
               />
               {/* CraftSkillsShowcase */}
               <Route
                 path="/craft-skills-showcase"
                 element={
-                  !loginStatus ? (
-                    <CraftSkillsShowcase/>
-                  ) : (
-                    <Navigate to="/" />
-                  )
+                  !loginStatus ? <CraftSkillsShowcase /> : <Navigate to="/" />
                 }
               />
               {/* CraftSkillsShowcase */}
               <Route
                 path="/craft-skills-training/*"
                 element={
-                  !loginStatus ? (
-                    <CraftSkillsTraining />
-                  ) : (
-                    <Navigate to="/" />
-                  )
+                  !loginStatus ? <CraftSkillsTraining /> : <Navigate to="/" />
                 }
               />
-
+              {/* PrivacyPolicyPage */}
+              <Route
+                path="/privacy-policy"
+                element={
+                  !loginStatus ? <PrivacyPolicyPage /> : <Navigate to="/" />
+                }
+              />
+              {/* ResourcesBlogScreen */}
+              <Route
+                path="/resources-blog"
+                element={
+                  !loginStatus ? <ResourcesBlogScreen /> : <Navigate to="/" />
+                }
+              />
             </Routes>
           </div>
         </Router>

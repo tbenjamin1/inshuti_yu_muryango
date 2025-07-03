@@ -60,7 +60,7 @@ const WhatMakesUsDifferent = () => {
     ];
 
     return (
-        <div className="bg-gradient-to-br from-purple-400 via-purple-400 to-blue-400 rounded-3xl overflow-hidden shadow-2xl">
+        <div className="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 rounded-3xl overflow-hidden shadow-2xl">
             <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[500px]">
                 {/* Content Section */}
                 <div className="p-10 lg:p-12 flex flex-col justify-center text-white relative">

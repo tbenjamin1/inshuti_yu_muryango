@@ -1,11 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState ,useEffect} from "react";
+import {
+  Star,
+  Clock,
+  Users,
+  ChevronRight,
+  Heart,
+  BookOpen,
+  Palette,
+  Scissors,
+  Camera,
+  Music,
+  Paintbrush,
+  ShoppingBag,
+} from "lucide-react";
 
-const TopBusiness = ({ allBusinessesRegisteredList }) => {
+const WorkshopsPrograms = ({  }) => {
     const [loading, setLoading] = useState(true);
-    const [visibleProducts, setVisibleProducts] = useState(8);
+    const [visibleprograms, setVisibleprograms] = useState(8);
 
     // Sample product data with relevant content
-    const products = [
+    const programs = [
         {
             id: 1,
             name: "Maternity Care Package",
@@ -84,10 +98,10 @@ const TopBusiness = ({ allBusinessesRegisteredList }) => {
             setLoading(false);
         }, 1000);
         return () => clearTimeout(timer);
-    }, [allBusinessesRegisteredList]);
+    }, []);
 
     const loadMore = () => {
-        setVisibleProducts(prev => Math.min(prev + 4, products.length));
+        setVisibleprograms(prev => Math.min(prev + 4, programs.length));
     };
 
     const ProductCard = ({ product }) => (
@@ -139,19 +153,9 @@ const TopBusiness = ({ allBusinessesRegisteredList }) => {
     return (
         <div className="bg-gradient-to-br from-purple-400 via-purple-400 to-blue-400 rounded-3xl p-8 shadow-2xl">
             {/* Header Section */}
-            <div className="text-center mb-12">
-                <div className="relative inline-block">
-                    <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4 drop-shadow-lg">
-                        Our Programs & Services
-                    </h2>
-                    <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-white bg-opacity-60 rounded-full"></div>
-                </div>
-                <p className="text-white text-opacity-90 text-xl mt-6 max-w-3xl mx-auto leading-relaxed drop-shadow-sm">
-                    Discover our comprehensive range of support programs designed specifically for empowering women and strengthening communities
-                </p>
-            </div>
+            
 
-            {/* Products Grid */}
+            {/* programs Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-10">
                 {loading ? (
                     // Loading state
@@ -160,14 +164,14 @@ const TopBusiness = ({ allBusinessesRegisteredList }) => {
                     ))
                 ) : (
                     // Product cards
-                    products.slice(0, visibleProducts).map((product) => (
+                    programs.slice(0, visibleprograms).map((product) => (
                         <ProductCard key={product.id} product={product} />
                     ))
                 )}
             </div>
 
             {/* Load More Section */}
-            {!loading && visibleProducts < products.length && (
+            {!loading && visibleprograms < programs.length && (
                 <div className="text-center">
                     <button
                         onClick={loadMore}
@@ -182,7 +186,7 @@ const TopBusiness = ({ allBusinessesRegisteredList }) => {
                         <div className="absolute inset-0 bg-white bg-opacity-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </button>
                     <p className="text-white text-opacity-70 mt-4 text-sm">
-                        Showing {visibleProducts} of {products.length} programs
+                        Showing {visibleprograms} of {programs.length} programs
                     </p>
                 </div>
             )}
@@ -193,4 +197,4 @@ const TopBusiness = ({ allBusinessesRegisteredList }) => {
     );
 };
 
-export default TopBusiness;
+export default WorkshopsPrograms;

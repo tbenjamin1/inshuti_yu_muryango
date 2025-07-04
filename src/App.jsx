@@ -2,9 +2,9 @@ import "./App.css";
 import Signup from "./components/auth/Signup";
 import Login from "./components/auth/Login";
 import Home from "./components/auth/Home";
-
 import Reset from "./components/auth/Reset";
 import DashboardLayout from "./components/dashboard/DashboardLayout";
+
 
 import {
   BrowserRouter as Router,
@@ -25,6 +25,8 @@ import CraftSkillsShowcase from "./components/services/CraftSkillsShowcase";
 import CraftSkillsTraining from "./components/services/SkillTrainingServices";
 import PrivacyPolicyPage from "./components/services/PrivacyPolicyPage";
 import ResourcesBlogScreen from "./components/services/ResourcesBlogPage";
+import ManageBlogs from "./components/dashboard/pages/ManageBlogs";
+import ManageGroups from "./components/dashboard/pages/ManageGroups";
 
 function App() {
   const loginStatus = useSelector(loggedInStatus);
@@ -44,23 +46,23 @@ function App() {
               <Route
                 path="/dashboard-home/*"
                 element={
-                  !loginStatus ? <DashboardLayout /> : <Navigate to="/" />
+                  loginStatus ? <DashboardLayout /> : <Navigate to="/" />
                 }
               />
               {/* Dashboard */}
               <Route
                 path="/dashboard"
-                element={<ServiceManagementDashboard />}
+                element={loginStatus ?< ServiceManagementDashboard /> : <Navigate to="/" />}
               />
               <Route
                 path="/manage-product"
-                element={!loginStatus ? <ManageProduct /> : <Navigate to="/" />}
+                element={loginStatus ? <ManageProduct /> : <Navigate to="/" />}
               />
               {/*  UserManagementDashboard */}
               <Route
                 path="/users-management"
                 element={
-                  !loginStatus ? (
+                  loginStatus ? (
                     <UserManagementDashboard />
                   ) : (
                     <Navigate to="/" />
@@ -70,39 +72,52 @@ function App() {
               {/* SupportGroupsPage */}
               <Route
                 path="/support-groups"
-                element={
-                  !loginStatus ? <SupportGroupsPage /> : <Navigate to="/" />
+                element={ <SupportGroupsPage />
                 }
               />
               {/* CraftSkillsShowcase */}
               <Route
                 path="/craft-skills-showcase"
-                element={
-                  !loginStatus ? <CraftSkillsShowcase /> : <Navigate to="/" />
+                element={ <CraftSkillsShowcase/>
                 }
               />
               {/* CraftSkillsShowcase */}
               <Route
                 path="/craft-skills-training/*"
-                element={
-                  !loginStatus ? <CraftSkillsTraining /> : <Navigate to="/" />
+                element={ <CraftSkillsTraining  />
                 }
               />
               {/* PrivacyPolicyPage */}
               <Route
                 path="/privacy-policy"
-                element={
-                  !loginStatus ? <PrivacyPolicyPage /> : <Navigate to="/" />
+                element={ <PrivacyPolicyPage  />
                 }
               />
               {/* ResourcesBlogScreen */}
               <Route
                 path="/resources-blog"
-                element={
-                  !loginStatus ? <ResourcesBlogScreen /> : <Navigate to="/" />
+                element={ <ResourcesBlogScreen  />
                 }
               />
+               {/* ManageBlogs */}
+            <Route
+              path="/manage-blogs"
+              element={
+                loginStatus ? <ManageBlogs /> : <Navigate to="/" />
+              }
+            /> {/* ManageGroup*/}
+
+
+           
+            <Route
+              path="/manage-groups"
+              element={
+                loginStatus ? <ManageGroups /> : <Navigate to="/" />
+              }
+            />
             </Routes>
+           
+
           </div>
         </Router>
       </div>

@@ -39,14 +39,14 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="flex flex-col justify-center items-center w-full animate-fadeIn">
+        <div className="flex flex-col justify-center items-center w-full animate-fadeIn" id="product-listing" >
           <div className="p-4 mx-4 w-full flex flex-col justify-center items-center">
             <ProductListing />
           </div>
         </div>
 
         {allBussinessesRegisteredList && (
-          <div className="flex flex-col justify-center items-center w-full my-3 animate-fadeIn">
+          <div className="flex flex-col justify-center items-center w-full my-3 animate-fadeIn" id="about-section">
             <div className="p-4 mx-4 w-full flex flex-col justify-center items-center">
               <AboutUsSection />
             </div>
@@ -54,7 +54,7 @@ const Home = () => {
         )}
       </div>
 
-      <div className="w-full pt-3" id="info-content">
+      <div className="w-full pt-3" id="bottom-content">
         <Footer />
       </div>
     </div>

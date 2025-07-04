@@ -12,8 +12,46 @@ import {
   Slack,
 } from "lucide-react";
 import NewNavBar from "../auth/NewNavBar";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchAsynGroups,
+  fetchAsynServices,
+  getAllGroups,
+  getAllPaginatedGroups,
+  getAllPaginatedServices,
+  getAllServices,
+  getIsLoadingGroups,
+  getIsLoadingServices,
+  getUser,
+} from "../../redux/transactions/TransactionSlice";
 
 const SupportGroupsPage = () => {
+  const dispatch = useDispatch();
+  const user = useSelector(getUser);
+  const token = user?.token;
+
+  // Get groups
+  const groupsList = useSelector(getAllGroups);
+  const paginatedGroupsList = useSelector(getAllPaginatedGroups);
+  const isLoadingGroups = useSelector(getIsLoadingGroups);
+
+  // console.log("Groups List:", groupsList);
+  // console.log("Paginated Groups List:", paginatedGroupsList);
+  // console.log("Is Loading Groups:", isLoadingGroups);
+
+  useEffect(() => {
+    if (token) {
+      dispatch(
+        fetchAsynGroups({
+          currentPage: 1,
+          searchQuery: "",
+          categoryId: "",
+          serviceId: "6866e47d35c41e4f6461788c",
+        })
+      );
+    }
+  }, [token, dispatch]);
+
   const [isVisible, setIsVisible] = useState({});
   const [activeTestimonial, setActiveTestimonial] = useState(0);
 

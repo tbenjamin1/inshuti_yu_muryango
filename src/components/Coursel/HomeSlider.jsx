@@ -1,8 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Play, Pause } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchAsynServices,
+  getAllPaginatedServices,
+  getAllServices,
+  getIsLoadingServices,
+  getUser,
+} from "../../redux/transactions/TransactionSlice";
 
 const ImageGallery = () => {
+  const dispatch = useDispatch();
+  const user = useSelector(getUser);
+  const token = user?.token;
+
+  // Get services
+  const servicesList = useSelector(getAllServices);
+  const paginatedServicesList = useSelector(getAllPaginatedServices);
+  const isLoadingServices = useSelector(getIsLoadingServices);
+
+  console.log("Services List:", servicesList);
+  console.log("Paginated Services List:", paginatedServicesList);
+  console.log("Is Loading Services:", isLoadingServices);
+
+  useEffect(() => {
+    if (token) {
+      dispatch(
+        fetchAsynServices({
+          currentPage: 1,
+          searchQuery: "",
+          categoryId: "",
+          groupId: "",
+        })
+      );
+    }
+  }, [token]);
+
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoplay, setIsAutoplay] = useState(true);
 
@@ -63,6 +97,85 @@ const ImageGallery = () => {
   const toggleAutoplay = () => {
     setIsAutoplay(!isAutoplay);
   };
+  const LoadingCard = () => (
+    <div className="bg-white bg-opacity-10 backdrop-blur-md rounded-2xl overflow-hidden border border-white border-opacity-20 animate-pulse">
+      <div className="bg-white bg-opacity-20 h-48 w-full"></div>
+      <div className="p-6">
+        <div className="bg-white bg-opacity-20 h-6 w-3/4 rounded mb-2"></div>
+        <div className="bg-white bg-opacity-20 h-4 w-1/2 rounded mb-3"></div>
+        <div className="bg-white bg-opacity-20 h-3 w-1/4 rounded"></div>
+      </div>
+    </div>
+  );
+  const ServiceCard = ({ service }) => (
+    <div className="text-center p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-pink-100 hover:border-pink-300">
+      <div className="w-16 h-16 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg
+          className="w-8 h-8 text-white"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM9 17H7V10H9V17ZM13 17H11V7H13V17ZM17 17H15V13H17V17Z" />
+        </svg>
+      </div>
+      <h3 className="text-xl font-semibold text-gray-800 mb-3">
+        {service.title}
+      </h3>
+      <p className="text-gray-600 text-sm mb-4 leading-relaxed">
+        {service.description }
+      </p>
+
+      { service&& service.title==='Skill Development'&& <Link
+         to="/craft-skills-showcase"
+        className="text-pink-600 font-medium hover:text-pink-700 transition-colors duration-200"
+      >
+        Learn More →
+      </Link>}
+
+      { service&& service.title==='Workshops & Events'&& <Link
+         to="/craft-skills-showcase"
+        className="text-pink-600 font-medium hover:text-pink-700 transition-colors duration-200"
+      >
+        Learn More →
+      </Link>}
+      { service&& service.title==='Support Groups' && <Link  
+        to="/support-groups"
+        className="text-pink-600 font-medium hover:text-pink-700 transition-colors duration-200"
+      >
+        Learn More →
+      </Link>}
+      { service&& service.title==='Privacy & Safety' && <Link 
+        to="/privacy-policy"
+        className="text-pink-600 font-medium hover:text-pink-700 transition-colors duration-200"
+      >
+        Learn More →
+      </Link>}
+
+      {/* support geroups */}
+      { service&& service.title==='Support Groups' && (  
+        <Link 
+           to="/support-groups"
+          className="text-pink-600 font-medium hover:text-pink-700 transition-colors duration-200"
+        > 
+
+          Learn More →
+        </Link>
+      )}
+      {/* blogs */}
+
+      { service&& service.title==='Resources & Blog' && (
+        <Link
+          to="/resources-blog"
+          className="text-pink-600 font-medium hover:text-pink-700 transition-colors duration-200"
+        >
+          Learn More →
+        </Link>
+      )}
+
+
+
+    </div>
+  );
 
   return (
     <section className="py-16 bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50">
@@ -191,7 +304,17 @@ const ImageGallery = () => {
 
           {/* Services Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
-            <div className="text-center p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-pink-100 hover:border-pink-300">
+            {isLoadingServices
+              ? // Loading state
+                Array.from({ length: 8 }).map((_, index) => (
+                  <LoadingCard key={index} />
+                ))
+              : // Product cards
+              servicesList&&servicesList.map((service) => (
+                    <ServiceCard key={service.id} service={service} />
+                  ))}
+
+            {/* <div className="text-center p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-pink-100 hover:border-pink-300">
               <div className="w-16 h-16 bg-gradient-to-r from-rose-400 to-pink-400 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg
                   className="w-8 h-8 text-white"
@@ -214,9 +337,9 @@ const ImageGallery = () => {
               >
                 Learn More
               </Link>
-            </div>
+            </div> */}
 
-            <div className="text-center p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-pink-100 hover:border-pink-300">
+            {/* <div className="text-center p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-pink-100 hover:border-pink-300">
               <div className="w-16 h-16 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg
                   className="w-8 h-8 text-white"
@@ -234,7 +357,7 @@ const ImageGallery = () => {
                 mental wellness strategies.
               </p>
 
-              {/* Workshops */}
+            
 
               <Link
                 to="/craft-skills-showcase"
@@ -242,11 +365,9 @@ const ImageGallery = () => {
               >
                 Learn More →
               </Link>
-            </div>
+            </div> */}
 
-            
-
-            <div className="text-center p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-pink-100 hover:border-pink-300">
+            {/* <div className="text-center p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-pink-100 hover:border-pink-300">
               <div className="w-16 h-16 bg-gradient-to-r from-rose-400 to-pink-400 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg
                   className="w-8 h-8 text-white"
@@ -269,9 +390,9 @@ const ImageGallery = () => {
               >
                 Learn More →
               </Link>
-            </div>
+            </div> */}
 
-            <div className="text-center p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-pink-100 hover:border-pink-300 md:col-span-2 lg:col-span-1">
+            {/* <div className="text-center p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-pink-100 hover:border-pink-300 md:col-span-2 lg:col-span-1">
               <div className="w-16 h-16 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg
                   className="w-8 h-8 text-white"
@@ -294,7 +415,7 @@ const ImageGallery = () => {
               >
                 Learn More →
               </Link>
-            </div>
+            </div> */}
           </div>
 
           {/* Call to Action */}

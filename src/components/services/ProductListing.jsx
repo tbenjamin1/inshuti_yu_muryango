@@ -1,152 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { Star, ShoppingBag, Heart, Eye } from 'lucide-react';
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAsynProducts, getAllPaginatedProducts, getAllProducts, getIsLoadingProducts, getUser } from '../../redux/transactions/TransactionSlice';
 
 const ProductListing = ({ title = "Featured Products", subtitle = "Discover amazing products created by our talented students" }) => {
-    const [loading, setLoading] = useState(true);
+
+     const dispatch = useDispatch();
+      const user = useSelector(getUser);
+      const productsList = useSelector(getAllProducts);
+      const paginatedProductsList = useSelector(getAllPaginatedProducts);
+      const isLoadingproducts = useSelector(getIsLoadingProducts);
+      const token = user?.token;
+
+  
+
+
+   
     const [visibleProducts, setVisibleProducts] = useState(8);
     const [favorites, setFavorites] = useState(new Set());
 
-    // Sample product data
-    const products = [
-        {
-            id: 1,
-            name: "Handwoven Silk Scarf",
-            category: "Textile Arts",
-            price: 85,
-            originalPrice: 120,
-            creator: "Sarah Johnson",
-            rating: 4.9,
-            reviews: 24,
-            status: "Available",
-            image: "https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=400&h=300&fit=crop",
-            badge: "Best Seller"
-        },
-        {
-            id: 2,
-            name: "Digital Art Print Set",
-            category: "Digital Art",
-            price: 45,
-            originalPrice: 60,
-            creator: "Michael Chen",
-            rating: 4.8,
-            reviews: 18,
-            status: "Available",
-            image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop",
-            badge: "New"
-        },
-        {
-            id: 3,
-            name: "Leather Bound Journal",
-            category: "Paper Crafts",
-            price: 65,
-            originalPrice: 80,
-            creator: "Emma Rodriguez",
-            rating: 4.7,
-            reviews: 32,
-            status: "Available",
-            image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=300&fit=crop",
-            badge: "Popular"
-        },
-        {
-            id: 4,
-            name: "Portrait Photography Session",
-            category: "Photography",
-            price: 120,
-            originalPrice: 150,
-            creator: "David Kim",
-            rating: 4.9,
-            reviews: 15,
-            status: "Available",
-            image: "https://images.unsplash.com/photo-1567306301408-9b74779a11af?w=400&h=300&fit=crop",
-            badge: "Premium"
-        },
-        {
-            id: 5,
-            name: "Custom Music Composition",
-            category: "Music Production",
-            price: 200,
-            originalPrice: 250,
-            creator: "Lisa Martinez",
-            rating: 5.0,
-            reviews: 8,
-            status: "Available",
-            image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=300&fit=crop",
-            badge: "Exclusive"
-        },
-        {
-            id: 6,
-            name: "Paper Sculpture Art",
-            category: "Paper Crafts",
-            price: 75,
-            originalPrice: 95,
-            creator: "Alex Thompson",
-            rating: 4.6,
-            reviews: 21,
-            status: "Available",
-            image: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=300&fit=crop",
-            badge: "Trending"
-        },
-        {
-            id: 7,
-            name: "Ceramic Pottery Set",
-            category: "Pottery",
-            price: 90,
-            originalPrice: 110,
-            creator: "Maria Garcia",
-            rating: 4.8,
-            reviews: 27,
-            status: "Available",
-            image: "https://images.unsplash.com/photo-1578662015318-d8b3dbc94ab4?w=400&h=300&fit=crop",
-            badge: "Handmade"
-        },
-        {
-            id: 8,
-            name: "Watercolor Painting",
-            category: "Fine Arts",
-            price: 150,
-            originalPrice: 180,
-            creator: "John Wilson",
-            rating: 4.7,
-            reviews: 19,
-            status: "Available",
-            image: "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=400&h=300&fit=crop",
-            badge: "Limited Edition"
-        },
-        {
-            id: 9,
-            name: "Wooden Jewelry Box",
-            category: "Woodworking",
-            price: 110,
-            originalPrice: 140,
-            creator: "Robert Davis",
-            rating: 4.9,
-            reviews: 23,
-            status: "Available",
-            image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop",
-            badge: "Artisan"
-        },
-        {
-            id: 10,
-            name: "Knitted Winter Sweater",
-            category: "Textile Arts",
-            price: 95,
-            originalPrice: 125,
-            creator: "Anne Miller",
-            rating: 4.8,
-            reviews: 31,
-            status: "Available",
-            image: "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400&h=300&fit=crop",
-            badge: "Cozy"
-        }
-    ];
+  
 
     useEffect(() => {
-        // Simulate data loading
-        const timer = setTimeout(() => {
-            setLoading(false);
-        }, 1000);
-        return () => clearTimeout(timer);
-    }, []);
+
+        //  get products currentPage, searchQuery, categoryId, groupId 
+        if (token) {
+            dispatch(fetchAsynProducts({ currentPage: 1, searchQuery: '', categoryId: '', groupId: '' }));
+        }
+     
+    }, [token,dispatch]);
 
     const loadMore = () => {
         setVisibleProducts(prev => Math.min(prev + 4, products.length));
@@ -184,7 +66,7 @@ const ProductListing = ({ title = "Featured Products", subtitle = "Discover amaz
         <div className="group bg-white bg-opacity-10 backdrop-blur-md rounded-2xl overflow-hidden border border-white border-opacity-20 hover:bg-opacity-20 transition-all duration-300 hover:scale-105 hover:shadow-2xl">
             <div className="relative overflow-hidden">
                 <img
-                    src={product.image}
+                    src={product.images && product.images.length > 0 ? product.images[0].image_url : 'https://as2.ftcdn.net/jpg/05/97/47/95/1000_F_597479556_7bbQ7t4Z8k3xbAloHFHVdZIizWK1PdOo.jpg'}
                     alt={product.name}
                     className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
                 />
@@ -192,8 +74,8 @@ const ProductListing = ({ title = "Featured Products", subtitle = "Discover amaz
                 
                 {/* Badge */}
                 <div className="absolute top-3 left-3">
-                    <span className={`${getBadgeColor(product.badge)} text-white text-xs font-bold px-2 py-1 rounded-full`}>
-                        {product.badge}
+                    <span className={`${getBadgeColor(product.badge || 'New')} text-white text-xs font-bold px-2 py-1 rounded-full`}>
+                        {product.badge || 'New'}
                     </span>
                 </div>
 
@@ -217,7 +99,7 @@ const ProductListing = ({ title = "Featured Products", subtitle = "Discover amaz
                 {/* Status indicator */}
                 <div className="absolute bottom-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <span className="bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                        {product.status}
+                        {product.status === 'available' ? 'Available' : 'Out of Stock'}
                     </span>
                 </div>
             </div>
@@ -234,17 +116,19 @@ const ProductListing = ({ title = "Featured Products", subtitle = "Discover amaz
                 </div>
                 
                 <p className="text-white text-opacity-80 text-sm mb-2 capitalize">
-                    {product.category}
+                    {product.category_id
+                        ? product.category_id.name
+                        : 'Uncategorized'}
                 </p>
                 
                 <p className="text-white text-opacity-70 text-xs mb-3">
-                    by {product.creator}
+                    by {product?.group_id ? product.group_id?.name : 'Unknown Group'}
                 </p>
 
                 <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center space-x-2">
                         <span className="text-white font-bold text-xl">
-                            ${product.price}
+                            RWF{product.price}
                         </span>
                         {product.originalPrice && (
                             <span className="text-white text-opacity-50 text-sm line-through">
@@ -287,9 +171,9 @@ const ProductListing = ({ title = "Featured Products", subtitle = "Discover amaz
     );
 
     // Calculate stats
-    const totalProducts = products.length;
-    const averageRating = (products.reduce((sum, product) => sum + product.rating, 0) / products.length).toFixed(1);
-    const totalReviews = products.reduce((sum, product) => sum + product.reviews, 0);
+    const totalProducts = productsList.length;
+    const averageRating = (productsList.reduce((sum, product) => sum + product.rating, 0) / productsList.length).toFixed(1);
+    const totalReviews = productsList.reduce((sum, product) => sum + product.reviews, 0);
 
     return (
         <div className="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 rounded-3xl p-8 shadow-2xl">
@@ -305,21 +189,21 @@ const ProductListing = ({ title = "Featured Products", subtitle = "Discover amaz
 
             {/* Products Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-10">
-                {loading ? (
+                {isLoadingproducts ? (
                     // Loading state
                     Array.from({ length: 8 }).map((_, index) => (
                         <LoadingCard key={index} />
                     ))
                 ) : (
                     // Product cards
-                    products.slice(0, visibleProducts).map((product) => (
+                    productsList.slice(0, visibleProducts).map((product) => (
                         <ProductCard key={product.id} product={product} />
                     ))
                 )}
             </div>
 
             {/* Load More Section */}
-            {!loading && visibleProducts < products.length && (
+            {!isLoadingproducts && visibleProducts < productsList.length && (
                 <div className="text-center mb-10">
                     <button
                         onClick={loadMore}

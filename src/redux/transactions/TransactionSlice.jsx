@@ -1,6 +1,50 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import axios from "axios";
+const savedUser = localStorage.getItem("user");
+const API_BASE = "https://ecommerce-backend-0v7j.onrender.com/api";
+
+// get groups
+export const fetchAsynGroups = createAsyncThunk(
+  "tranx/fetchAsynGroups",
+  async ({ currentPage, searchQuery,serviceId }) => {
+    const response = await axios.get(
+      `${API_BASE}/groups/service/${serviceId}`,
+      { headers: {
+         Authorization: `Bearer ${savedUser?.token}`,
+       },}
+    );
+    return response.data;
+  }
+);
+
+//  get products
+export const fetchAsynProducts = createAsyncThunk(
+  "tranx/fetchAsynProducts",
+  async ({ currentPage, searchQuery, categoryId, groupId }) => {
+    const response = await axios.get(
+      `${API_BASE}/products/`,
+      { headers: {
+         Authorization: `Bearer ${savedUser?.token}`,
+       },}
+    );
+    return response.data;
+  }
+);
+
+//  get services
+export const fetchAsynServices = createAsyncThunk(
+  "tranx/fetchAsynServices",
+  async ({ currentPage, searchQuery, categoryId, groupId }) => {
+    const response = await axios.get(
+      `${API_BASE}/services/`,
+      { headers: {
+         Authorization: `Bearer ${savedUser?.token}`,
+       },}
+    );
+    return response.data;
+  }
+);
 
 export const fetchAsynBusinessRegistered = createAsyncThunk(
   "tranx/fetchAsynBusinessRegistered",
@@ -22,9 +66,25 @@ export const fetchAsynProviders = createAsyncThunk(
   }
 );
 
-const savedUser = localStorage.getItem("user");
+
 
 const initialState = {
+// groups
+  groupsList: [],
+  paginatedGroupsList: {},
+  isLoadingGroups: false,
+
+  // services
+  servicesList: [],
+  paginatedServicesList: {},
+  isLoadingServices: false,
+
+  //  fetchAsynProducts
+
+  productsList: [],
+  paginatedProductsList: {},
+  isLoadingproducts: false,
+
   isLoading: false,
   acceptTerms: false,
   transactionsList: [],
@@ -56,6 +116,52 @@ const transactionsSlice = createSlice({
     },
   },
   extraReducers: {
+
+    // fetchAsynGroups
+    [fetchAsynGroups.pending]: (state) => {
+      state.isLoadingGroups = true;
+    },
+    [fetchAsynGroups.fulfilled]: (state, { payload }) => {
+      return {
+        ...state,
+        isLoadingGroups: false,     
+        groupsList: payload.groups,
+        paginatedGroupsList: payload,
+      };
+    },
+
+    //  fetchAsynServices
+    [fetchAsynServices.pending]: (state) => {
+      state.isLoadingServices = true;
+    },
+    [fetchAsynServices.fulfilled]: (state, { payload }) => {
+      return {
+        ...state,
+        isLoadingServices: false,
+        servicesList: payload.services,     
+        paginatedServicesList: payload,
+      };
+    },
+
+    [fetchAsynServices.rejected]: (state) => {
+      state.isLoadingServices = false;
+    },
+    //  fetchAsynProducts
+    [fetchAsynProducts.pending]: (state) => {
+      state.isLoadingproducts = true;
+    },
+    [fetchAsynProducts.fulfilled]: (state, { payload }) => {
+      return {
+        ...state,
+        isLoadingproducts: false,
+        productsList: payload.data,
+        paginatedProductsList: payload,
+      };
+    },
+    [fetchAsynProducts.rejected]: (state) => {
+      state.isLoadingproducts = false;
+    },
+
     [fetchAsynProviders.pending]: (state) => {
       state.isLoading = true;
     },
@@ -109,4 +215,24 @@ export const getAllProviders = (state) => state.transactions.allUssdProviders;
 
 export const selectAcceptTerms = (state) => state.transactions.acceptTerms;
 export const { setAcceptTermsConditions } = transactionsSlice.actions;
+
+// fetchAsynProducts
+export const getAllProducts = (state) => state.transactions.productsList;
+export const getAllPaginatedProducts = (state) =>
+  state.transactions.paginatedProductsList;
+export const getIsLoadingProducts = (state) =>
+  state.transactions.isLoadingproducts;
+// fetchAsynServices
+export const getAllServices = (state) => state.transactions.servicesList;
+export const getAllPaginatedServices = (state) =>
+  state.transactions.paginatedServicesList;
+export const getIsLoadingServices = (state) =>
+  state.transactions.isLoadingServices;
+// fetchAsynGroups
+export const getAllGroups = (state) => state.transactions.groupsList;
+export const getAllPaginatedGroups = (state) =>
+  state.transactions.paginatedGroupsList;
+export const getIsLoadingGroups = (state) =>
+  state.transactions.isLoadingGroups;
+
 export default transactionsSlice.reducer;

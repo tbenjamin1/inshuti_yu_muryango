@@ -132,7 +132,7 @@ const ImageGallery = () => {
         Learn More →
       </Link>}
 
-      { service&& service.title==='Workshops & Events'&& <Link
+      { service&& service.title==='Workshops & Skills development'&& <Link
          to="/craft-skills-showcase"
         className="text-pink-600 font-medium hover:text-pink-700 transition-colors duration-200"
       >

@@ -27,6 +27,7 @@ import PrivacyPolicyPage from "./components/services/PrivacyPolicyPage";
 import ResourcesBlogScreen from "./components/services/ResourcesBlogPage";
 import ManageBlogs from "./components/dashboard/pages/ManageBlogs";
 import ManageGroups from "./components/dashboard/pages/ManageGroups";
+import Myprofile from "./components/auth/Myprofile";
 
 function App() {
   const loginStatus = useSelector(loggedInStatus);
@@ -115,8 +116,15 @@ function App() {
                 loginStatus ? <ManageGroups /> : <Navigate to="/" />
               }
             />
+              {/* Myprofile */}
+             <Route
+              path="/manage-profile"
+              element={
+                loginStatus ? <Myprofile /> : <Navigate to="/" />
+              }
+            />
             </Routes>
-           
+         
 
           </div>
         </Router>

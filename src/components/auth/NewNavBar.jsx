@@ -16,8 +16,6 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../redux/transactions/TransactionSlice";
 
-
-
 const ModernNavBar = () => {
   const dispatch = useDispatch();
   const user = useSelector(getUser);
@@ -27,6 +25,7 @@ const ModernNavBar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
 
   const isLoggedIn = user && user.token ? true : false;
 
@@ -38,6 +37,18 @@ const ModernNavBar = () => {
       document.documentElement.clientHeight;
     setPercent(Math.round((winScroll / height) * 100));
     setIsScrolled(winScroll > 50);
+
+    // Update active section based on scroll position
+    const sections = ["home", "about-section", "product-listing"];
+    const scrollPosition = winScroll + 100; // Offset for navbar height
+
+    for (let i = sections.length - 1; i >= 0; i--) {
+      const section = document.getElementById(sections[i]);
+      if (section && section.offsetTop <= scrollPosition) {
+        setActiveSection(sections[i]);
+        break;
+      }
+    }
   };
 
   useEffect(() => {
@@ -59,15 +70,53 @@ const ModernNavBar = () => {
     setIsUserMenuOpen(false);
   };
 
+  // Smooth scroll function
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const navbarHeight = 120; // Adjust based on your navbar height
+      const elementPosition = element.offsetTop - navbarHeight;
+      
+      window.scrollTo({
+        top: elementPosition,
+        behavior: 'smooth'
+      });
+    }
+    closeMobileMenu(); // Close mobile menu after clicking
+  };
+
+  // Handle home navigation
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+    closeMobileMenu();
+  };
+
   const navLinks = [
-    { to: "/", label: "Home" },
-    { to: "/products", label: "Products" },
-    { to: "/about", label: "About Us" },
-    // { to: "/contact", label: "Contact" },
+    { 
+      id: "home", 
+      label: "Home", 
+      action: scrollToTop,
+      isActive: activeSection === "home"
+    },
+    { 
+      id: "product-listing", 
+      label: "Products", 
+      action: () => scrollToSection("product-listing"),
+      isActive: activeSection === "product-listing"
+    },
+    { 
+      id: "about-section", 
+      label: "About Us", 
+      action: () => scrollToSection("about-section"),
+      isActive: activeSection === "about-section"
+    },
   ];
 
   const userMenuItems = [
-    { label: "Profile", href: "/profile" },
+    { label: "Profile", href: "/manage-profile" },
     // { label: "Settings", href: "/settings" },
     // { label: "Orders", href: "/orders" },
     // { label: "Help", href: "/help" },
@@ -118,7 +167,10 @@ const ModernNavBar = () => {
           <div className="px-8 py-4">
             <div className="flex items-center justify-between">
               {/* Logo */}
-              <a href="/" className="flex items-center space-x-3 group">
+              <button 
+                onClick={scrollToTop}
+                className="flex items-center space-x-3 group cursor-pointer"
+              >
                 <div className="relative">
                   <div className="h-12 w-12 bg-gradient-to-br from-violet-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:shadow-xl">
                     <span className="text-lg font-bold text-white">IYM</span>
@@ -133,19 +185,25 @@ const ModernNavBar = () => {
                     Premium Services
                   </span>
                 </div>
-              </a>
+              </button>
 
               {/* Navigation Links */}
               <div className="flex items-center space-x-8">
                 {navLinks.map((link) => (
-                  <a
-                    key={link.to}
-                    href={link.to}
-                    className="relative font-medium text-gray-700 hover:text-purple-600 transition-all duration-300 py-2 px-3 rounded-lg hover:bg-purple-50 group"
+                  <button
+                    key={link.id}
+                    onClick={link.action}
+                    className={`relative font-medium transition-all duration-300 py-2 px-3 rounded-lg group ${
+                      link.isActive
+                        ? "text-purple-600 bg-purple-50"
+                        : "text-gray-700 hover:text-purple-600 hover:bg-purple-50"
+                    }`}
                   >
                     {link.label}
-                    <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-purple-600 scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
-                  </a>
+                    <span className={`absolute bottom-0 left-3 right-3 h-0.5 bg-purple-600 transition-transform duration-300 ${
+                      link.isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                    }`}></span>
+                  </button>
                 ))}
               </div>
 
@@ -257,7 +315,10 @@ const ModernNavBar = () => {
         {/* Mobile Navigation */}
         <div className="lg:hidden">
           <div className="flex justify-between items-center px-4 py-4">
-            <a href="/" className="flex items-center space-x-3 group">
+            <button 
+              onClick={scrollToTop}
+              className="flex items-center space-x-3 group cursor-pointer"
+            >
               <div className="h-10 w-10 bg-gradient-to-br from-violet-600 to-purple-600 rounded-lg flex items-center justify-center shadow-lg">
                 <span className="text-sm font-bold text-white">IYM</span>
               </div>
@@ -267,7 +328,7 @@ const ModernNavBar = () => {
                 </span>
                 <span className="text-xs text-gray-600">Premium Services</span>
               </div>
-            </a>
+            </button>
 
             <div className="flex items-center space-x-2">
               {/* {isLoggedIn && (
@@ -307,15 +368,18 @@ const ModernNavBar = () => {
 
                 {/* Navigation Links */}
                 <div className="py-2">
-                  {navLinks.map((link, index) => (
-                    <a
-                      key={link.to}
-                      href={link.to}
-                      className="block px-6 py-4 text-gray-800 hover:bg-purple-50 hover:text-purple-600 font-medium transition-all duration-300 border-l-4 border-transparent hover:border-purple-500"
-                      onClick={closeMobileMenu}
+                  {navLinks.map((link) => (
+                    <button
+                      key={link.id}
+                      onClick={link.action}
+                      className={`block w-full text-left px-6 py-4 font-medium transition-all duration-300 border-l-4 ${
+                        link.isActive
+                          ? "bg-purple-50 text-purple-600 border-purple-500"
+                          : "text-gray-800 hover:bg-purple-50 hover:text-purple-600 border-transparent hover:border-purple-500"
+                      }`}
                     >
                       {link.label}
-                    </a>
+                    </button>
                   ))}
                 </div>
 

@@ -44,7 +44,7 @@ const ManageGroups = () => {
   const [requestsLoading, setRequestsLoading] = useState(false);
   const [requestsFilter, setRequestsFilter] = useState('pending');
   const [formData, setFormData] = useState({
-    name: "", description: "", is_private: false, group_icon: null, service_id: "", group_link: ""
+    name: "", description: "", is_private: false, group_icon: null, service_id: "", link: ""
   });
 
   useEffect(() => {
@@ -296,7 +296,7 @@ const ManageGroups = () => {
   };
 
   const resetForm = () => {
-    setFormData({ name: "", description: "", is_private: false, group_icon: null, service_id: "", group_link: "" });
+    setFormData({ name: "", description: "", is_private: false, group_icon: null, service_id: "", link: "" });
     setEditingGroup(null);
   };
 
@@ -308,7 +308,7 @@ const ManageGroups = () => {
       is_private: record.is_private,
       group_icon: record.group_icon,
       service_id: record.service_id?._id || record.service_id?.id || record.service_id,
-      group_link: record.group_link || ""
+      link: record.link || ""
     });
     setModalVisible(true);
   };
@@ -678,8 +678,8 @@ const ManageGroups = () => {
               <Input
                 placeholder="Enter group link (optional)"
                 style={{ marginTop: "4px" }}
-                value={formData.group_link}
-                onChange={(e) => setFormData({ ...formData, group_link: e.target.value })}
+                value={formData.link}
+                onChange={(e) => setFormData({ ...formData, link: e.target.value })}
               />
             </div>
 

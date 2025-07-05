@@ -36,6 +36,9 @@ const ManageGroups = () => {
   const [selectedServiceFilter, setSelectedServiceFilter] = useState(null);
   const [approvingUser, setApprovingUser] = useState(null);
   const [rejectingUser, setRejectingUser] = useState(null);
+  const [approvingGroup, setApprovingGroup] = useState(false);
+  const [rejectingGroup, setRejectingGroup] = useState(false);
+  const [submittingGroup, setSubmittingGroup] = useState(false); // Add this state
   const [joinRequests, setJoinRequests] = useState([]);
   const [requestsLoading, setRequestsLoading] = useState(false);
   const [requestsFilter, setRequestsFilter] = useState('pending');
@@ -93,6 +96,72 @@ const ManageGroups = () => {
       message.error("Failed to fetch join requests");
     } finally {
       setRequestsLoading(false);
+    }
+  };
+
+  const handleApproveGroup = async (groupId) => {
+    setApprovingGroup(true);
+    try {
+      const response = await fetch(`${API_BASE}/groups/${groupId}/approve`, {
+        method: "PUT",
+        headers: { 
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      });
+      
+      if (!response.ok) throw new Error("Failed to approve group");
+      
+      message.success("Group approved successfully");
+      
+      // Refresh data
+      await fetchAllGroups();
+      
+      // Update viewing group if it's the same group
+      if (viewingGroup && viewingGroup._id === groupId) {
+        const updatedGroup = allGroups.find(g => g._id === groupId);
+        if (updatedGroup) {
+          setViewingGroup({ ...updatedGroup, approval_status: 'approved' });
+        }
+      }
+    } catch (error) {
+      console.error("Error approving group:", error);
+      message.error("Failed to approve group");
+    } finally {
+      setApprovingGroup(false);
+    }
+  };
+
+  const handleRejectGroup = async (groupId) => {
+    setRejectingGroup(true);
+    try {
+      const response = await fetch(`${API_BASE}/groups/${groupId}/reject`, {
+        method: "PUT",
+        headers: { 
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      });
+      
+      if (!response.ok) throw new Error("Failed to reject group");
+      
+      message.success("Group rejected successfully");
+      
+      // Refresh data
+      await fetchAllGroups();
+      
+      // Update viewing group if it's the same group
+      if (viewingGroup && viewingGroup._id === groupId) {
+        const updatedGroup = allGroups.find(g => g._id === groupId);
+        if (updatedGroup) {
+          setViewingGroup({ ...updatedGroup, approval_status: 'rejected' });
+        }
+      }
+    } catch (error) {
+      console.error("Error rejecting group:", error);
+      message.error("Failed to reject group");
+    } finally {
+      setRejectingGroup(false);
     }
   };
 
@@ -174,6 +243,7 @@ const ManageGroups = () => {
       return;
     }
 
+    setSubmittingGroup(true); // Set loading state
     try {
       const submitData = new FormData();
       Object.keys(formData).forEach(key => {
@@ -204,6 +274,8 @@ const ManageGroups = () => {
     } catch (error) {
       console.error(`Error ${editingGroup ? 'updating' : 'creating'} group:`, error);
       message.error(`Failed to ${editingGroup ? 'update' : 'create'} group`);
+    } finally {
+      setSubmittingGroup(false); // Reset loading state
     }
   };
 
@@ -641,10 +713,20 @@ const ManageGroups = () => {
 
             <div>
               <Space>
-                <Button type="primary" onClick={handleSubmitGroup}>
+                <Button 
+                  type="primary" 
+                  onClick={handleSubmitGroup}
+                  loading={submittingGroup}
+                  disabled={submittingGroup}
+                >
                   {editingGroup ? "Update Group" : "Create Group"}
                 </Button>
-                <Button onClick={() => setModalVisible(false)}>Cancel</Button>
+                <Button 
+                  onClick={() => setModalVisible(false)}
+                  disabled={submittingGroup}
+                >
+                  Cancel
+                </Button>
               </Space>
             </div>
           </div>
@@ -675,6 +757,40 @@ const ManageGroups = () => {
                       />
                       <Title level={4} style={{ marginTop: "16px" }}>{viewingGroup.name}</Title>
                       <Text type="secondary">{viewingGroup.description}</Text>
+                      
+                      {/* Group Approval/Rejection Buttons */}
+                      <div style={{ marginTop: "16px" }}>
+                        {viewingGroup.approval_status === 'pending' && (
+                          <Space>
+                            <Button
+                              type="primary"
+                              icon={<CheckOutlined />}
+                              loading={approvingGroup}
+                              onClick={() => handleApproveGroup(viewingGroup._id)}
+                            >
+                              Approve Group
+                            </Button>
+                            <Button
+                              danger
+                              icon={<CloseOutlined />}
+                              loading={rejectingGroup}
+                              onClick={() => handleRejectGroup(viewingGroup._id)}
+                            >
+                              Reject Group
+                            </Button>
+                          </Space>
+                        )}
+                        {viewingGroup.approval_status === 'approved' && (
+                          <Tag color="green" style={{ marginTop: "8px" }}>
+                            <CheckOutlined /> Group Approved
+                          </Tag>
+                        )}
+                        {viewingGroup.approval_status === 'rejected' && (
+                          <Tag color="red" style={{ marginTop: "8px" }}>
+                            <CloseOutlined /> Group Rejected
+                          </Tag>
+                        )}
+                      </div>
                     </Card>
                   </Col>
                   <Col span={16}>
@@ -691,7 +807,7 @@ const ManageGroups = () => {
                         </Tag>
                       </Descriptions.Item>
                       <Descriptions.Item label="Approval Status">
-                        <Tag color={viewingGroup.approval_status === "approved" ? "green" : "orange"}>
+                        <Tag color={viewingGroup.approval_status === "approved" ? "green" : viewingGroup.approval_status === "rejected" ? "red" : "orange"}>
                           {viewingGroup.approval_status?.toUpperCase() || "PENDING"}
                         </Tag>
                       </Descriptions.Item>
@@ -736,4 +852,4 @@ const ManageGroups = () => {
   );
 };
 
-export default ManageGroups;
+export default ManageGroups

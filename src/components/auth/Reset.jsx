@@ -13,7 +13,7 @@ function Login() {
                 </div>
                 <div className='flex flex-col justify-center items-center login_form'>
                     <span className='login-title'>
-                        Login to your JaliKoi Account
+                        Login to your  ubihindure “inshuti y’umubyeyi Account
                     </span>
                     <span className='login-sub-title p-2' >See what is going on with your business</span>
                     <span className='login-sub-title my-3'>------------- Reset password ------------- </span>

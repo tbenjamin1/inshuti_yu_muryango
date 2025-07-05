@@ -4,7 +4,7 @@ import { Modal, Button, Rate,Tag, Skeleton } from 'antd';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAsynProducts, getAllProducts, getIsLoadingProducts, getUser } from '../../redux/transactions/TransactionSlice';
 
-const ProductListing = ({ title = "Featured Products", subtitle = "Discover amazing products created by our talented students" }) => {
+const ProductListing = ({ title = "Featured Products", subtitle = "Discover amazing products created by our talented Mothers" }) => {
     const dispatch = useDispatch();
     const user = useSelector(getUser);
     const productsList = useSelector(getAllProducts);

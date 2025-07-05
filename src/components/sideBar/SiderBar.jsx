@@ -32,21 +32,13 @@ const Sidebar = () => {
   const location = useLocation();
   const [activeTab, setActiveTab] = useState("");
 
-  const apiUrljaliKoi = import.meta.env.VITE_API_URL_KOIPAY;
+ 
 
   useEffect(() => {
     setActiveTab(location.pathname);
   }, [location]);
 
-  const handleLogout = async () => {
-    try {
-      await axios.get(`${apiUrljaliKoi}/auth/signout`);
-      localStorage.removeItem("user");
-      window.location.replace("/");
-    } catch (error) {
-      console.error("Logout failed", error);
-    }
-  };
+ 
   // Define your navigation items dynamically
   const menuItems = [
     {

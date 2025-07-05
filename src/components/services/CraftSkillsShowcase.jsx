@@ -101,7 +101,7 @@ const CTASection = () => (
         Ready to Begin Your Creative Journey?
       </h2>
       <p className="text-xl mb-8 opacity-90">
-        Join hundreds of students who have discovered their artistic potential
+        Join hundreds of Mothers who have discovered their artistic potential
         through our programs.
       </p>
      
@@ -194,7 +194,7 @@ export default function CraftSkillsShowcase() {
                   <div className="text-4xl font-bold text-pink-600 mb-2">
                     500+
                   </div>
-                  <div className="text-gray-600 mb-4">Students Empowered</div>
+                  <div className="text-gray-600 mb-4">Mothers Empowered</div>
                   <div className="text-4xl font-bold text-purple-600 mb-2">
                     95%
                   </div>
@@ -234,10 +234,10 @@ export default function CraftSkillsShowcase() {
           <div className="space-y-8">
             <div className="text-center">
               <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                What Our Students Say
+                What Our Mothers Say
               </h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Real stories from students who discovered their creative
+                Real stories from Mothers who discovered their creative
                 potential through our programs.
               </p>
             </div>
@@ -258,7 +258,7 @@ export default function CraftSkillsShowcase() {
               </h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
                 Discover amazing products and artworks created by our talented
-                students in their workshops.
+                Mothers in their workshops.
               </p>
             </div>
             <div className="">

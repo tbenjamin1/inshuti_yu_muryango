@@ -61,13 +61,7 @@ export const fetchAsynBusinessRegistered = createAsyncThunk(
 );
 
 export const fetchAsynProviders = createAsyncThunk(
-  "tranx/fetchAsynProviders",
-  async () => {
-    const response = await axios.get(
-      `https://ussdbackendautomation.jalikoi.rw/providers`
-    );
-    return response.data;
-  }
+ 
 );
 
 const initialState = {

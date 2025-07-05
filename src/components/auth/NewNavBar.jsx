@@ -179,7 +179,7 @@ const ModernNavBar = () => {
                 </div>
                 <div className="flex items-center space-x-2 group cursor-pointer">
                   <Mail size={12} className="text-blue-400 group-hover:text-blue-300 transition-colors" />
-                  <span className="group-hover:text-blue-100 transition-colors">help@highroup.rw</span>
+                  <span className="group-hover:text-blue-100 transition-colors">helpUmubyeyi@gmail.com</span>
                 </div>
                 <div className="flex items-center space-x-2 group cursor-pointer">
                   <MapPin size={12} className="text-orange-400 group-hover:text-orange-300 transition-colors" />

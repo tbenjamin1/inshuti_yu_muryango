@@ -12,6 +12,7 @@ import FurnitureSection from "../Coursel/HomeSlider";
 import FeatureSection from "../inshutiYumuryangoPages/AdvertSection";
 import AboutUsSection from "../inshutiYumuryangoPages/AboutUsSection";
 import ProductListing from "../services/ProductListing";
+import Ourstory from "../images/ourstory.jpeg"
 
 const Home = () => {
   const [currentPage, setCurrentPage] = useState(1);

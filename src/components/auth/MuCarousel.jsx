@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
 
 const WhatMakesUsDifferent = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -178,14 +179,17 @@ const WhatMakesUsDifferent = () => {
                         <p className="text-white text-opacity-90 text-lg drop-shadow-sm">Connect with women who understand your journey.</p>
                     </div>
                     <div className="flex space-x-5">
-                        <button className="group relative bg-white text-purple-600 font-bold px-8 py-4 rounded-2xl hover:bg-opacity-90 transition-all duration-300 shadow-xl text-lg overflow-hidden">
+                        
+                         <Link
+                                  to='/support-groups'
+                                  className="text-pink-600 font-medium hover:text-pink-700 transition-colors duration-200"
+                                >
+                                <button className="group relative bg-white text-purple-600 font-bold px-8 py-4 rounded-2xl hover:bg-opacity-90 transition-all duration-300 shadow-xl text-lg overflow-hidden">
                             <span className="relative z-10">Join Support Group</span>
                             <div className="absolute inset-0 bg-gradient-to-r from-purple-100 to-blue-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         </button>
-                        <button className="group relative border-2 border-white text-white font-bold px-8 py-4 rounded-2xl hover:bg-white hover:text-purple-600 transition-all duration-300 text-lg backdrop-blur-sm overflow-hidden">
-                            <span className="relative z-10">Learn More</span>
-                            <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        </button>
+                                </Link>
+                      
                     </div>
                 </div>
             </div>

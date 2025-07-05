@@ -1,4 +1,5 @@
 import React from "react";
+import Ourstory from "../images/ourstory.jpeg"
 
 const AboutUsSection = () => {
     return (
@@ -109,25 +110,16 @@ const AboutUsSection = () => {
                                 </p>
                             </div>
                             
-                            <div className="flex flex-col sm:flex-row gap-4">
-                                <button className="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 hover:bg-purple-700 text-white font-semibold px-8 py-3 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl">
-                                    See More
-                                </button>
-                                <button className="border-2 border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white font-semibold px-8 py-3 rounded-lg transition-all duration-300">
-                                    Contact Us
-                                </button>
-                            </div>
+                          
                         </div>
 
-                        {/* Image Placeholder */}
-                        <div className="bg-gradient-to-br from-purple-300 via-pink-300 to-blue-300 flex items-center justify-center min-h-[400px] lg:min-h-full">
-                            <div className="text-center text-white p-8">
-                                <svg className="w-24 h-24 mx-auto mb-4 opacity-80" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fillRule="evenodd" d="M18 8a6 6 0 01-7.743 5.743L10 14l-0.257-.257A6 6 0 1118 8zM10 2a1 1 0 011 1v1.664l1.168.665a1 1 0 01.5.866v1.473a1 1 0 01-.684.949L10 8.664V10a1 1 0 11-2 0V8.664L6.016 7.617a1 1 0 01-.684-.949V5.195a1 1 0 01.5-.866L7 3.664V3a1 1 0 012 0z" clipRule="evenodd"/>
-                                </svg>
-                                <h4 className="text-2xl font-semibold mb-2">Our Story Image</h4>
-                                <p className="opacity-80">Replace with actual supportive community image</p>
-                            </div>
+                        {/* Image */}
+                        <div className="min-h-[400px] lg:min-h-full">
+                            <img 
+                                src={Ourstory} 
+                                alt="Our Story - Inshuti Y'umubyeyi community" 
+                                className="w-full h-full object-cover"
+                            />
                         </div>
                     </div>
                 </div>

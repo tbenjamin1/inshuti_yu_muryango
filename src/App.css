@@ -1787,6 +1787,7 @@ p {
 .ant-menu-dark {
   background:#3C82F6 !important;
 }
-.ant-typography{
-  /* color:#ffff !important; */
+.ant-btn-color-primary{
+border-radius: 5px !important;
+background-color: rgb(16, 185, 129) !important;
 }

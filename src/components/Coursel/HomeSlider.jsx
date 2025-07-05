@@ -135,8 +135,8 @@ const ImageGallery = () => {
   };
 
   const LoadingCard = () => (
-    <div className="bg-white bg-opacity-10 backdrop-blur-md rounded-2xl overflow-hidden border border-white border-opacity-20 animate-pulse">
-      <div className="bg-white bg-opacity-20 h-48 w-full"></div>
+    <div className="bg-purple-200 bg-opacity-10 backdrop-blur-md rounded-2xl overflow-hidden border border-white border-opacity-20 animate-pulse">
+      <div className="bg-purple-200 bg-opacity-20 h-48 w-full"></div>
       <div className="p-6">
         <div className="bg-white bg-opacity-20 h-6 w-3/4 rounded mb-2"></div>
         <div className="bg-white bg-opacity-20 h-4 w-1/2 rounded mb-3"></div>

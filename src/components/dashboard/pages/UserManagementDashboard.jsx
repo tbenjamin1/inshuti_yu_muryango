@@ -372,13 +372,13 @@ const UserManagementDashboard = () => {
                 >
                   Export
                 </Button>
-                <Button 
+                {/* <Button 
                   type="primary" 
                   icon={<PlusOutlined />}
                   onClick={handleCreateUser}
                 >
                   Add User
-                </Button>
+                </Button> */}
               </Space>
             </Col>
           </Row>

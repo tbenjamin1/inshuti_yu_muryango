@@ -29,8 +29,6 @@ const UserManagementDashboard = () => {
     try {
       setLoading(true);
       const params = new URLSearchParams({
-        page: pagination.page,
-        limit: pagination.limit,
         ...(searchTerm && { search: searchTerm }),
         ...(filterRole !== 'all' && { role: filterRole }),
         ...(filterActive !== 'all' && { active_only: filterActive })
@@ -41,8 +39,9 @@ const UserManagementDashboard = () => {
       });
       
       if (response.ok) {
-        const data = await response.json();
-        setUsers(data.users || []);
+        const data = await response.json()
+        setUsers(data.data || []);
+       
         setPagination(prev => ({ ...prev, total: data.total || 0 }));
       }
     } catch (error) {

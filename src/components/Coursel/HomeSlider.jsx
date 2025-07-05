@@ -43,6 +43,39 @@ const ImageGallery = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoplay, setIsAutoplay] = useState(true);
 
+  // Helper function to generate slug from title
+  const generateSlug = (title) => {
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
+      .replace(/\s+/g, '-') // Replace spaces with hyphens
+      .replace(/-+/g, '-') // Replace multiple hyphens with single
+      .trim();
+  };
+
+  // Helper function to get route path based on service title/slug
+  const getServiceRoute = (service) => {
+
+    console.log("service",service)
+    
+    const slug = service._id;
+    
+    // Specific routes with slug as query parameter
+    switch (service.title) {
+      case 'Skill Development':
+      case 'Workshops & Skills development':
+        return `/craft-skills-showcase?slug=${slug}`;
+      case 'Support Groups':
+        return `/support-groups?slug=${slug}`;
+      case 'Privacy & Safety':
+        return `/privacy-policy?slug=${slug}`;
+      case 'Resources & Blog':
+        return `/resources-blog?slug=${slug}`;
+      default:
+        return `/services/${slug}`;
+    }
+  };
+
   // Images focused on women's mental wellness
   const images = [
     {
@@ -84,7 +117,7 @@ const ImageGallery = () => {
 
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % images.length);
-    }, 5000); // Slightly longer intervals for contemplation
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [isAutoplay, images.length]);
@@ -100,6 +133,7 @@ const ImageGallery = () => {
   const toggleAutoplay = () => {
     setIsAutoplay(!isAutoplay);
   };
+
   const LoadingCard = () => (
     <div className="bg-white bg-opacity-10 backdrop-blur-md rounded-2xl overflow-hidden border border-white border-opacity-20 animate-pulse">
       <div className="bg-white bg-opacity-20 h-48 w-full"></div>
@@ -110,75 +144,60 @@ const ImageGallery = () => {
       </div>
     </div>
   );
-  const ServiceCard = ({ service }) => (
-    <div className="text-center p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-pink-100 hover:border-pink-300">
-      <div className="w-16 h-16 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full flex items-center justify-center mx-auto mb-4">
-        <svg
-          className="w-8 h-8 text-white"
-          fill="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM9 17H7V10H9V17ZM13 17H11V7H13V17ZM17 17H15V13H17V17Z" />
-        </svg>
-      </div>
-      <h3 className="text-xl font-semibold text-gray-800 mb-3">
-        {service.title}
-      </h3>
-      <p className="text-gray-600 text-sm mb-4 leading-relaxed">
-        {service.description }
-      </p>
 
-      { service&& service.title==='Skill Development'&& <Link
-         to="/craft-skills-showcase"
-        className="text-pink-600 font-medium hover:text-pink-700 transition-colors duration-200"
-      >
-        Learn More →
-      </Link>}
+  const ServiceCard = ({ service }) => {
+    const serviceRoute = getServiceRoute(service);
+    const slug = service.slug || generateSlug(service.title);
 
-      { service&& service.title==='Workshops & Skills development'&& <Link
-         to="/craft-skills-showcase"
-        className="text-pink-600 font-medium hover:text-pink-700 transition-colors duration-200"
-      >
-        Learn More →
-      </Link>}
-      { service&& service.title==='Support Groups' && <Link  
-        to="/support-groups"
-        className="text-pink-600 font-medium hover:text-pink-700 transition-colors duration-200"
-      >
-        Learn More →
-      </Link>}
-      { service&& service.title==='Privacy & Safety' && <Link 
-        to="/privacy-policy"
-        className="text-pink-600 font-medium hover:text-pink-700 transition-colors duration-200"
-      >
-        Learn More →
-      </Link>}
+    return (
+      <div className="text-center p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-pink-100 hover:border-pink-300">
+        <div className="w-16 h-16 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg
+            className="w-8 h-8 text-white"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM9 17H7V10H9V17ZM13 17H11V7H13V17ZM17 17H15V13H17V17Z" />
+          </svg>
+        </div>
+        <h3 className="text-xl font-semibold text-gray-800 mb-3">
+          {service.title}
+        </h3>
+        <p className="text-gray-600 text-sm mb-4 leading-relaxed">
+          {service.description}
+        </p>
 
-      {/* support geroups */}
-      { service&& service.title==='Support Groups' && (  
-        <Link 
-           to="/support-groups"
-          className="text-pink-600 font-medium hover:text-pink-700 transition-colors duration-200"
-        > 
-
-          Learn More →
-        </Link>
-      )}
-      {/* blogs */}
-
-      { service&& service.title==='Resources & Blog' && (
+        {/* Method 1: Using dynamic route with slug */}
         <Link
-          to="/resources-blog"
+          to={serviceRoute}
           className="text-pink-600 font-medium hover:text-pink-700 transition-colors duration-200"
         >
           Learn More →
         </Link>
-      )}
 
+        {/* Method 2: Passing slug as state (alternative) */}
+        {/* 
+        <Link
+          to={serviceRoute}
+          state={{ slug: slug, service: service }}
+          className="text-pink-600 font-medium hover:text-pink-700 transition-colors duration-200"
+        >
+          Learn More →
+        </Link>
+        */}
 
-
-    </div>
-  );
+        {/* Method 3: Using search params (alternative) */}
+        {/* 
+        <Link
+          to={`${serviceRoute}?slug=${slug}&id=${service.id}`}
+          className="text-pink-600 font-medium hover:text-pink-700 transition-colors duration-200"
+        >
+          Learn More →
+        </Link>
+        */}
+      </div>
+    );
+  };
 
   return (
     <section className="py-16 bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50">
@@ -313,135 +332,11 @@ const ImageGallery = () => {
                   <LoadingCard key={index} />
                 ))
               : // Product cards
-              servicesList&&servicesList.map((service) => (
-                    <ServiceCard key={service.id} service={service} />
-                  ))}
-
-            {/* <div className="text-center p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-pink-100 hover:border-pink-300">
-              <div className="w-16 h-16 bg-gradient-to-r from-rose-400 to-pink-400 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg
-                  className="w-8 h-8 text-white"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 7C14.64 7 14.31 7.14 14.05 7.36L12 9.41L9.95 7.36C9.69 7.14 9.36 7 9 7H3V9L9 9L12 12L15 9H21ZM12 13.5C11.2 13.5 10.5 14.2 10.5 15S11.2 16.5 12 16.5 13.5 15.8 13.5 15 12.8 13.5 12 13.5Z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-3">
-                Support Groups
-              </h3>
-              <p className="text-gray-600 text-sm mb-4 leading-relaxed">
-                Join safe spaces where women share experiences and find
-                community healing together.
-              </p>
-              <Link
-                to="/support-groups"
-                className="text-pink-600 font-medium hover:text-pink-700 transition-colors duration-200"
-              >
-                Learn More
-              </Link>
-            </div> */}
-
-            {/* <div className="text-center p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-pink-100 hover:border-pink-300">
-              <div className="w-16 h-16 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg
-                  className="w-8 h-8 text-white"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM9 17H7V10H9V17ZM13 17H11V7H13V17ZM17 17H15V13H17V17Z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-3">
-                Workshops & Skill Development
-              </h3>
-              <p className="text-gray-600 text-sm mb-4 leading-relaxed">
-                Attend empowering workshops on mindfulness, self-care, and
-                mental wellness strategies.
-              </p>
-
-            
-
-              <Link
-                to="/craft-skills-showcase"
-                className="text-pink-600 font-medium hover:text-pink-700 transition-colors duration-200"
-              >
-                Learn More →
-              </Link>
-            </div> */}
-
-            {/* <div className="text-center p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-pink-100 hover:border-pink-300">
-              <div className="w-16 h-16 bg-gradient-to-r from-rose-400 to-pink-400 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg
-                  className="w-8 h-8 text-white"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M12 1L3 5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 1ZM12 7C13.4 7 14.8 8.6 14.8 10V11.5C15.4 11.5 16 12.1 16 12.7V16.2C16 16.8 15.4 17.4 14.8 17.4H9.2C8.6 17.4 8 16.8 8 16.2V12.7C8 12.1 8.6 11.5 9.2 11.5V10C9.2 8.6 10.6 7 12 7ZM12 8.2C11.2 8.2 10.5 8.9 10.5 9.7V11.5H13.5V9.7C13.5 8.9 12.8 8.2 12 8.2Z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-3">
-                Privacy & Safety
-              </h3>
-              <p className="text-gray-600 text-sm mb-4 leading-relaxed">
-                Your confidentiality is protected with our secure, judgment-free
-                environment.
-              </p>
-              <Link
-                to="/privacy-policy"
-                className="text-pink-600 font-medium hover:text-pink-700 transition-colors duration-200"
-              >
-                Learn More →
-              </Link>
-            </div> */}
-
-            {/* <div className="text-center p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-pink-100 hover:border-pink-300 md:col-span-2 lg:col-span-1">
-              <div className="w-16 h-16 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg
-                  className="w-8 h-8 text-white"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M19 5V19H5V5H19ZM19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM14 17H7V15H14V17ZM17 13H7V11H17V13ZM17 9H7V7H17V9Z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-3">
-                Resources & Blog
-              </h3>
-              <p className="text-gray-600 text-sm mb-4 leading-relaxed">
-                Access our comprehensive library of mental health resources,
-                articles, and wellness guides.
-              </p>
-              <Link
-                to="/resources-blog"
-                className="text-pink-600 font-medium hover:text-pink-700 transition-colors duration-200"
-              >
-                Learn More →
-              </Link>
-            </div> */}
+                servicesList &&
+                servicesList.map((service) => (
+                  <ServiceCard key={service.id} service={service} />
+                ))}
           </div>
-
-          {/* Call to Action */}
-          {/* <div className="text-center mt-12">
-            <div className="bg-gradient-to-r from-rose-400 via-pink-400 to-purple-400 p-8 rounded-2xl shadow-xl text-white">
-              <h3 className="text-2xl font-bold mb-4">
-                Ready to Begin Your Wellness Journey?
-              </h3>
-              <p className="text-lg mb-6 opacity-95">
-                You don't have to face your challenges alone. Join our
-                supportive community today.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <button className="bg-white text-pink-600 px-8 py-3 rounded-full font-semibold hover:bg-pink-50 transition-colors duration-300 shadow-lg">
-                  Find Support Now
-                </button>
-                
-                <button className="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-pink-600 transition-all duration-300">
-                  Learn More
-                </button>
-              </div>
-            </div>
-          </div> */}
         </div>
       </div>
     </section>

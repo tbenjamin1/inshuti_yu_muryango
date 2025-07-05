@@ -99,6 +99,17 @@ const WorkshopsPrograms = () => {
         
         // Show success message or update UI
         alert('Successfully joined the group!');
+        const joinData = await response.json();
+        console.log('joinData', joinData);
+        
+        // Redirect user if redirect_link is provided
+        if (joinData?.redirect_link) {
+          // Option 1: Redirect in the same tab
+          window.location.href = joinData.redirect_link;
+          
+          // Option 2: Open in a new tab (comment out the line above and uncomment below)
+          // window.open(joinData.redirect_link, '_blank');
+        }
       } else {
         const errorData = await response.json();
         alert(`Failed to join group: ${errorData.message || 'Unknown error'}`);

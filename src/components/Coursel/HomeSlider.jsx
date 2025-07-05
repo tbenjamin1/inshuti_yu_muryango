@@ -19,9 +19,9 @@ const ImageGallery = () => {
   const token = user?.token;
 
   // Get services
-  const servicesList = useSelector(getAllpublicServices);
-  const paginatedServicesList = useSelector(getAllpublicPaginatedServices);
-  const isLoadingServices = useSelector(getpublicIsLoadingServices);
+  const servicesList = useSelector(getAllServices);
+  const paginatedServicesList = useSelector(getAllPaginatedServices);
+  const isLoadingServices = useSelector(getIsLoadingServices);
 
   console.log("pub Services List:", servicesList);
   console.log("Paginated Services List:", paginatedServicesList);

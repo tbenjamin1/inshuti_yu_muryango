@@ -17,9 +17,9 @@ const ProductListing = ({ title = "Featured Products", subtitle = "Discover amaz
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     useEffect(() => {
-        if (token) {
+       
             dispatch(fetchAsynProducts({ currentPage: 1, searchQuery: '', categoryId: '', groupId: '' }));
-        }
+        
     }, [token, dispatch]);
 
     const loadMore = () => {

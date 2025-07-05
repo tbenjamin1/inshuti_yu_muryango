@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import DashboardHome from "../DashboardLayout";
 import {
   Card, Table, Button, Modal, Input, Select, Switch, Upload, Space, Tag, 
-  Popconfirm, message, Row, Col, Avatar, Typography, Tabs, Badge, Dropdown, Menu, Empty
+  Popconfirm, message, Row, Col, Avatar, Typography, Badge, Dropdown, Menu, 
+  Empty, Descriptions, List, Divider, Tabs
 } from "antd";
 import {
   PlusOutlined, EditOutlined, DeleteOutlined, EyeOutlined, TeamOutlined, 
-  CheckOutlined, CloseOutlined, UploadOutlined, MoreOutlined, GroupOutlined, SafetyOutlined
+  CheckOutlined, CloseOutlined, UploadOutlined, MoreOutlined, GroupOutlined, 
+  SafetyOutlined, UserOutlined, CalendarOutlined, CrownOutlined
 } from "@ant-design/icons";
 import { fetchAsynServices, getAllServices, getIsLoadingServices, getUser } from "../../../redux/transactions/TransactionSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,9 +30,15 @@ const ManageGroups = () => {
   const [allGroups, setAllGroups] = useState([]);
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [viewModalVisible, setViewModalVisible] = useState(false);
   const [editingGroup, setEditingGroup] = useState(null);
-  const [joinRequests, setJoinRequests] = useState([]);
+  const [viewingGroup, setViewingGroup] = useState(null);
   const [selectedServiceFilter, setSelectedServiceFilter] = useState(null);
+  const [approvingUser, setApprovingUser] = useState(null);
+  const [rejectingUser, setRejectingUser] = useState(null);
+  const [joinRequests, setJoinRequests] = useState([]);
+  const [requestsLoading, setRequestsLoading] = useState(false);
+  const [requestsFilter, setRequestsFilter] = useState('pending');
   const [formData, setFormData] = useState({
     name: "", description: "", is_private: false, group_icon: null, service_id: "", group_link: ""
   });
@@ -64,8 +72,99 @@ const ManageGroups = () => {
     if (!serviceId) {
       setGroups(allGroups);
     } else {
-      const filtered = allGroups.filter(group => group.service_id === serviceId);
+      const filtered = allGroups.filter(group => 
+        group.service_id && (group.service_id._id === serviceId || group.service_id.id === serviceId)
+      );
       setGroups(filtered);
+    }
+  };
+
+  const fetchGroupRequests = async (groupId, status = 'pending') => {
+    setRequestsLoading(true);
+    try {
+      const response = await fetch(`${API_BASE}/groups/${groupId}/requests?status=${status}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (!response.ok) throw new Error("Failed to fetch requests");
+      const data = await response.json();
+      setJoinRequests(data.requests || data || []);
+    } catch (error) {
+      console.error("Error fetching requests:", error);
+      message.error("Failed to fetch join requests");
+    } finally {
+      setRequestsLoading(false);
+    }
+  };
+
+  const handleRejectUser = async (groupId, userId) => {
+    setRejectingUser(userId);
+    try {
+      const response = await fetch(`${API_BASE}/groups/${groupId}/reject/${userId}`, {
+        method: "PUT",
+        headers: { 
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      });
+      
+      if (!response.ok) throw new Error("Failed to reject user");
+      
+      message.success("User rejected successfully");
+      
+      // Refresh data
+      await fetchAllGroups();
+      if (viewingGroup) {
+        await fetchGroupRequests(groupId, requestsFilter);
+        const updatedGroups = allGroups.map(g => 
+          g._id === groupId ? { ...g, joined_users: g.joined_users.filter(u => u.user_id !== userId) } : g
+        );
+        setAllGroups(updatedGroups);
+        setGroups(updatedGroups);
+        const updatedViewingGroup = updatedGroups.find(g => g._id === groupId);
+        if (updatedViewingGroup) setViewingGroup(updatedViewingGroup);
+      }
+    } catch (error) {
+      console.error("Error rejecting user:", error);
+      message.error("Failed to reject user");
+    } finally {
+      setRejectingUser(null);
+    }
+  };
+
+  const handleApproveUser = async (groupId, userId) => {
+    setApprovingUser(userId);
+    try {
+      const response = await fetch(`${API_BASE}/groups/${groupId}/approve/${userId}`, {
+        method: "PUT",
+        headers: { 
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      });
+      
+      if (!response.ok) throw new Error("Failed to approve user");
+      
+      message.success("User approved successfully");
+      
+      // Refresh data
+      await fetchAllGroups();
+      if (viewingGroup) {
+        await fetchGroupRequests(groupId, requestsFilter);
+        const updatedGroups = await fetch(`${API_BASE}/groups`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const updatedData = await updatedGroups.json();
+        const updatedGroupsData = updatedData.groups || updatedData || [];
+        setAllGroups(updatedGroupsData);
+        setGroups(updatedGroupsData);
+        const updatedViewingGroup = updatedGroupsData.find(g => g._id === groupId);
+        if (updatedViewingGroup) setViewingGroup(updatedViewingGroup);
+      }
+    } catch (error) {
+      console.error("Error approving user:", error);
+      message.error("Failed to approve user");
+    } finally {
+      setApprovingUser(null);
     }
   };
 
@@ -135,10 +234,16 @@ const ManageGroups = () => {
       description: record.description,
       is_private: record.is_private,
       group_icon: record.group_icon,
-      service_id: record.service_id,
+      service_id: record.service_id?._id || record.service_id?.id || record.service_id,
       group_link: record.group_link || ""
     });
     setModalVisible(true);
+  };
+
+  const openViewModal = (record) => {
+    setViewingGroup(record);
+    setViewModalVisible(true);
+    fetchGroupRequests(record._id, 'pending');
   };
 
   const groupColumns = [
@@ -148,10 +253,16 @@ const ManageGroups = () => {
       key: "name",
       render: (text, record) => (
         <Space>
+          <Avatar 
+            src={record.group_icon !== 'default-group-icon-url' ? record.group_icon : null} 
+            icon={<GroupOutlined />} 
+          />
           <div>
             <Text strong>{text}</Text>
             <br />
-            <Text type="secondary" style={{ fontSize: "12px" }}>{record.description}</Text>
+            <Text type="secondary" style={{ fontSize: "12px" }}>
+              {record.description?.length > 50 ? `${record.description.substring(0, 50)}...` : record.description}
+            </Text>
           </div>
         </Space>
       ),
@@ -160,14 +271,20 @@ const ManageGroups = () => {
       title: "Service",
       dataIndex: "service_id",
       key: "service_id",
-      render: (serviceId) => {
-        const service = servicesList.find(s => s.id === serviceId);
-        return service ? (
+      render: (service) => {
+        if (!service) return <Text type="secondary">No Service</Text>;
+        return (
           <Space>
-            <Avatar src={service.icon} icon={<SafetyOutlined />} size="small" />
-            {service.title}
+            <Avatar icon={<SafetyOutlined />} size="small" />
+            <div>
+              <Text strong>{service.title}</Text>
+              <br />
+              <Text type="secondary" style={{ fontSize: "12px" }}>
+                {service.subtitle?.substring(0, 30)}...
+              </Text>
+            </div>
           </Space>
-        ) : "Unknown Service";
+        );
       },
     },
     {
@@ -177,6 +294,16 @@ const ManageGroups = () => {
       render: (isActive) => (
         <Tag color={isActive ? "green" : "red"}>
           {isActive ? "ACTIVE" : "INACTIVE"}
+        </Tag>
+      ),
+    },
+    {
+      title: "Approval",
+      dataIndex: "approval_status",
+      key: "approval_status",
+      render: (status) => (
+        <Tag color={status === "approved" ? "green" : status === "pending" ? "orange" : "red"}>
+          {status?.toUpperCase() || "PENDING"}
         </Tag>
       ),
     },
@@ -194,12 +321,19 @@ const ManageGroups = () => {
       title: "Members",
       dataIndex: "members_count",
       key: "members_count",
-      render: (members) => (
+      render: (count, record) => (
         <Space>
           <TeamOutlined />
-          <Text>{members || 0}</Text>
+          <Text>{count || 0}</Text>
+          <Text type="secondary">({record.formatted_members || "0 members"})</Text>
         </Space>
       ),
+    },
+    {
+      title: "Created",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (date) => new Date(date).toLocaleDateString(),
     },
     {
       title: "Actions",
@@ -208,6 +342,9 @@ const ManageGroups = () => {
         <Dropdown
           overlay={
             <Menu>
+              <Menu.Item key="view" icon={<EyeOutlined />} onClick={() => openViewModal(record)}>
+                View Details
+              </Menu.Item>
               <Menu.Item key="edit" icon={<EditOutlined />} onClick={() => openEditModal(record)}>
                 Edit
               </Menu.Item>
@@ -229,6 +366,125 @@ const ManageGroups = () => {
       ),
     },
   ];
+
+  const renderMembersTab = () => (
+    <div>
+      <div style={{ marginBottom: "16px" }}>
+        <Row gutter={16}>
+          <Col span={12}>
+            <Title level={5}>Group Members ({viewingGroup?.members_count || 0})</Title>
+          </Col>
+          <Col span={12}>
+            <div style={{ textAlign: "right" }}>
+              <Select
+                value={requestsFilter}
+                onChange={(value) => {
+                  setRequestsFilter(value);
+                  fetchGroupRequests(viewingGroup._id, value);
+                }}
+                style={{ width: 150 }}
+              >
+                <Option value="pending">Pending</Option>
+                <Option value="approved">Approved</Option>
+                <Option value="rejected">Rejected</Option>
+              </Select>
+            </div>
+          </Col>
+        </Row>
+      </div>
+      
+      <Table
+        dataSource={requestsFilter === 'approved' ? viewingGroup?.joined_users?.filter(u => u.status === 'approved') : joinRequests}
+        rowKey="_id"
+        loading={requestsLoading}
+        pagination={{ pageSize: 10 }}
+        columns={[
+          {
+            title: "User",
+            dataIndex: "user_id",
+            key: "user_id",
+            render: (userId, record) => (
+              <Space>
+                <Avatar icon={<UserOutlined />} />
+                <div>
+                  <Text>User ID: {userId}</Text>
+                  <br />
+                  <Text type="secondary" style={{ fontSize: "12px" }}>
+                    {record.user_info?.email || record.user_info?.username || 'No additional info'}
+                  </Text>
+                </div>
+              </Space>
+            ),
+          },
+          {
+            title: "Role",
+            dataIndex: "role",
+            key: "role",
+            render: (role) => (
+              <Tag color="blue">{role || 'member'}</Tag>
+            ),
+          },
+          {
+            title: "Status",
+            dataIndex: "status",
+            key: "status",
+            render: (status) => (
+              <Tag color={status === 'approved' ? 'green' : status === 'rejected' ? 'red' : 'orange'}>
+                {status}
+              </Tag>
+            ),
+          },
+          {
+            title: "Joined",
+            dataIndex: "joined_at",
+            key: "joined_at",
+            render: (date) => date ? new Date(date).toLocaleDateString() : 'N/A',
+          },
+          {
+            title: "Actions",
+            key: "actions",
+            render: (_, record) => (
+              <Space>
+                {record.status === 'pending' && (
+                  <>
+                    <Button
+                      type="primary"
+                      size="small"
+                      icon={<CheckOutlined />}
+                      loading={approvingUser === record.user_id}
+                      onClick={() => handleApproveUser(viewingGroup._id, record.user_id)}
+                    >
+                      Approve
+                    </Button>
+                    <Button
+                      danger
+                      size="small"
+                      icon={<CloseOutlined />}
+                      loading={rejectingUser === record.user_id}
+                      onClick={() => handleRejectUser(viewingGroup._id, record.user_id)}
+                    >
+                      Reject
+                    </Button>
+                  </>
+                )}
+                {record.status === 'approved' && (
+                  <Button
+                    danger
+                    size="small"
+                    icon={<CloseOutlined />}
+                    loading={rejectingUser === record.user_id}
+                    onClick={() => handleRejectUser(viewingGroup._id, record.user_id)}
+                  >
+                    Remove
+                  </Button>
+                )}
+              </Space>
+            ),
+          },
+        ]}
+      />
+    </div>
+  );
 
   return (
     <DashboardHome>
@@ -288,9 +544,11 @@ const ManageGroups = () => {
               showSizeChanger: true,
               showTotal: (total) => `Total ${total} groups`,
             }}
+            scroll={{ x: 1200 }}
           />
         </Card>
 
+        {/* Create/Edit Group Modal */}
         <Modal
           title={editingGroup ? "Edit Group" : "Create New Group"}
           visible={modalVisible}
@@ -390,6 +648,88 @@ const ManageGroups = () => {
               </Space>
             </div>
           </div>
+        </Modal>
+
+        {/* View Group Details Modal */}
+        <Modal
+          title="Group Details"
+          visible={viewModalVisible}
+          onCancel={() => setViewModalVisible(false)}
+          footer={[
+            <Button key="close" onClick={() => setViewModalVisible(false)}>
+              Close
+            </Button>
+          ]}
+          width={1000}
+        >
+          {viewingGroup && (
+            <Tabs defaultActiveKey="1">
+              <TabPane tab="Overview" key="1">
+                <Row gutter={16}>
+                  <Col span={8}>
+                    <Card style={{ textAlign: "center" }}>
+                      <Avatar 
+                        size={100} 
+                        src={viewingGroup.group_icon !== 'default-group-icon-url' ? viewingGroup.group_icon : null}
+                        icon={<GroupOutlined />} 
+                      />
+                      <Title level={4} style={{ marginTop: "16px" }}>{viewingGroup.name}</Title>
+                      <Text type="secondary">{viewingGroup.description}</Text>
+                    </Card>
+                  </Col>
+                  <Col span={16}>
+                    <Descriptions bordered column={1}>
+                      <Descriptions.Item label="Service">
+                        <Space>
+                          <Avatar icon={<SafetyOutlined />} size="small" />
+                          {viewingGroup.service_id?.title || "No Service"}
+                        </Space>
+                      </Descriptions.Item>
+                      <Descriptions.Item label="Status">
+                        <Tag color={viewingGroup.is_active ? "green" : "red"}>
+                          {viewingGroup.is_active ? "ACTIVE" : "INACTIVE"}
+                        </Tag>
+                      </Descriptions.Item>
+                      <Descriptions.Item label="Approval Status">
+                        <Tag color={viewingGroup.approval_status === "approved" ? "green" : "orange"}>
+                          {viewingGroup.approval_status?.toUpperCase() || "PENDING"}
+                        </Tag>
+                      </Descriptions.Item>
+                      <Descriptions.Item label="Privacy">
+                        <Tag color={viewingGroup.is_private ? "blue" : "green"}>
+                          {viewingGroup.is_private ? "Private" : "Public"}
+                        </Tag>
+                      </Descriptions.Item>
+                      <Descriptions.Item label="Members">
+                        <Space>
+                          <TeamOutlined />
+                          <Text>{viewingGroup.members_count || 0} members</Text>
+                        </Space>
+                      </Descriptions.Item>
+                      <Descriptions.Item label="Created">
+                        <Space>
+                          <CalendarOutlined />
+                          {new Date(viewingGroup.createdAt).toLocaleDateString()}
+                        </Space>
+                      </Descriptions.Item>
+                      <Descriptions.Item label="Group Admin">
+                        <Space>
+                          <CrownOutlined />
+                          <Text>{viewingGroup.group_admin?.fullName || viewingGroup.group_admin?.username || "Unknown"}</Text>
+                        </Space>
+                      </Descriptions.Item>
+                    </Descriptions>
+                  </Col>
+                </Row>
+              </TabPane>
+              <TabPane tab={`Members (${viewingGroup.members_count || 0})`} key="2">
+                {renderMembersTab()}
+              </TabPane>
+              <TabPane tab={`Join Requests (${joinRequests.length})`} key="3">
+                {renderMembersTab()}
+              </TabPane>
+            </Tabs>
+          )}
         </Modal>
       </div>
     </DashboardHome>

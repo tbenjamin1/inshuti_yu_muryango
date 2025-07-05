@@ -68,15 +68,7 @@ const Sidebar = () => {
       icon: <AppstoreOutlined />,
       label: <Link to="/users-management">user</Link>,
     },
-    {
-      key: "logout",
-      icon: <LogoutOutlined />,
-      label: (
-        <span onClick={handleLogout} style={{ cursor: "pointer" }}>
-          Log Out
-        </span>
-      ),
-    },
+   
   ];
   return (
     <Sider style={siderStyle}>

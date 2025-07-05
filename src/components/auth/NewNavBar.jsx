@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom"; // React Router Link
 import {
   Menu,
   X,
@@ -11,6 +12,7 @@ import {
   ChevronDown,
   Bell,
   Search,
+  Link as LinkIcon,
 } from "lucide-react";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -172,9 +174,10 @@ const ModernNavBar = () => {
                 className="flex items-center space-x-3 group cursor-pointer"
               >
                 <div className="relative">
-                  <div className="h-12 w-12 bg-gradient-to-br from-violet-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:shadow-xl">
+                 <Link to='/'>
+                 <div className="h-12 w-12 bg-gradient-to-br from-violet-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:shadow-xl">
                     <span className="text-lg font-bold text-white">IYM</span>
-                  </div>
+                  </div></Link>
                   <div className="absolute -inset-1 bg-gradient-to-br from-violet-600 to-purple-600 rounded-xl opacity-20 group-hover:opacity-30 transition-opacity duration-300 blur-sm"></div>
                 </div>
                 <div className="text-left">
@@ -209,35 +212,11 @@ const ModernNavBar = () => {
 
               {/* Right Side Actions */}
               <div className="flex items-center space-x-4">
-                {/* Search */}
-                {/* <div className="relative">
-                  <button
-                    onClick={() => setIsSearchOpen(!isSearchOpen)}
-                    className="p-2 rounded-lg hover:bg-gray-100 transition-all duration-300 hover:scale-110"
-                  >
-                    <Search size={20} className="text-gray-600" />
-                  </button>
-                  {isSearchOpen && (
-                    <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-gray-200 p-4 z-50">
-                      <input
-                        type="text"
-                        placeholder="Search..."
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                        autoFocus
-                      />
-                    </div>
-                  )}
-                </div> */}
+               
 
                 {isLoggedIn ? (
                   <>
-                    {/* Notifications */}
-                    {/* <button className="relative p-2 rounded-lg hover:bg-gray-100 transition-all duration-300 hover:scale-110">
-                      <Bell size={20} className="text-gray-600" />
-                      <span className="absolute -top-1 -right-1 h-4 w-4 bg-red-500 rounded-full flex items-center justify-center text-xs text-white">
-                        3
-                      </span>
-                    </button> */}
+                   
 
                     {/* User Menu */}
                     <div className="relative">

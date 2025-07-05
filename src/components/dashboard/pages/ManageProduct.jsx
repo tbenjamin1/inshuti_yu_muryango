@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Plus, Edit2, Trash2, Search, Save, X, Upload, Eye, AlertCircle, CheckCircle, Loader2 } from "lucide-react";
-import { Modal, Image, Tag, Descriptions, Alert } from 'antd';
+import { Modal, Image, Tag, Descriptions, Alert, notification } from 'antd';
 import DashboardHome from "../DashboardLayout";
 import { getUser } from "../../../redux/transactions/TransactionSlice";
 import { useDispatch, useSelector } from "react-redux";
-
+import axios from "axios";
 const ManageProduct = () => {
   const user = useSelector(getUser);
   const token = user?.token;
@@ -147,38 +147,59 @@ const ManageProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-    
+  
     setState(prev => ({ ...prev, submitting: true, error: null }));
-    
-    const formDataToSend = new FormData();
-    Object.entries(formData).forEach(([key, value]) => {
-      if (key === 'images' && Array.isArray(value)) {
-        value.forEach(img => {
-          if (img.data) {
-            const byteCharacters = atob(img.data.split(',')[1]);
-            const byteNumbers = new Array(byteCharacters.length).fill().map((_, i) => byteCharacters.charCodeAt(i));
-            const blob = new Blob([new Uint8Array(byteNumbers)], { type: img.type });
-            formDataToSend.append('images', blob, img.name);
-          }
+  
+    try {
+      const formDataToSend = new FormData();
+  
+      Object.entries(formData).forEach(([key, value]) => {
+        if (key === 'images' && Array.isArray(value)) {
+          value.forEach(img => {
+            if (img.data) {
+              const byteCharacters = atob(img.data.split(',')[1]);
+              const byteNumbers = new Array(byteCharacters.length).fill().map((_, i) => byteCharacters.charCodeAt(i));
+              const blob = new Blob([new Uint8Array(byteNumbers)], { type: img.type });
+              formDataToSend.append('images', blob, img.name);
+            }
+          });
+        } else if (value !== '' && value !== null) {
+          formDataToSend.append(key, value);
+        }
+      });
+  
+      const endpoint = state.editingProduct
+        ? `/products/${state.editingProduct._id}`
+        : '/products';
+  
+      const response = await apiCall(endpoint, {
+        method: state.editingProduct ? 'PUT' : 'POST',
+        body: formDataToSend
+      });
+      
+  
+      console.log("response",response);
+  
+      if (response?.success) {
+        notification.success({
+          message: "successfully ",
+          description: 'successfully',
         });
-      } else if (value !== '' && value !== null) {
-        formDataToSend.append(key, value);
+        closeModal();
+        searchProducts();
+      } else {
+        // If API returns error message but not throwing an exception
+        showMessage(response?.message || 'Something went wrong. Please try again.', 'error');
       }
-    });
-
-    const endpoint = state.editingProduct ? `/products/${state.editingProduct._id}` : '/products';
-    const response = await apiCall(endpoint, {
-      method: state.editingProduct ? 'PUT' : 'POST',
-      body: formDataToSend
-    });
-
-    if (response?.success) {
-      showMessage(`Product ${state.editingProduct ? 'updated' : 'created'} successfully!`, "success");
-      closeModal();
-      searchProducts();
+    } catch (error) {
+      console.log('Submission error:', error.response);
+      showMessage('An unexpected error occurred. Please try again later.', 'error');
+      setState(prev => ({ ...prev, error: error.message || 'Unknown error' }));
+    } finally {
+      setState(prev => ({ ...prev, submitting: false }));
     }
-    setState(prev => ({ ...prev, submitting: false }));
   };
+  
 
   const deleteProduct = async (id) => {
     if (!confirm("Delete this product?")) return;

@@ -9,7 +9,7 @@ export const fetchAsynGroups = createAsyncThunk(
   "tranx/fetchAsynGroups",
   async ({ currentPage, searchQuery,serviceId }) => {
     const response = await axios.get(
-      `${API_BASE}/groups/service/${serviceId}`,
+      `${API_BASE}/groups`,
       { headers: {
          Authorization: `Bearer ${savedUser?.token}`,
        },}

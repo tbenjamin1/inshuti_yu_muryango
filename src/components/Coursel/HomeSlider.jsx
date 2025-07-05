@@ -5,8 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchAsynServices,
   getAllPaginatedServices,
+  getAllpublicPaginatedServices,
+  getAllpublicServices,
   getAllServices,
   getIsLoadingServices,
+  getpublicIsLoadingServices,
   getUser,
 } from "../../redux/transactions/TransactionSlice";
 
@@ -16,11 +19,11 @@ const ImageGallery = () => {
   const token = user?.token;
 
   // Get services
-  const servicesList = useSelector(getAllServices);
-  const paginatedServicesList = useSelector(getAllPaginatedServices);
-  const isLoadingServices = useSelector(getIsLoadingServices);
+  const servicesList = useSelector(getAllpublicServices);
+  const paginatedServicesList = useSelector(getAllpublicPaginatedServices);
+  const isLoadingServices = useSelector(getpublicIsLoadingServices);
 
-  console.log("Services List:", servicesList);
+  console.log("pub Services List:", servicesList);
   console.log("Paginated Services List:", paginatedServicesList);
   console.log("Is Loading Services:", isLoadingServices);
 

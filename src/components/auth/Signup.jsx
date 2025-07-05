@@ -95,6 +95,7 @@ export default function RegistrationForm() {
     const payload = {
       fullName: formData.fullName,
       username: formData.username,
+      email:formData.email,
       phone: formData.phone,
       password: formData.password,
     };
@@ -320,8 +321,7 @@ export default function RegistrationForm() {
                       htmlFor="email"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Email Address{" "}
-                      <span className="text-gray-400">(Optional)</span>
+                      Email Addres
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-1 left-0 pl-3 flex items-center pointer-events-none">

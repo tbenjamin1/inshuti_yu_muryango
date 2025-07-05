@@ -63,14 +63,14 @@ const ModernNavBar = () => {
     { to: "/", label: "Home" },
     { to: "/products", label: "Products" },
     { to: "/about", label: "About Us" },
-    { to: "/contact", label: "Contact" },
+    // { to: "/contact", label: "Contact" },
   ];
 
   const userMenuItems = [
     { label: "Profile", href: "/profile" },
-    { label: "Settings", href: "/settings" },
-    { label: "Orders", href: "/orders" },
-    { label: "Help", href: "/help" },
+    // { label: "Settings", href: "/settings" },
+    // { label: "Orders", href: "/orders" },
+    // { label: "Help", href: "/help" },
   ];
 
   return (
@@ -152,7 +152,7 @@ const ModernNavBar = () => {
               {/* Right Side Actions */}
               <div className="flex items-center space-x-4">
                 {/* Search */}
-                <div className="relative">
+                {/* <div className="relative">
                   <button
                     onClick={() => setIsSearchOpen(!isSearchOpen)}
                     className="p-2 rounded-lg hover:bg-gray-100 transition-all duration-300 hover:scale-110"
@@ -169,17 +169,17 @@ const ModernNavBar = () => {
                       />
                     </div>
                   )}
-                </div>
+                </div> */}
 
                 {isLoggedIn ? (
                   <>
                     {/* Notifications */}
-                    <button className="relative p-2 rounded-lg hover:bg-gray-100 transition-all duration-300 hover:scale-110">
+                    {/* <button className="relative p-2 rounded-lg hover:bg-gray-100 transition-all duration-300 hover:scale-110">
                       <Bell size={20} className="text-gray-600" />
                       <span className="absolute -top-1 -right-1 h-4 w-4 bg-red-500 rounded-full flex items-center justify-center text-xs text-white">
                         3
                       </span>
-                    </button>
+                    </button> */}
 
                     {/* User Menu */}
                     <div className="relative">
@@ -270,12 +270,12 @@ const ModernNavBar = () => {
             </a>
 
             <div className="flex items-center space-x-2">
-              {isLoggedIn && (
+              {/* {isLoggedIn && (
                 <button className="relative p-2 rounded-lg hover:bg-gray-100 transition-all duration-300">
                   <Bell size={18} className="text-gray-600" />
                   <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full"></span>
                 </button>
-              )}
+              )} */}
               <button
                 onClick={toggleMobileMenu}
                 className="p-2 rounded-lg hover:bg-gray-100 transition-all duration-300 hover:scale-110"
@@ -294,7 +294,7 @@ const ModernNavBar = () => {
               />
               <div className="absolute top-full left-0 right-0 bg-white shadow-2xl z-40 lg:hidden max-h-screen overflow-y-auto">
                 {/* Search Bar */}
-                <div className="p-4 border-b border-gray-200">
+                {/* <div className="p-4 border-b border-gray-200">
                   <div className="relative">
                     <Search size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                     <input
@@ -303,7 +303,7 @@ const ModernNavBar = () => {
                       className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     />
                   </div>
-                </div>
+                </div> */}
 
                 {/* Navigation Links */}
                 <div className="py-2">
